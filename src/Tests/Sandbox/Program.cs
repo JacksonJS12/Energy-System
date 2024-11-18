@@ -5,14 +5,14 @@
     using System.IO;
     using System.Threading.Tasks;
 
-    using PlatformSystem.Data;
-    using PlatformSystem.Data.Common;
-    using PlatformSystem.Data.Common.Repositories;
-    using PlatformSystem.Data.Models;
-    using PlatformSystem.Data.Repositories;
-    using PlatformSystem.Data.Seeding;
-    using PlatformSystem.Services.Data;
-    using PlatformSystem.Services.Messaging;
+    using EnergySystem.Data;
+    using EnergySystem.Data.Common;
+    using EnergySystem.Data.Common.Repositories;
+    using EnergySystem.Data.Models;
+    using EnergySystem.Data.Repositories;
+    using EnergySystem.Data.Seeding;
+    using EnergySystem.Services.Data;
+    using EnergySystem.Services.Messaging;
 
     using CommandLine;
 
