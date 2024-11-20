@@ -6,8 +6,8 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Models;
     using EnergySystem.Data.Common.Models;
-    using EnergySystem.Data.Models;
 
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
@@ -26,6 +26,13 @@
 
         public DbSet<Setting> Settings { get; set; }
 
+        public DbSet<Battery> Batteries { get; set; }
+
+        public DbSet<Grid> Grids { get; set; }
+
+        public DbSet<Property> Properties { get; set; }
+
+        
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
