@@ -450,7 +450,7 @@ namespace EnergySystem.Data.Migrations
                         .HasForeignKey("GridId");
 
                     b.HasOne("EnergySystem.Data.Models.ApplicationUser", "Owner")
-                        .WithMany()
+                        .WithMany("Properties")
                         .HasForeignKey("OwnerId");
 
                     b.Navigation("Grid");
@@ -514,6 +514,8 @@ namespace EnergySystem.Data.Migrations
                     b.Navigation("Claims");
 
                     b.Navigation("Logins");
+
+                    b.Navigation("Properties");
 
                     b.Navigation("Roles");
                 });

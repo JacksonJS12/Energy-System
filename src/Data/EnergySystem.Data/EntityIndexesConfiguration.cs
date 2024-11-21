@@ -2,7 +2,7 @@
 {
     using System.Linq;
 
-    using EnergySystem.Data.Common.Models;
+    using Common.Models;
 
     using Microsoft.EntityFrameworkCore;
 

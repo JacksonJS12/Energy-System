@@ -2,9 +2,10 @@
 {
     using System;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
 
-    using EnergySystem.Data.Common.Repositories;
+    using Common.Repositories;
 
     using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,17 @@
         public virtual IQueryable<TEntity> All() => this.DbSet;
 
         public virtual IQueryable<TEntity> AllAsNoTracking() => this.DbSet.AsNoTracking();
+
+        public IQueryable<TEntity> AllWithIncludes(params Expression<Func<TEntity, object>>[] includes)
+        {
+            IQueryable<TEntity> query = this.DbSet;
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return query;
+        }
 
         public virtual Task AddAsync(TEntity entity) => this.DbSet.AddAsync(entity).AsTask();
 

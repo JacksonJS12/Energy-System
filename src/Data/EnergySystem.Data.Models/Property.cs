@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using EnergySystem.Data.Common.Models;
-using EnergySystem.Data.Models.Enums;
-
-namespace EnergySystem.Data.Models
+﻿namespace EnergySystem.Data.Models
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Common.Models;
+
+    using Enums;
+
     public class Property : BaseDeletableModel<string>
     {
         public Property()
@@ -18,6 +20,8 @@ namespace EnergySystem.Data.Models
         public string Address { get; set; }
 
         public float ElectricityNeed { get; set; }
+
+        public string OwnerId { get; set; }
 
         public virtual ApplicationUser Owner { get; set; }
 

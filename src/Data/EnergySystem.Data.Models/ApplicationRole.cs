@@ -3,7 +3,7 @@ namespace EnergySystem.Data.Models
 {
     using System;
 
-    using EnergySystem.Data.Common.Models;
+    using Common.Models;
 
     using Microsoft.AspNetCore.Identity;
 

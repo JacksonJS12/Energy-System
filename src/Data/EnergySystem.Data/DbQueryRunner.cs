@@ -3,7 +3,7 @@
     using System;
     using System.Threading.Tasks;
 
-    using EnergySystem.Data.Common;
+    using Common;
 
     using Microsoft.EntityFrameworkCore;
 
@@ -16,10 +16,7 @@
 
         public ApplicationDbContext Context { get; set; }
 
-        public Task RunQueryAsync(string query, params object[] parameters)
-        {
-            return this.Context.Database.ExecuteSqlRawAsync(query, parameters);
-        }
+        public Task RunQueryAsync(string query, params object[] parameters) => this.Context.Database.ExecuteSqlRawAsync(query, parameters);
 
         public void Dispose()
         {

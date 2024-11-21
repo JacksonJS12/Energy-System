@@ -5,16 +5,16 @@
     using System.IO;
     using System.Threading.Tasks;
 
+    using CommandLine;
+
     using EnergySystem.Data;
     using EnergySystem.Data.Common;
     using EnergySystem.Data.Common.Repositories;
     using EnergySystem.Data.Models;
     using EnergySystem.Data.Repositories;
     using EnergySystem.Data.Seeding;
-    using EnergySystem.Services.Data;
+    using EnergySystem.Services.Data.Settings;
     using EnergySystem.Services.Messaging;
-
-    using CommandLine;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -43,8 +43,8 @@
                 serviceProvider = serviceScope.ServiceProvider;
 
                 return Parser.Default.ParseArguments<SandboxOptions>(args).MapResult(
-                    opts => SandboxCode(opts, serviceProvider).GetAwaiter().GetResult(),
-                    _ => 255);
+                parsedFunc: opts => SandboxCode(opts, serviceProvider).GetAwaiter().GetResult(),
+                notParsedFunc: _ => 255);
             }
         }
 
@@ -69,8 +69,8 @@
             services.AddSingleton<IConfiguration>(configuration);
 
             services.AddDbContext<ApplicationDbContext>(
-                options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
-                    .UseLoggerFactory(new LoggerFactory()));
+            options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+                .UseLoggerFactory(new LoggerFactory()));
 
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
                 .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();

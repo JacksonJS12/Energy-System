@@ -4,6 +4,6 @@
     {
         Grid = 0,
         Battery = 1,
-        Mixed = 2
+        Mixed = 2,
     }
 }

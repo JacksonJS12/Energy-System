@@ -1,9 +1,10 @@
 ﻿namespace EnergySystem.Web.ViewModels.Settings
 {
-    using EnergySystem.Data.Models;
-    using EnergySystem.Services.Mapping;
-
     using AutoMapper;
+
+    using Data.Models;
+
+    using Services.Mapping;
 
     public class SettingViewModel : IMapFrom<Setting>, IHaveCustomMappings
     {
@@ -18,8 +19,8 @@
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Setting, SettingViewModel>().ForMember(
-                m => m.NameAndValue,
-                opt => opt.MapFrom(x => x.Name + " = " + x.Value));
+            destinationMember: m => m.NameAndValue,
+            memberOptions: opt => opt.MapFrom(x => x.Name + " = " + x.Value));
         }
     }
 }

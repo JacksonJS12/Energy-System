@@ -3,28 +3,30 @@
     using System;
     using System.Threading.Tasks;
 
-    using EnergySystem.Data.Common.Repositories;
-    using EnergySystem.Data.Models;
-    using EnergySystem.Services.Data;
-    using EnergySystem.Web.ViewModels.Settings;
+    using Data.Common.Repositories;
+    using Data.Models;
 
     using Microsoft.AspNetCore.Mvc;
 
+    using Services.Data.Settings;
+
+    using ViewModels.Settings;
+
     public class SettingsController : BaseController
     {
-        private readonly ISettingsService settingsService;
 
-        private readonly IDeletableEntityRepository<Setting> repository;
+        private readonly IDeletableEntityRepository<Setting> _repository;
+        private readonly ISettingsService _settingsService;
 
         public SettingsController(ISettingsService settingsService, IDeletableEntityRepository<Setting> repository)
         {
-            this.settingsService = settingsService;
-            this.repository = repository;
+            this._settingsService = settingsService;
+            this._repository = repository;
         }
 
         public IActionResult Index()
         {
-            var settings = this.settingsService.GetAll<SettingViewModel>();
+            var settings = this._settingsService.GetAll<SettingViewModel>();
             var model = new SettingsListViewModel { Settings = settings };
             return this.View(model);
         }
@@ -34,8 +36,8 @@
             var random = new Random();
             var setting = new Setting { Name = $"Name_{random.Next()}", Value = $"Value_{random.Next()}" };
 
-            await this.repository.AddAsync(setting);
-            await this.repository.SaveChangesAsync();
+            await this._repository.AddAsync(setting);
+            await this._repository.SaveChangesAsync();
 
             return this.RedirectToAction(nameof(this.Index));
         }

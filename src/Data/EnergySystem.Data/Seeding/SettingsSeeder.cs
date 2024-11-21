@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using EnergySystem.Data.Models;
+    using Models;
 
     internal class SettingsSeeder : ISeeder
     {

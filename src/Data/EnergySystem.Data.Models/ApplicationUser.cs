@@ -4,7 +4,7 @@ namespace EnergySystem.Data.Models
     using System;
     using System.Collections.Generic;
 
-    using EnergySystem.Data.Common.Models;
+    using Common.Models;
 
     using Microsoft.AspNetCore.Identity;
 
@@ -16,7 +16,16 @@ namespace EnergySystem.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+            this.Properties = new HashSet<Property>();
         }
+
+        public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
+
+        public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
+
+        public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
+
+        public virtual ICollection<Property> Properties { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }
@@ -27,11 +36,5 @@ namespace EnergySystem.Data.Models
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
-
-        public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
-
-        public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
-
-        public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
     }
 }

@@ -1,7 +1,8 @@
 ﻿namespace EnergySystem.Data.Models
 {
     using System;
-    using EnergySystem.Data.Common.Models;
+
+    using Common.Models;
 
     public class Grid : BaseDeletableModel<string>
     {

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
 
     public interface IRepository<TEntity> : IDisposable
@@ -10,6 +11,8 @@
         IQueryable<TEntity> All();
 
         IQueryable<TEntity> AllAsNoTracking();
+
+        IQueryable<TEntity> AllWithIncludes(params Expression<Func<TEntity, object>>[] includes);
 
         Task AddAsync(TEntity entity);
 

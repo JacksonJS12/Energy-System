@@ -1,4 +1,4 @@
-﻿namespace EnergySystem.Services.Data
+﻿namespace EnergySystem.Services.Data.Settings
 {
     using System.Collections.Generic;
 

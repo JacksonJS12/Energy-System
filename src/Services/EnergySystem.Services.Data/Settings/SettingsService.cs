@@ -1,11 +1,12 @@
-﻿namespace EnergySystem.Services.Data
+﻿namespace EnergySystem.Services.Data.Settings
 {
     using System.Collections.Generic;
     using System.Linq;
 
     using EnergySystem.Data.Common.Repositories;
     using EnergySystem.Data.Models;
-    using EnergySystem.Services.Mapping;
+
+    using Mapping;
 
     public class SettingsService : ISettingsService
     {
@@ -16,14 +17,8 @@
             this.settingsRepository = settingsRepository;
         }
 
-        public int GetCount()
-        {
-            return this.settingsRepository.AllAsNoTracking().Count();
-        }
+        public int GetCount() => this.settingsRepository.AllAsNoTracking().Count();
 
-        public IEnumerable<T> GetAll<T>()
-        {
-            return this.settingsRepository.All().To<T>().ToList();
-        }
+        public IEnumerable<T> GetAll<T>() => this.settingsRepository.All().To<T>().ToList();
     }
 }

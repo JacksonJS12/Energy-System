@@ -3,8 +3,8 @@
     using System;
     using System.Linq;
 
-    using EnergySystem.Data.Common.Models;
-    using EnergySystem.Data.Common.Repositories;
+    using Common.Models;
+    using Common.Repositories;
 
     using Microsoft.EntityFrameworkCore;
 

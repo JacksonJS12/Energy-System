@@ -1,0 +1,119 @@
+﻿@model EnergySystem.Web.ViewModels.Property.PropertyDetailsViewModel
+
+@{
+    ViewData["Title"] = "Property Details";
+}
+
+<div class="container my-5">
+    <!-- Header Section with Back Button -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-primary">@Model.Name</h1>
+        <a asp-controller="Property" asp-action="MyProperties" class="btn btn-success">
+            Back to My Properties
+        </a>
+    </div>
+
+    <!-- Property Information Section -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card shadow-lg mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Property Information</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Address:</strong> @Model.Address
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Electricity Need:</strong> @Model.ElectricityNeed kWh
+                        </li>
+                    </ul>
+                    <div class="mt-3">
+                        <a asp-controller="Property" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                            Edit Property
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid and Batteries Section -->
+    <div class="row">
+        <!-- Grid Information -->
+        @if (Model.Grid != null)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-lg h-100">
+                    <div class="card-header bg-secondary text-white">
+                        <h3 class="mb-0">Grid Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong>Grid Name:</strong> @Model.Grid.Name
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Provider:</strong> @Model.Grid.Provider
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Maximum Capacity:</strong> @Model.Grid.MaximumCapacity kWh
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Current Usage:</strong> @Model.Grid.CurrentUsage kWh
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Supply Price:</strong> $@Model.Grid.SupplyPrice per kWh
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Batteries Information -->
+        <div class="col-md-6 mb-4">
+            @if (Model.Batteries != null && Model.Batteries.Any())
+            {
+                <div class="card shadow-lg h-100">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="mb-0">Batteries</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach (var battery in Model.Batteries)
+                            {
+                                <div class="col-12 mb-3">
+                                    <div class="card border-secondary">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-primary">@battery.Model</h5>
+                                            <p class="card-text">
+                                                <strong>Capacity:</strong> @battery.Capacity Wh<br />
+                                                <strong>Voltage:</strong> @battery.Voltage V<br />
+                                                <strong>Charge Level:</strong> @battery.CurrentChargeLevel %<br />
+                                                <strong>State of Health:</strong> @battery.StateOfHealth %<br />
+                                                <strong>Cycle Count:</strong> @battery.CycleCount
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card shadow-lg h-100">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="mb-0">Batteries</h3>
+                    </div>
+                    <div class="card-body text-center">
+                        <p class="text-muted">No batteries are associated with this property.</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

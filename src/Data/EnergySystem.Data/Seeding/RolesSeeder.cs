@@ -5,10 +5,11 @@
     using System.Threading.Tasks;
 
     using EnergySystem.Common;
-    using EnergySystem.Data.Models;
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
+
+    using Models;
 
     internal class RolesSeeder : ISeeder
     {

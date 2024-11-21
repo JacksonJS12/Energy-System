@@ -1,6 +1,6 @@
 ﻿namespace EnergySystem.Data.Models
 {
-    using EnergySystem.Data.Common.Models;
+    using Common.Models;
 
     public class Setting : BaseDeletableModel<int>
     {

@@ -13,6 +13,8 @@
 
     using Moq;
 
+    using Settings;
+
     using Xunit;
 
     public class SettingsServiceTests
@@ -22,14 +24,14 @@
         {
             var repository = new Mock<IDeletableEntityRepository<Setting>>();
             repository.Setup(r => r.AllAsNoTracking()).Returns(new List<Setting>
-                                                        {
-                                                            new Setting(),
-                                                            new Setting(),
-                                                            new Setting(),
-                                                        }.AsQueryable());
+            {
+                new Setting(),
+                new Setting(),
+                new Setting(),
+            }.AsQueryable());
             var service = new SettingsService(repository.Object);
             Assert.Equal(3, service.GetCount());
-            repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+            repository.Verify(expression: x => x.AllAsNoTracking(), Times.Once);
         }
 
         [Fact]

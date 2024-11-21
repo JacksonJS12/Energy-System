@@ -6,7 +6,6 @@
     using System.Reflection;
 
     using AutoMapper;
-    using AutoMapper.Configuration;
 
     public static class AutoMapperConfig
     {
@@ -27,27 +26,26 @@
 
             var config = new MapperConfigurationExpression();
             config.CreateProfile(
-                "ReflectionProfile",
-                configuration =>
+            "ReflectionProfile",
+            config: configuration => {
+                // IMapFrom<>
+                foreach (var map in GetFromMaps(types))
                 {
-                    // IMapFrom<>
-                    foreach (var map in GetFromMaps(types))
-                    {
-                        configuration.CreateMap(map.Source, map.Destination);
-                    }
+                    configuration.CreateMap(map.Source, map.Destination);
+                }
 
-                    // IMapTo<>
-                    foreach (var map in GetToMaps(types))
-                    {
-                        configuration.CreateMap(map.Source, map.Destination);
-                    }
+                // IMapTo<>
+                foreach (var map in GetToMaps(types))
+                {
+                    configuration.CreateMap(map.Source, map.Destination);
+                }
 
-                    // IHaveCustomMappings
-                    foreach (var map in GetCustomMappings(types))
-                    {
-                        map.CreateMappings(configuration);
-                    }
-                });
+                // IHaveCustomMappings
+                foreach (var map in GetCustomMappings(types))
+                {
+                    map.CreateMappings(configuration);
+                }
+            });
             MapperInstance = new Mapper(new MapperConfiguration(config));
         }
 

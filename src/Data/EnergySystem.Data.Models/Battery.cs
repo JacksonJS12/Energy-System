@@ -1,9 +1,8 @@
-﻿
-namespace EnergySystem.Data.Models
+﻿namespace EnergySystem.Data.Models
 {
     using System;
 
-    using EnergySystem.Data.Common.Models;
+    using Common.Models;
 
     public class Battery : BaseDeletableModel<string>
     {
@@ -40,6 +39,5 @@ namespace EnergySystem.Data.Models
         public string PropertyId { get; set; }
 
         public virtual Property Property { get; set; }
-
     }
 }

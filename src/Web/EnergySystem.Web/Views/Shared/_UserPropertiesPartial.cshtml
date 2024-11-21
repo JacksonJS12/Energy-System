@@ -1,0 +1,16 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<EnergySystem.Web.ViewModels.Property.PropertyDetailsViewModel>
+
+<div>
+    <h4>Your Properties</h4>
+    <ul>
+        @foreach (var property in Model)
+        {
+            <li>
+                <a asp-controller="Property" asp-action="Details" asp-route-id="@property.Id">
+                    @property.Name
+                </a>
+            </li>
+        }
+    </ul>
+</div>
