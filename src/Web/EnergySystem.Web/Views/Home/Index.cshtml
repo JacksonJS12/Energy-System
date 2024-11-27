@@ -1,8 +1,123 @@
-﻿@using EnergySystem.Common
+﻿@* @page *@
+@* @model EnergySystem.Web.Pages.IndexModel *@
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
+<div class="container mt-5">
+    <h1 class="text-primary text-center mb-4">Dashboard</h1>
+
+    <!-- Key Metrics -->
+    <div class="row text-center mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-header bg-info text-white">
+                    <h3>Current Usage</h3>
+                </div>
+                <div class="card-body">
+                    <p class="display-5 text-primary">15.5 kWh</p>
+                    @* <p class="display-5 text-primary">@Model.CurrentUsage.ToString("F1") kWh</p> *@
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-header bg-success text-white">
+                    <h3>Average Savings</h3>
+                </div>
+                <div class="card-body">
+                    <p class="display-5 text-success">50.25 BGN</p>
+                    @* <p class="display-5 text-success">@Model.AverageSavings.ToString("C2") BGN</p> *@
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-header bg-warning text-white">
+                    <h3>Electricity Cost</h3>
+                </div>
+                <div class="card-body">
+                    <p class="display-5 text-danger">0.30 BGN/kWh</p>
+                    @* <p class="display-5 text-danger">@Model.CurrentElectricityCost.ToString("C2") BGN/kWh</p> *@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Current Electricity Prices -->
+    <div class="card shadow-lg mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3>Electricity Prices</h3>
+        </div>
+        <div class="card-body">
+            <canvas id="electricityPricesChart" width="800" height="400"></canvas>
+        </div>
+    </div>
+
+    <!-- Battery Status and Power Source -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-secondary text-white">
+                    <h3>Battery Status</h3>
+                </div>
+                <div class="card-body text-center">
+                    <div class="battery-icon-container mb-3">
+                        <div class="battery-icon">
+                            <div class="battery-level" style="height: 75%;"></div>
+                            @* <div class="battery-level" style="height: @Model.BatteryChargeLevel%;"></div> *@
+                        </div>
+                        <p class="mt-2">75% Charged</p>
+                        @* <p class="mt-2">@Model.BatteryChargeLevel.ToString("F0")% Charged</p> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-lg">
+                <div class="card-header bg-dark text-white">
+                    <h3>Current Power Source</h3>
+                </div>
+                <div class="card-body text-center">
+                    <h2 class="display-6 text-primary">Battery</h2>
+                    @* <h2 class="display-6 text-primary">@Model.CurrentPowerSource</h2> *@
+                    <p>Powering the system with <strong>Battery</strong>.</p>
+                    @* <p>Powering the system with <strong>@Model.CurrentPowerSource</strong>.</p> *@
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('electricityPricesChart').getContext('2d');
+        const labels = ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"];
+        const electricityPrices = [0.20, 0.18, 0.17, 0.15, 0.14, 0.13, 0.12, 0.25, 0.28, 0.30, 0.35, 0.38, 0.40, 0.37, 0.32, 0.28, 0.25, 0.22, 0.18, 0.15, 0.14, 0.13, 0.12, 0.11];
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Electricity Prices (BGN/kWh)',
+                        data: electricityPrices,
+                        borderColor: '#007bff',
+                        backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                        fill: true,
+                    }
+                ],
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+    </script>
+}

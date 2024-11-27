@@ -1,0 +1,132 @@
+﻿@* @page *@
+@* @model EnergySystem.Web.Price.CostAnalysisModel *@
+@{
+    ViewData["Title"] = "Cost Analysis";
+}
+
+<div class="container mt-5">
+    <h1 class="text-primary text-center mb-4">Cost Analysis</h1>
+
+    <!-- Total Costs and Savings -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h2>Total Costs</h2>
+                </div>
+                <div class="card-body text-center">
+                    <p class="display-4 text-danger">350.75 BGN</p>
+                    @* <p class="display-4 text-danger">@Model.TotalCost.ToString("C2") BGN</p> *@
+                    <p class="text-muted">This is the total cost of electricity usage for the selected period (BGN).</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-success text-white text-center">
+                    <h2>Total Savings</h2>
+                </div>
+                <div class="card-body text-center">
+                    <p class="display-4 text-success">120.50 BGN</p>
+                    @* <p class="display-4 text-success">@Model.TotalSavings.ToString("C2") BGN</p> *@
+                    <p class="text-muted">Savings achieved by using battery power during peak hours (BGN).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid vs. Battery Usage -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-header bg-info text-white text-center">
+                    <h4>Grid vs. Battery Usage</h4>
+                </div>
+                <div class="card-body text-center">
+                    <canvas id="usageChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Historical Costs -->
+    <!-- TODO: Add date filtration of the data -->
+    <div class="card shadow-lg mt-4">
+        <div class="card-header bg-warning text-white">
+            <h2 class="mb-0">Historical Cost Breakdown</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Grid Cost (BGN)</th>
+                    <th>Battery Cost (BGN)</th>
+                    <th>Total Cost (BGN)</th>
+                    <th>Savings (BGN)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Test data -->
+                <tr>
+                    <td>@DateTime.Now.AddDays(-1)</td>
+                    <td>150.25</td>
+                    <td>30.50</td>
+                    <td>180.75</td>
+                    <td>50.00</td>
+                </tr>
+                <tr>
+                    <td>@DateTime.Now.AddDays(-2)</td>
+                    <td>120.50</td>
+                    <td>25.00</td>
+                    <td>145.50</td>
+                    <td>40.00</td>
+                </tr>
+
+                @* @foreach (var cost in Model.HistoricalCosts) *@
+                @* { *@
+                @*     <tr> *@
+                @*         <td>@cost.Date.ToShortDateString()</td> *@
+                @*         <td>@cost.GridCost.ToString("C2")</td> *@
+                @*         <td>@cost.BatteryCost.ToString("C2")</td> *@
+                @*         <td>@cost.TotalCost.ToString("C2")</td> *@
+                @*         <td>@cost.Savings.ToString("C2")</td> *@
+                @*     </tr> *@
+                @* } *@
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('usageChart').getContext('2d');
+        const gridUsage = @Html.Raw(Json.Serialize(500)); //Model.GridUsage
+        const batteryUsage = @Html.Raw(Json.Serialize(300)); //Model.BatteryUsage
+
+        const chart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Grid Usage (kWh)', 'Battery Usage (kWh)'],
+                datasets: [{
+                    data: [gridUsage, batteryUsage],
+                    backgroundColor: ['#007bff', '#28a745'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                }
+            }
+        });
+    </script>
+}

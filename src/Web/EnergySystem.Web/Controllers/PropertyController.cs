@@ -4,15 +4,10 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-
     using EnergySystem.Services.Data.Property;
-    using EnergySystem.Web.ViewModels.Battery;
-    using EnergySystem.Web.ViewModels.Grid;
+    using EnergySystem.Web.ViewModels.ApplicationUser;
     using EnergySystem.Web.ViewModels.Property;
-
     using Microsoft.AspNetCore.Mvc;
-
-    using ViewModels.ApplicationUser;
 
     public class PropertyController : BaseController
     {

@@ -13,6 +13,7 @@ body {
 
 main {
     flex: 1;
+    padding-bottom: 50px; /* Add padding to the bottom of the main container */
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -82,6 +83,7 @@ a:hover {
     text-align: center;
     padding: 1rem;
     border-top: 3px solid #343a40;
+    margin-top: auto;
 }
 
 .footer a {
@@ -100,6 +102,7 @@ a:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     background-color: #fff;
+    margin-bottom: 30px; /* Adds margin to the bottom of cards */
 }
 
 .card:hover {
@@ -115,6 +118,7 @@ a:hover {
     padding: 1rem;
     text-transform: uppercase;
     border-bottom: 3px solid #e5e5e5;
+    background-color: #3cae34;
 }
 
 /* Specific Card Headers */
@@ -203,4 +207,70 @@ a:hover {
 /* Hover Effects */
 .card:hover .card-header {
     filter: brightness(1.2);
+}
+
+/* Battery Icon */
+.battery-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.battery-body {
+    width: 100px;
+    height: 200px;
+    border: 5px solid #333;
+    border-radius: 5px;
+    position: relative;
+    background: #e9ecef;
+}
+
+.battery-fill {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background: #28a745;
+    transition: height 0.5s ease;
+    border-radius: 3px;
+}
+
+.battery-tip {
+    width: 20px;
+    height: 15px;
+    background: #333;
+    margin: -5px auto 0;
+    border-radius: 3px;
+}
+
+.battery-percentage {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Card and List Styling */
+.card-header {
+    font-size: 1.25rem;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.card-header.bg-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.card-header.bg-warning {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.list-group-item {
+    font-size: 1rem;
+    line-height: 1.5;
 }

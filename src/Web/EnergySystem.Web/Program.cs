@@ -12,6 +12,7 @@
     using EnergySystem.Services.Data.Settings;
     using EnergySystem.Services.Mapping;
     using EnergySystem.Services.Messaging;
+    using EnergySystem.Web.Profiles;
     using EnergySystem.Web.ViewModels;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
@@ -20,8 +21,6 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-
-    using Profiles;
 
     public class Program
     {
@@ -83,7 +82,7 @@
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddScoped<IPropertyService, PropertyService>();
-            
+
             // AutoMapper
             services.AddAutoMapper(typeof(PropertyProfile));
         }

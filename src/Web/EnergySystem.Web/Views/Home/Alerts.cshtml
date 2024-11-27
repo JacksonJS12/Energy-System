@@ -1,0 +1,83 @@
+﻿@* @page *@
+@* @model EnergySystem.Web.Pages.AlertsModel *@
+@{
+    ViewData["Title"] = "Alerts & Notifications";
+}
+
+<div class="container mt-5">
+    <h1 class="text-primary text-center mb-4">Alerts & Notifications</h1>
+
+    <div class="row">
+        <!-- Alerts List -->
+        <div class="col-md-12">
+            <div class="card shadow-lg">
+                <div class="card-header bg-danger text-white text-center">
+                    <h2>Recent Alerts</h2>
+                </div>
+                <div class="card-body">
+                    <!--For tests-->
+                    @if (true)
+                    {
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="text-danger">Electricity Price Spike</h5>
+                                    <p class="text-muted mb-0">Electricity prices have increased by 25% during peak
+                                        hours. Consider switching to battery power.</p>
+                                    <small class="text-secondary">11/27/2024 2:45 PM</small>
+                                </div>
+                                <span class="badge badge-danger">PriceChange</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="text-danger">Battery Low Charge</h5>
+                                    <p class="text-muted mb-0">Your battery charge level is below 10%. Please recharge
+                                        during off-peak hours.</p>
+                                    <small class="text-secondary">11/27/2024 2:15 PM</small>
+                                </div>
+                                <span class="badge badge-warning">BatteryWarning</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="text-danger">Energy-Saving Recommendation</h5>
+                                    <p class="text-muted mb-0">Using your washing machine after 9 PM can reduce your
+                                        energy costs by 20%.</p>
+                                    <small class="text-secondary">11/26/2024 4:00 AM</small>
+                                </div>
+                                <span class="badge badge-info">Tip</span>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted">
+                            <h4>No recent alerts to display.</h4>
+                        </div>
+                    }
+                    @* @if (Model.Alerts.Any()) *@
+                    @* { *@
+                    @*     <ul class="list-group"> *@
+                    @*         @foreach (var alert in Model.Alerts) *@
+                    @*         { *@
+                    @*             <li class="list-group-item d-flex justify-content-between align-items-center"> *@
+                    @*                 <div> *@
+                    @*                     <h5 class="text-danger">@alert.Title</h5> *@
+                    @*                     <p class="text-muted mb-0">@alert.Message</p> *@
+                    @*                     <small class="text-secondary">@alert.Date.ToString("g")</small> *@
+                    @*                 </div> *@
+                    @*                 <span class="badge @alert.AlertTypeBadgeClass">@alert.AlertType.ToString()</span> *@
+                    @*             </li> *@
+                    @*         } *@
+                    @*     </ul> *@
+                    @* } *@
+                    @* else *@
+                    @* { *@
+                    @*     <div class="text-center text-muted"> *@
+                    @*         <h4>No recent alerts to display.</h4> *@
+                    @*     </div> *@
+                    @* } *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

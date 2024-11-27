@@ -1,0 +1,79 @@
+﻿@* @page *@
+@* @model EnergySystem.Web.Battery.BatteryManagementModel *@
+@{
+    ViewData["Title"] = "Battery Management";
+}
+
+<div class="container mt-5">
+    <h1 class="text-primary text-center mb-4">Battery Management</h1>
+
+    <div class="row">
+        <!-- Battery Icon on the Left -->
+        <div class="col-md-4 text-center">
+            <div class="battery-container flex-column-reverse">
+                <div class="battery-body">
+                    <div class="battery-fill" style="height: 75%;"></div>
+                    @* <div class="battery-fill" style="height: @Model.Battery.CurrentChargeLevel%;"></div> *@
+                </div>
+                <div class="battery-tip"></div>
+                @* <p class="battery-percentage mt-2">@Model.Battery.CurrentChargeLevel %</p> *@
+            </div>
+            <p class="battery-percentage mt-2">75 %</p>
+        </div>
+
+        <!-- Battery Stats on the Right -->
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-success text-white">
+                    <h2 class="mb-0">Battery Information</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Model:</strong> LG Chem Resu
+                            @* <strong>Model:</strong> @Model.Battery.Model *@
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Capacity:</strong> 9,6 kWh
+                            @* <strong>Capacity:</strong> @Model.Battery.Capacity kWh *@
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Voltage:</strong> 400 V
+                            @* <strong>Voltage:</strong> @Model.Battery.Voltage V *@
+                        </li>
+                        <li class="list-group-item">
+                            <strong>State of Health:</strong> 90 %
+                            @* <strong>State of Health:</strong> @Model.Battery.StateOfHealth % *@
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Cycle Count:</strong> 150
+                            @* <strong>Cycle Count:</strong> @Model.Battery.CycleCount *@
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="card shadow-lg mt-4">
+        <div class="card-header bg-warning text-white">
+            <h2 class="mb-0">Recommendations</h2>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">Based on current electricity prices and battery status:</p>
+            <ul>
+                <li>
+                    @* @if (Model.ShouldCharge) *@
+                    @* { *@
+                    <span class="text-success font-weight-bold">Charge your battery now to save on costs.</span>
+                    @* } *@
+                    @* else *@
+                    @* { *@
+                     <span class="text-danger font-weight-bold">/ Use battery power instead of charging.</span> 
+                    @* } *@
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
