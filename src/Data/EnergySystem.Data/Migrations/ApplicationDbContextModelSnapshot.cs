@@ -17,7 +17,7 @@ namespace EnergySystem.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.20")
+                .HasAnnotation("ProductVersion", "7.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -249,6 +249,39 @@ namespace EnergySystem.Data.Migrations
                     b.ToTable("Grids");
                 });
 
+            modelBuilder.Entity("EnergySystem.Data.Models.MarketPrice", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Hour")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("PricePerKWh")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Region")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("MarketPrices");
+                });
+
             modelBuilder.Entity("EnergySystem.Data.Models.Property", b =>
                 {
                     b.Property<string>("Id")
@@ -293,6 +326,51 @@ namespace EnergySystem.Data.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Properties");
+                });
+
+            modelBuilder.Entity("EnergySystem.Data.Models.Report", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("BatteryCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<double>("BatteryUsage")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("GridCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<double>("GridUsage")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Savings")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Reports");
                 });
 
             modelBuilder.Entity("EnergySystem.Data.Models.Setting", b =>

@@ -31,6 +31,10 @@
 
         public DbSet<Property> Properties { get; set; }
 
+        public DbSet<Report> Reports { get; set; }
+
+        public DbSet<MarketPrice> MarketPrices { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
