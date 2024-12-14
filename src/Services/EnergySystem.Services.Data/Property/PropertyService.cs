@@ -1,14 +1,16 @@
 ﻿namespace EnergySystem.Services.Data.Property
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     using EnergySystem.Data.Common.Repositories;
     using EnergySystem.Data.Models;
-    using EnergySystem.Services.Projections;
 
     using Microsoft.EntityFrameworkCore;
+
+    using Projections;
 
     public class PropertyService : IPropertyService
     {
@@ -69,5 +71,6 @@
                 })
                 .ToListAsync();
         }
+        public Task<PropertyProjection> CreatePropertyAsync(PropertyProjection property) => throw new NotImplementedException();
     }
 }

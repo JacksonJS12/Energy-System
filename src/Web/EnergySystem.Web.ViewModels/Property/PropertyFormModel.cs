@@ -4,13 +4,9 @@
 
     using Battery;
 
-    using Data.Models;
+    using Services.Projections;
 
-    using Grid;
-
-    using Services.Mapping;
-
-    public class PropertyDetailsViewModel : IMapFrom<Property>
+    public class PropertyFormModel
     {
         public string Id { get; set; }
 
@@ -20,8 +16,8 @@
 
         public float ElectricityNeed { get; set; }
 
-        public GridViewModel Grid { get; set; }
+        public IEnumerable<GridProjection> Grids { get; set; }
 
-        public IEnumerable<BatteryViewModel> Batteries { get; set; }
+        public IEnumerable<BatteryViewModel> Batteries { get; set; } = new HashSet<BatteryViewModel>();
     }
 }

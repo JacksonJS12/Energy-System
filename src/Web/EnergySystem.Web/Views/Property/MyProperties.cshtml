@@ -1,48 +1,33 @@
-﻿@model EnergySystem.Web.ViewModels.ApplicationUser.UserPropertiesViewModel
+﻿<div class="container text-center my-5">
+    <h2 class="mb-4">YOUR PROPERTIES</h2>
 
-@{
-    ViewData["Title"] = "My Properties";
-}
-
-<div class="container mt-5">
+    <!-- Property Cards -->
     <div class="row">
-        <div class="col-md-12">
-            <h1 class="mb-4 text-center">Your Properties</h1>
+        @foreach (var property in Model.Properties)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        @property.Name.ToUpper()
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Address:</strong> @property.Address</p>
+                        <p><strong>Electricity Need:</strong> @property.ElectricityNeed kWh</p>
+                        <a class="btn btn-primary" href="/Properties/Details/ @property.Id">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+        <!-- Add Property Button -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    ADD PROPERTY
+                </div>
+                <div class="card-body text-center">
+                    <a class="btn btn-success" asp-controller="Property" asp-action="Create">Add New</a>
+                </div>
+            </div>
         </div>
     </div>
-
-    @if (Model.Properties.Any())
-    {
-        <div class="container mt-5">
-            <div class="row">
-                @foreach (var property in Model.Properties)
-                {
-                    <div class="col-md-4">
-                        <div class="card shadow-sm mb-4">
-                            <div class="card-header">
-                                @property.Name
-                            </div>
-                            <div class="card-body">
-                                <p><strong>Address:</strong> @property.Address</p>
-                                <p><strong>Electricity Need:</strong> @property.ElectricityNeed kWh</p>
-                                <a asp-controller="Property" asp-action="Details" asp-route-id="@property.Id"
-                                   class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    }
-    else
-    {
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <p class="text-muted">You do not own any properties yet.</p>
-                <a asp-controller="Property" asp-action="Create" class="btn btn-success">
-                    Add New Property
-                </a>
-            </div>
-        </div>
-    }
 </div>

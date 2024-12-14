@@ -1,4 +1,4 @@
-﻿@model EnergySystem.Web.ViewModels.Property.PropertyDetailsViewModel
+﻿@model PropertyDetailsViewModel
 
 @{
     ViewData["Title"] = "Property Details";
@@ -89,10 +89,10 @@
                                         <div class="card-body">
                                             <h5 class="card-title text-primary">@battery.Model</h5>
                                             <p class="card-text">
-                                                <strong>Capacity:</strong> @battery.Capacity Wh<br />
-                                                <strong>Voltage:</strong> @battery.Voltage V<br />
-                                                <strong>Charge Level:</strong> @battery.CurrentChargeLevel %<br />
-                                                <strong>State of Health:</strong> @battery.StateOfHealth %<br />
+                                                <strong>Capacity:</strong> @battery.Capacity Wh<br/>
+                                                <strong>Voltage:</strong> @battery.Voltage V<br/>
+                                                <strong>Charge Level:</strong> @battery.CurrentChargeLevel %<br/>
+                                                <strong>State of Health:</strong> @battery.StateOfHealth %<br/>
                                                 <strong>Cycle Count:</strong> @battery.CycleCount
                                             </p>
                                         </div>

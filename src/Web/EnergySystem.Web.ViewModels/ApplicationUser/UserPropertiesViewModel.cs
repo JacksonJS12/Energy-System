@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using EnergySystem.Web.ViewModels.Property;
+    using Property;
 
     public class UserPropertiesViewModel
     {

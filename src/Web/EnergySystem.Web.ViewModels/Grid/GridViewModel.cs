@@ -1,8 +1,8 @@
 ﻿namespace EnergySystem.Web.ViewModels.Grid
 {
-    using EnergySystem.Data.Models;
+    using Data.Models;
 
-    using EnergySystem.Services.Mapping;
+    using Services.Mapping;
 
     public class GridViewModel : IMapFrom<Grid>
     {

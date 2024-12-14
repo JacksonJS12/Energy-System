@@ -2,7 +2,7 @@
 {
     using System;
 
-    using EnergySystem.Data.Common.Models;
+    using Common.Models;
 
     public class Report : BaseDeletableModel<string>
     {
@@ -25,4 +25,4 @@
 
         public decimal Savings { get; set; } // Savings achieved by using battery power.
     }
-}    
+}

@@ -1,7 +1,7 @@
 ﻿@* @page *@
 @* @model EnergySystem.Web.Price.PriceTrackerModel *@
 @{
-ViewData["Title"] = "Real-Time Price Tracker";
+    ViewData["Title"] = "Real-Time Price Tracker";
 }
 
 <div class="container mt-5">
@@ -41,60 +41,60 @@ ViewData["Title"] = "Real-Time Price Tracker";
 </div>
 
 @section Scripts {
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('priceChart').getContext('2d');
-    const priceData = @Html.Raw(Json.Serialize( new List<double>
-                      {
-                          0.2, 0.19, 0.18, 0.17, 0.16, 0.15, 0.14, 0.13, 0.12,
-                          0.25, 0.26, 0.27, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33,
-                          0.34, 0.35, 0.24, 0.23, 0.22, 0.21
-                      })); //(Model.PriceData));
-    const timeLabels = @Html.Raw(Json.Serialize(new List<string>
-                       {
-                           "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00",
-                           "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00",
-                           "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00",
-                           "21:00", "22:00", "23:00"
-                       })); //(Model.TimeLabels));
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        const priceData = @Html.Raw(Json.Serialize(new List<double>
+                          {
+                              0.2, 0.19, 0.18, 0.17, 0.16, 0.15, 0.14, 0.13, 0.12,
+                              0.25, 0.26, 0.27, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33,
+                              0.34, 0.35, 0.24, 0.23, 0.22, 0.21,
+                          })); //(Model.PriceData));
+        const timeLabels = @Html.Raw(Json.Serialize(new List<string>
+                           {
+                               "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00",
+                               "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00",
+                               "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00",
+                               "21:00", "22:00", "23:00",
+                           })); //(Model.TimeLabels));
 
-    const chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: timeLabels,
-            datasets: [{
-                label: 'Electricity Price (BGN/kWh)',
-                data: priceData,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                }
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: timeLabels,
+                datasets: [{
+                    label: 'Electricity Price (BGN/kWh)',
+                    data: priceData,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
                         display: true,
-                        text: 'Price (BGN/kWh)'
+                        position: 'top'
                     }
                 },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Hour of the Day'
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Price (BGN/kWh)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Hour of the Day'
+                        }
                     }
                 }
             }
-        }
-    });
-</script>
+        });
+    </script>
 }

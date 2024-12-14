@@ -3,12 +3,14 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using EnergySystem.Services.Projections;
+    using Projections;
 
     public interface IPropertyService
     {
         Task<PropertyProjection> GetPropertyDetailsAsync(string propertyId);
 
         Task<IEnumerable<PropertyProjection>> GetUserPropertiesAsync(string userId);
+
+        Task<PropertyProjection> CreatePropertyAsync(PropertyProjection property);
     }
 }

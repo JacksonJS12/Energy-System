@@ -6,10 +6,12 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using EnergySystem.Data.Common.Models;
-    using EnergySystem.Data.Models;
+    using Common.Models;
+
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+
+    using Models;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {

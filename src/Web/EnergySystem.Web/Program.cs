@@ -2,18 +2,13 @@
 {
     using System.Reflection;
 
-    using EnergySystem.Data;
-    using EnergySystem.Data.Common;
-    using EnergySystem.Data.Common.Repositories;
-    using EnergySystem.Data.Models;
-    using EnergySystem.Data.Repositories;
-    using EnergySystem.Data.Seeding;
-    using EnergySystem.Services.Data.Property;
-    using EnergySystem.Services.Data.Settings;
-    using EnergySystem.Services.Mapping;
-    using EnergySystem.Services.Messaging;
-    using EnergySystem.Web.Profiles;
-    using EnergySystem.Web.ViewModels;
+    using Data;
+    using Data.Common;
+    using Data.Common.Repositories;
+    using Data.Models;
+    using Data.Repositories;
+    using Data.Seeding;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -21,6 +16,16 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+
+    using Profiles;
+
+    using Services.Data.Grid;
+    using Services.Data.Property;
+    using Services.Data.Settings;
+    using Services.Mapping;
+    using Services.Messaging;
+
+    using ViewModels;
 
     public class Program
     {
@@ -41,8 +46,7 @@
             services.AddDbContext<ApplicationDbContext>(
             options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<ApplicationUser>(options =>
-            {
+            services.AddDefaultIdentity<ApplicationUser>(options => {
                 options.SignIn.RequireConfirmedAccount = false;
 
                 // builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
@@ -59,8 +63,7 @@
             }).AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<CookiePolicyOptions>(
-            options =>
-            {
+            options => {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
@@ -82,6 +85,10 @@
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddScoped<IPropertyService, PropertyService>();
+
+            services.AddScoped<IGridService, GridService>();
+            services.AddScoped<IPropertyService, PropertyService>();
+
 
             // AutoMapper
             services.AddAutoMapper(typeof(PropertyProfile));

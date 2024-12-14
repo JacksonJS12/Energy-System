@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
+    using EnergySystem.Services.Data.Grid;
     using EnergySystem.Services.Data.Property;
     using EnergySystem.Web.ViewModels.ApplicationUser;
     using EnergySystem.Web.ViewModels.Property;
@@ -11,12 +12,14 @@
 
     public class PropertyController : BaseController
     {
-        private readonly IPropertyService _propertyService;
+        private readonly IGridService _gridService;
         private readonly IMapper _mapper;
+        private readonly IPropertyService _propertyService;
 
-        public PropertyController(IPropertyService propertyService, IMapper mapper)
+        public PropertyController(IPropertyService propertyService, IMapper mapper, IGridService gridService)
         {
             this._propertyService = propertyService;
+            this._gridService = gridService;
             this._mapper = mapper;
         }
 
@@ -32,19 +35,19 @@
             var viewModel = this._mapper.Map<PropertyDetailsViewModel>(propertyProjection);
             return this.View(viewModel);
         }
-        
+
         public async Task<IActionResult> MyProperties()
         {
-            if (!User.Identity.IsAuthenticated)
+            if (!this.User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Login", "Account");
+                return this.RedirectToAction("Login", "Account");
             }
 
-            var ownerId = GetUserId();
+            var ownerId = this.GetUserId();
 
             if (ownerId == null)
             {
-                return Unauthorized();
+                return this.Unauthorized();
             }
 
             var propertyProjections = await this._propertyService.GetUserPropertiesAsync(ownerId);
@@ -57,5 +60,25 @@
 
             return this.View(viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            var formModel = new PropertyFormModel
+            {
+                Grids = await this._gridService.GetAllGrids(),
+            };
+
+            return this.View(formModel);
+        }
+/*
+        [HttpPost]
+        public async Task<IActionResult> Create(PropertyFormModel model)
+        {
+
+
+            await this._propertyService.CreatePropertyAsync(model);
+        }
+        */
     }
 }

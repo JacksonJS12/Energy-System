@@ -2,12 +2,9 @@
 {
     using Microsoft.AspNetCore.Mvc;
 
-    public class BatteryController : Controller
+    public class BatteryController : BaseController
     {
         // GET
-        public IActionResult BatteryManagement()
-        {
-            return View();
-        }
+        public IActionResult BatteryManagement() => this.View();
     }
 }

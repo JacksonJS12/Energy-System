@@ -2,7 +2,7 @@
 {
     using System;
 
-    using EnergySystem.Data.Common.Models;
+    using Common.Models;
 
     public class MarketPrice : BaseDeletableModel<string>
     {

@@ -21,8 +21,10 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Data\EnergySystem.Data.Common\EnergySystem.Data.Common.csproj"/>
         <ProjectReference Include="..\..\Data\EnergySystem.Data.Models\EnergySystem.Data.Models.csproj"/>
+        <ProjectReference Include="..\..\Data\EnergySystem.Data\EnergySystem.Data.csproj"/>
+        <ProjectReference Include="..\..\Web\EnergySystem.Web.ViewModels\EnergySystem.Web.ViewModels.csproj"/>
         <ProjectReference Include="..\EnergySystem.Services.Mapping\EnergySystem.Services.Mapping.csproj"/>
-        <ProjectReference Include="..\EnergySystem.Services\EnergySystem.Services.csproj" />
+        <ProjectReference Include="..\EnergySystem.Services\EnergySystem.Services.csproj"/>
     </ItemGroup>
 
 </Project>
