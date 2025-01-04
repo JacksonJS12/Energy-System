@@ -2,6 +2,8 @@
 {
     using System.Security.Claims;
 
+    using Data.Models;
+
     using Microsoft.AspNetCore.Mvc;
 
     public class BaseController : Controller

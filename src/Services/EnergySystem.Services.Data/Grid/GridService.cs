@@ -8,7 +8,7 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using Projections;
+    using Web.ViewModels.Grid;
 
     public class GridService : IGridService
     {
@@ -19,12 +19,12 @@
             this._dbContext = context;
         }
 
-        public async Task<IEnumerable<GridProjection>> GetAllGrids()
+        public async Task<IEnumerable<GridViewModel>> GetAllGrids()
         {
-            IEnumerable<GridProjection> allGrids = await this._dbContext
+            IEnumerable<GridViewModel> allGrids = await this._dbContext
                 .Grids
                 .Where(g => !g.IsDeleted) // Fetch only non-deleted grids
-                .Select(g => new GridProjection
+                .Select(g => new GridViewModel
                 {
                     Id = g.Id,
                     Name = g.Name,

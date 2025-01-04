@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
 
-    using Common.Models;
+    using EnergySystem.Data.Common.Models;
 
-    using Enums;
+    using EnergySystem.Data.Models.Enums;
 
     public class Property : BaseDeletableModel<string>
     {
@@ -23,14 +23,12 @@
 
         public string OwnerId { get; set; }
 
-        public virtual ApplicationUser Owner { get; set; }
+        public ApplicationUser Owner { get; set; }
 
         public Grid Grid { get; set; }
 
-        public virtual ICollection<Battery> Batteries { get; set; }
+        public ICollection<Battery> Batteries { get; set; }
 
         public PoweringRegime PoweringRegime { get; set; } //Enum for powering regime (e.g., Grid, Battery, Mixed).
-
-        public DateTime CreatedOn { get; set; }
     }
 }

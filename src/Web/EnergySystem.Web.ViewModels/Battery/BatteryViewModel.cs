@@ -1,9 +1,6 @@
 ﻿namespace EnergySystem.Web.ViewModels.Battery
 {
-    using Services.Mapping;
-    using Services.Projections;
-
-    public class BatteryViewModel : IMapFrom<BatteryProjection>
+    public class BatteryViewModel
     {
         public string Id { get; set; }
 

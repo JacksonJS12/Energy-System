@@ -1,0 +1,3 @@
+﻿TODO:
+- Create entity validation for the ViewModels
+- Create action POST method

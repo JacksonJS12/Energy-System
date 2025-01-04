@@ -2,13 +2,10 @@
 {
     using System.Collections.Generic;
 
-    using Battery;
-
-    using Data.Models;
-
-    using Grid;
-
-    using Services.Mapping;
+    using EnergySystem.Data.Models;
+    using EnergySystem.Services.Mapping;
+    using EnergySystem.Web.ViewModels.Battery;
+    using EnergySystem.Web.ViewModels.Grid;
 
     public class PropertyDetailsViewModel : IMapFrom<Property>
     {

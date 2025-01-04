@@ -10,14 +10,17 @@
         <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <ItemGroup>
-        <AdditionalFiles Include="..\..\stylecop.json"/>
+        <AdditionalFiles Include="..\..\stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="EnergySystem.Web.Tests"/>
+        <InternalsVisibleTo Include="EnergySystem.Web.Tests" />
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" Version="6.0.36" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.20">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -26,26 +29,25 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.4"/>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.3"/>
-        <PackageReference Include="BuildBundlerMinifier" Version="3.2.449"/>
-        <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175"/>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.20"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.3"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.3" />
+        <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.20" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.3" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435" PrivateAssets="all">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\EnergySystem.Common\EnergySystem.Common.csproj"/>
-        <ProjectReference Include="..\..\Data\EnergySystem.Data.Models\EnergySystem.Data.Models.csproj"/>
-        <ProjectReference Include="..\..\Data\EnergySystem.Data\EnergySystem.Data.csproj"/>
-        <ProjectReference Include="..\..\Services\EnergySystem.Services.Data\EnergySystem.Services.Data.csproj"/>
-        <ProjectReference Include="..\..\Services\EnergySystem.Services.Mapping\EnergySystem.Services.Mapping.csproj"/>
-        <ProjectReference Include="..\..\Services\EnergySystem.Services.Messaging\EnergySystem.Services.Messaging.csproj"/>
-        <ProjectReference Include="..\..\Services\EnergySystem.Services\EnergySystem.Services.csproj"/>
-        <ProjectReference Include="..\EnergySystem.Web.Infrastructure\EnergySystem.Web.Infrastructure.csproj"/>
-        <ProjectReference Include="..\EnergySystem.Web.ViewModels\EnergySystem.Web.ViewModels.csproj"/>
+        <ProjectReference Include="..\..\EnergySystem.Common\EnergySystem.Common.csproj" />
+        <ProjectReference Include="..\..\Data\EnergySystem.Data.Models\EnergySystem.Data.Models.csproj" />
+        <ProjectReference Include="..\..\Data\EnergySystem.Data\EnergySystem.Data.csproj" />
+        <ProjectReference Include="..\..\Services\EnergySystem.Services.Data\EnergySystem.Services.Data.csproj" />
+        <ProjectReference Include="..\..\Services\EnergySystem.Services.Mapping\EnergySystem.Services.Mapping.csproj" />
+        <ProjectReference Include="..\..\Services\EnergySystem.Services.Messaging\EnergySystem.Services.Messaging.csproj" />
+        <ProjectReference Include="..\..\Services\EnergySystem.Services\EnergySystem.Services.csproj" />
+        <ProjectReference Include="..\EnergySystem.Web.Infrastructure\EnergySystem.Web.Infrastructure.csproj" />
+        <ProjectReference Include="..\EnergySystem.Web.ViewModels\EnergySystem.Web.ViewModels.csproj" />
     </ItemGroup>
 </Project>

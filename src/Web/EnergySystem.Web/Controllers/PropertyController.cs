@@ -64,21 +64,22 @@
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var formModel = new PropertyFormModel
+            var formModel = new CreateInputModel
             {
                 Grids = await this._gridService.GetAllGrids(),
             };
 
             return this.View(formModel);
         }
-/*
+        
         [HttpPost]
-        public async Task<IActionResult> Create(PropertyFormModel model)
+        public async Task<IActionResult> Create(CreateInputModel input)
         {
-
-
-            await this._propertyService.CreatePropertyAsync(model);
+            var userId = this.GetUserId();
+            
+            await this._propertyService.CreateAsync(input, userId);
+            
+            return this.RedirectToAction("Property","Details");
         }
-        */
     }
 }

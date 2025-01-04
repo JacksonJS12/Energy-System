@@ -7,10 +7,10 @@
 
     using EnergySystem.Data.Common.Repositories;
     using EnergySystem.Data.Models;
-
+    using EnergySystem.Web.ViewModels.Battery;
+    using EnergySystem.Web.ViewModels.Grid;
+    using EnergySystem.Web.ViewModels.Property;
     using Microsoft.EntityFrameworkCore;
-
-    using Projections;
 
     public class PropertyService : IPropertyService
     {
@@ -21,12 +21,12 @@
             this._propertyRepository = propertyRepository;
         }
 
-        public async Task<PropertyProjection> GetPropertyDetailsAsync(string propertyId)
+        public async Task<PropertyDetailsViewModel> GetPropertyDetailsAsync(string propertyId)
         {
             return await this._propertyRepository
                 .All()
                 .Where(p => p.Id == propertyId)
-                .Select(p => new PropertyProjection
+                .Select(p => new PropertyDetailsViewModel
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -34,7 +34,7 @@
                     ElectricityNeed = p.ElectricityNeed,
                     Grid = p.Grid == null
                         ? null
-                        : new GridProjection
+                        : new GridViewModel()
                         {
                             Id = p.Grid.Id,
                             Name = p.Grid.Name,
@@ -43,7 +43,7 @@
                             SupplyPrice = p.Grid.SupplyPrice,
                             Provider = p.Grid.Provider,
                         },
-                    Batteries = p.Batteries.Select(b => new BatteryProjection
+                    Batteries = p.Batteries.Select(b => new BatteryViewModel
                     {
                         Id = b.Id,
                         Model = b.Model,
@@ -57,12 +57,12 @@
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<PropertyProjection>> GetUserPropertiesAsync(string userId)
+        public async Task<IEnumerable<PropertyDetailsViewModel>> GetUserPropertiesAsync(string userId)
         {
             return await this._propertyRepository
                 .All()
                 .Where(p => p.OwnerId == userId)
-                .Select(p => new PropertyProjection
+                .Select(p => new PropertyDetailsViewModel
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -71,6 +71,13 @@
                 })
                 .ToListAsync();
         }
-        public Task<PropertyProjection> CreatePropertyAsync(PropertyProjection property) => throw new NotImplementedException();
+        public Task CreateAsync(CreateInputModel property, string userId) => throw new NotImplementedException();
+        // public Task CreateAsync(CreateInputModel input, string userId)
+        // {
+        //     var property = new Property
+        //     {
+        //         
+        //     }
+        // }
     }
 }

@@ -3,14 +3,14 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Projections;
+    using EnergySystem.Web.ViewModels.Property;
 
     public interface IPropertyService
     {
-        Task<PropertyProjection> GetPropertyDetailsAsync(string propertyId);
+        Task<PropertyDetailsViewModel> GetPropertyDetailsAsync(string propertyId);
 
-        Task<IEnumerable<PropertyProjection>> GetUserPropertiesAsync(string userId);
+        Task<IEnumerable<PropertyDetailsViewModel>> GetUserPropertiesAsync(string userId);
 
-        Task<PropertyProjection> CreatePropertyAsync(PropertyProjection property);
+        Task CreateAsync(CreateInputModel property, string userId);
     }
 }
