@@ -9,7 +9,7 @@
     {
         Task<PropertyDetailsViewModel> GetPropertyDetailsAsync(string propertyId);
 
-        Task<IEnumerable<PropertyDetailsViewModel>> GetUserPropertiesAsync(string userId);
+        public T GetById<T>(string userId);
 
         Task CreateAsync(CreateInputModel property, string userId);
     }

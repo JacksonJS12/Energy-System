@@ -25,6 +25,8 @@
 
         public ApplicationUser Owner { get; set; }
 
+        public string GridId { get; set; }
+
         public Grid Grid { get; set; }
 
         public ICollection<Battery> Batteries { get; set; }

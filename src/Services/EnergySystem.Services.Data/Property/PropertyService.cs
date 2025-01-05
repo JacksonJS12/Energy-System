@@ -10,6 +10,9 @@
     using EnergySystem.Web.ViewModels.Battery;
     using EnergySystem.Web.ViewModels.Grid;
     using EnergySystem.Web.ViewModels.Property;
+
+    using Mapping;
+
     using Microsoft.EntityFrameworkCore;
 
     public class PropertyService : IPropertyService
@@ -57,21 +60,28 @@
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<PropertyDetailsViewModel>> GetUserPropertiesAsync(string userId)
+        public T GetById<T>(string userId)
         {
-            return await this._propertyRepository
-                .All()
-                .Where(p => p.OwnerId == userId)
-                .Select(p => new PropertyDetailsViewModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Address = p.Address,
-                    ElectricityNeed = p.ElectricityNeed,
-                })
-                .ToListAsync();
+            var properties = this._propertyRepository.AllAsNoTracking()
+                .Where(x => x.Id == userId)
+                .To<T>().FirstOrDefault();
+
+            return properties;
         }
-        public Task CreateAsync(CreateInputModel property, string userId) => throw new NotImplementedException();
+        public async Task CreateAsync(CreateInputModel input, string userId)
+        {
+            var property = new Property
+            {
+                Name = input.Name,
+                Address = input.Address,
+                ElectricityNeed = float.Parse(input.ElectricityNeed),
+                GridId = input.GridId,
+                OwnerId = userId,
+            };
+            
+            await this._propertyRepository.AddAsync(property);
+            await this._propertyRepository.SaveChangesAsync();
+        }
         // public Task CreateAsync(CreateInputModel input, string userId)
         // {
         //     var property = new Property

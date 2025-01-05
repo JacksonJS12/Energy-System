@@ -4,7 +4,6 @@
     using System.ComponentModel.DataAnnotations;
 
     using EnergySystem.Web.ViewModels.Battery;
-
     using EnergySystem.Web.ViewModels.Grid;
 
     using static EnergySystem.Common.EntityValidationConstants.Property;
@@ -24,7 +23,9 @@
         public string ElectricityNeed { get; set; }
 
         [Required]
-        public IEnumerable<GridViewModel> Grids { get; set; }
+        public string GridId { get; set; }
+
+        public IEnumerable<KeyValuePair<string, string>> GridsItems { get; set; }
 
         public IEnumerable<BatteryViewModel> Batteries { get; set; } = new HashSet<BatteryViewModel>();
     }

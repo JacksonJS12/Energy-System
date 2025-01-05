@@ -1,8 +1,11 @@
-﻿@model CreateInputModel
-
-<h1>Create Property</h1>
+﻿@model EnergySystem.Web.ViewModels.Property.CreateInputModel
+@{
+    this.ViewData["Title"] = "Add new property";
+    var gridsItems = this.Model.GridsItems.Select(x => new SelectListItem(x.Value, x.Key));
+}
 
 <form method="post">
+    <h1>@this.ViewData["Title"]</h1>
     <div class="form-group">
         <label for="name">Property Name</label>
         <input type="text" id="name" name="Name" class="form-control" required/>
@@ -18,14 +21,19 @@
         <input type="number" id="electricityNeed" name="ElectricityNeed" class="form-control" required/>
     </div>
 
+    @* <div class="form-group"> *@
+    @*     <label asp-for="Grids">Select Grid</label> *@
+    @*     <select id="grid" name="GridId" class="form-control"> *@
+    @*         @foreach (var grid in Model.Grids) *@
+    @*         { *@
+    @*             <option value="@grid.Id">@grid.Name</option> *@
+    @*         } *@
+    @*     </select> *@
+    @* </div> *@
     <div class="form-group">
-        <label for="grid">Select Grid</label>
-        <select id="grid" name="GridId" class="form-control">
-            @foreach (var grid in Model.Grids)
-            {
-                <option value="@grid.Id">@grid.Name</option>
-            }
-        </select>
+        <label asp-for="GridId"></label>
+        <select asp-for="GridId" class="form-control" asp-items="gridsItems"></select>
+        <span asp-validation-for="GridId" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Create Property</button>

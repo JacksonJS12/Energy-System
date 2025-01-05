@@ -2,40 +2,44 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
 
     using EnergySystem.Data;
-
-    using Microsoft.EntityFrameworkCore;
-
-    using Web.ViewModels.Grid;
+    using EnergySystem.Data.Common.Repositories;
+    using EnergySystem.Data.Models;
+    using EnergySystem.Web.ViewModels.Grid;
 
     public class GridService : IGridService
     {
-        private readonly ApplicationDbContext _dbContext;
-
-        public GridService(ApplicationDbContext context)
+        private readonly IDeletableEntityRepository<Grid> _gridRepository;
+        public GridService(IDeletableEntityRepository<Grid> gridRepository)
         {
-            this._dbContext = context;
+            this._gridRepository = gridRepository;
         }
 
-        public async Task<IEnumerable<GridViewModel>> GetAllGrids()
+        public IEnumerable<KeyValuePair<string, string>> GetAllAsKeyValuePairs()
         {
-            IEnumerable<GridViewModel> allGrids = await this._dbContext
-                .Grids
-                .Where(g => !g.IsDeleted) // Fetch only non-deleted grids
-                .Select(g => new GridViewModel
-                {
-                    Id = g.Id,
-                    Name = g.Name,
-                    MaximumCapacity = g.MaximumCapacity,
-                    CurrentUsage = g.CurrentUsage,
-                    SupplyPrice = g.SupplyPrice,
-                    Provider = g.Provider,
-                })
-                .ToArrayAsync();
+            // IEnumerable<GridViewModel> allGrids = this._dbContext
+            //     .Grids
+            //     .Where(g => !g.IsDeleted) // Fetch only non-deleted grids
+            //     .Select(g => new GridViewModel
+            //     {
+            //         Id = g.Id,
+            //         Name = g.Name,
+            //         MaximumCapacity = g.MaximumCapacity,
+            //         CurrentUsage = g.CurrentUsage,
+            //         SupplyPrice = g.SupplyPrice,
+            //         Provider = g.Provider,
+            //     })
+            //     .ToArray();
+            //
+            // return allGrids;
 
-            return allGrids;
+            return this._gridRepository.AllAsNoTracking()
+                .Select(x => new
+                {
+                    x.Id,
+                    x.Name,
+                }).ToList().Select(x => new KeyValuePair<string, string>(x.Id, x.Name));
         }
     }
 }

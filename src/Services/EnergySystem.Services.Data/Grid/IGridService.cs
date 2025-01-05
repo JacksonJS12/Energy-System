@@ -7,7 +7,6 @@
 
     public interface IGridService
     {
-        Task<IEnumerable<GridViewModel
-        >> GetAllGrids();
+        public IEnumerable<KeyValuePair<string, string>> GetAllAsKeyValuePairs();
     }
 }

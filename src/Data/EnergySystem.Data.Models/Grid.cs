@@ -20,7 +20,5 @@
         public float SupplyPrice { get; set; } // Cost per kWh of electricity
 
         public string Provider { get; set; } // Name of the energy provider
-
-        public DateTime CreatedOn { get; set; }
     }
 }

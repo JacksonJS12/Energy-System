@@ -2,10 +2,10 @@
 {
     using System.Collections.Generic;
 
-    using Property;
+    using EnergySystem.Web.ViewModels.Property;
 
     public class UserPropertiesViewModel
     {
-        public IEnumerable<PropertyDetailsViewModel> Properties { get; set; }
+        public ICollection<PropertyDetailsViewModel> Properties { get; set; }
     }
 }
