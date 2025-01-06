@@ -1,3 +1,15 @@
 ﻿TODO:
 - Create entity validation for the ViewModels
-- Create action POST method
+
+- Edit action for Property
+- All action for Property
+- Delete action for Property
+
+- Add web scraper
+
+- Add Weather forecast API   
+
+- Set the data from IBEX in EEST UTC+2 from CEST UTC+1
+
+DONE:
+- Create action for Property

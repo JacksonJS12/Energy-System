@@ -12,5 +12,6 @@
         public T GetById<T>(string userId);
 
         Task CreateAsync(CreateInputModel property, string userId);
+        IEnumerable<T> GeAll<T>(string userId);
     }
 }

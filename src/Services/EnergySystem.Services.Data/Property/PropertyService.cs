@@ -78,9 +78,19 @@
                 GridId = input.GridId,
                 OwnerId = userId,
             };
-            
+
             await this._propertyRepository.AddAsync(property);
             await this._propertyRepository.SaveChangesAsync();
+        }
+        public IEnumerable<T> GeAll<T>(string userId)
+        {
+            var properties = this._propertyRepository
+                .AllAsNoTracking()
+                .OrderByDescending(x => x.Id)
+                .Where(x => x.OwnerId == userId)
+                .To<T>()
+                .ToList();
+            return properties;
         }
         // public Task CreateAsync(CreateInputModel input, string userId)
         // {
