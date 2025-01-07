@@ -1,6 +1,7 @@
 ﻿TODO:
 - Create entity validation for the ViewModels
 
+- Details action for Property
 - Edit action for Property
 - All action for Property
 - Delete action for Property
@@ -13,3 +14,4 @@
 
 DONE:
 - Create action for Property
+

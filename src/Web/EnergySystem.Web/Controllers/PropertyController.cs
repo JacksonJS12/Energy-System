@@ -51,12 +51,20 @@
         public IActionResult All()
         {
             string userId = this.GetUserId();
-            
+
             var viewModel = new PropertiesListViewModel
             {
                 Properties = this._propertyService.GeAll<PropertyInListViewModel>(userId),
             };
             return this.View(viewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Details(string id)
+        {
+            var property = this._propertyService.GetById<SinglePropertyViewModel>(id);
+
+            return this.View(property);
         }
     }
 }

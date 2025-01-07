@@ -60,13 +60,13 @@
                 .FirstOrDefaultAsync();
         }
 
-        public T GetById<T>(string userId)
+        public T GetById<T>(string propertyId)
         {
-            var properties = this._propertyRepository.AllAsNoTracking()
-                .Where(x => x.Id == userId)
+            var property = this._propertyRepository.AllAsNoTracking()
+                .Where(x => x.Id == propertyId)
                 .To<T>().FirstOrDefault();
 
-            return properties;
+            return property;
         }
         public async Task CreateAsync(CreateInputModel input, string userId)
         {

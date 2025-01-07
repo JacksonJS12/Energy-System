@@ -13,7 +13,7 @@
                     <div class="card-body">
                         <p><strong>Address:</strong> @property.Address</p>
                         <p><strong>Electricity Need:</strong> @property.ElectricityNeed kWh</p>
-                        <a class="btn btn-primary" href="/Properties/Details/ @property.Id">View Details</a>
+                        <a class="btn btn-primary" asp-controller="Property" asp-action="Details" asp-route-id="@property.Id">View Details</a>
                     </div>
                 </div>
             </div>
