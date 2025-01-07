@@ -44,7 +44,7 @@
 
             await this._propertyService.CreateAsync(input, userId);
 
-            return this.RedirectToAction("Property", "Details");
+            return this.RedirectToAction("Property", "All");
         }
 
         [HttpGet]

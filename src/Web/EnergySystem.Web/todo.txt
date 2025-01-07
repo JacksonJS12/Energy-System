@@ -1,10 +1,13 @@
 ﻿TODO:
 - Create entity validation for the ViewModels
 
-- Details action for Property
 - Edit action for Property
-- All action for Property
 - Delete action for Property
+
+- Create action for Battery
+- Edit action for Battery
+- Details action for Battery
+- Delete action for Battery
 
 - Add web scraper
 
@@ -14,4 +17,5 @@
 
 DONE:
 - Create action for Property
-
+- Details action for Property
+- All action for Property
