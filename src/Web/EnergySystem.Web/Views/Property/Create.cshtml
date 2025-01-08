@@ -21,15 +21,6 @@
         <input type="number" id="electricityNeed" name="ElectricityNeed" class="form-control" required/>
     </div>
 
-    @* <div class="form-group"> *@
-    @*     <label asp-for="Grids">Select Grid</label> *@
-    @*     <select id="grid" name="GridId" class="form-control"> *@
-    @*         @foreach (var grid in Model.Grids) *@
-    @*         { *@
-    @*             <option value="@grid.Id">@grid.Name</option> *@
-    @*         } *@
-    @*     </select> *@
-    @* </div> *@
     <div class="form-group">
         <label asp-for="GridId"></label>
         <select asp-for="GridId" class="form-control" asp-items="gridsItems"></select>

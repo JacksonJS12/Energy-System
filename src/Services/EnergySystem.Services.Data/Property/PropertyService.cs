@@ -98,5 +98,14 @@
             this._propertyRepository.Delete(recipe);
             await this._propertyRepository.SaveChangesAsync();
         }
+        public async Task UpdateAsync(string propertyId, EditPropertyInputModel input)
+        {
+            var property = this._propertyRepository.All().FirstOrDefault(x => x.Id == propertyId);
+            property.Name = input.Name;
+            property.Address = input.Address;
+            property.ElectricityNeed = float.Parse(input.ElectricityNeed);
+            property.GridId = input.GridId;
+            await this._propertyRepository.SaveChangesAsync();
+        }
     }
 }

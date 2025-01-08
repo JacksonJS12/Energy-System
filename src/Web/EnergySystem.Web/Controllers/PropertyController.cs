@@ -44,7 +44,7 @@
 
             await this._propertyService.CreateAsync(input, userId);
 
-            return this.RedirectToAction("Property", "All");
+            return this.RedirectToAction("All", "Property");
         }
 
         [HttpGet]
@@ -71,7 +71,28 @@
         public async Task<IActionResult> Delete(string id)
         {
             await this._propertyService.DeleteAsync(id);
-            return this.RedirectToAction(nameof(this.All));
+            return this.RedirectToAction("All", "Property");
+        }
+        
+        [HttpGet]
+        public IActionResult Edit(string id)
+        {
+            var inputModel = this._propertyService.GetById<EditPropertyInputModel>(id);
+            inputModel.GridsItems = this._gridService.GetAllAsKeyValuePairs();
+            return this.View(inputModel);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, EditPropertyInputModel input)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                input.GridsItems = this._gridService.GetAllAsKeyValuePairs();
+                return this.View(input);
+            }
+
+            await this._propertyService.UpdateAsync(id, input);
+            return this.RedirectToAction("Details", "Property", new {id});
         }
     }
 }
