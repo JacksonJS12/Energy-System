@@ -66,5 +66,12 @@
 
             return this.View(property);
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await this._propertyService.DeleteAsync(id);
+            return this.RedirectToAction(nameof(this.All));
+        }
     }
 }

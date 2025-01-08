@@ -6,6 +6,6 @@
 
     public class UserPropertiesViewModel
     {
-        public ICollection<PropertyDetailsViewModel> Properties { get; set; }
+        public ICollection<SinglePropertyViewModel> Properties { get; set; }
     }
 }

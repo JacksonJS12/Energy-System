@@ -24,12 +24,12 @@
             this._propertyRepository = propertyRepository;
         }
 
-        public async Task<PropertyDetailsViewModel> GetPropertyDetailsAsync(string propertyId)
+        public async Task<SinglePropertyViewModel> GetPropertyDetailsAsync(string propertyId)
         {
             return await this._propertyRepository
                 .All()
                 .Where(p => p.Id == propertyId)
-                .Select(p => new PropertyDetailsViewModel
+                .Select(p => new SinglePropertyViewModel()
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -92,12 +92,11 @@
                 .ToList();
             return properties;
         }
-        // public Task CreateAsync(CreateInputModel input, string userId)
-        // {
-        //     var property = new Property
-        //     {
-        //         
-        //     }
-        // }
+        public async Task DeleteAsync(string propertyId)
+        {
+            var recipe = this._propertyRepository.All().FirstOrDefault(x => x.Id == propertyId);
+            this._propertyRepository.Delete(recipe);
+            await this._propertyRepository.SaveChangesAsync();
+        }
     }
 }
