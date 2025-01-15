@@ -1,8 +1,6 @@
 ﻿TODO:
 - Create entity validation for the ViewModels
 
-- Delete action for Battery
-
 - Add web scraper
 
 - Add Weather forecast API   
@@ -23,4 +21,8 @@ DONE:
 - Create action for Battery
 - Details action for Battery
 - Edit action for Battery
+- Delete action for Battery
+
+
+
 
