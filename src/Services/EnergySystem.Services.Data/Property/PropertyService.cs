@@ -94,8 +94,8 @@
         }
         public async Task DeleteAsync(string propertyId)
         {
-            var recipe = this._propertyRepository.All().FirstOrDefault(x => x.Id == propertyId);
-            this._propertyRepository.Delete(recipe);
+            var property = this._propertyRepository.All().FirstOrDefault(x => x.Id == propertyId);
+            this._propertyRepository.Delete(property);
             await this._propertyRepository.SaveChangesAsync();
         }
         public async Task UpdateAsync(EditPropertyInputModel input, string propertyId)

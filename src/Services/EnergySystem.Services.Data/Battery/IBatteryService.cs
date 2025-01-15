@@ -9,5 +9,6 @@
         public Task CreateAsync(CreateBatteryInputModel model, string propertyId);
         public T GetById<T>(string batteryId);
         public Task UpdateAsync(EditBatteryInputModel input, string batteryId);
+        public Task DeleteAsync(string batteryId);
     }
 }

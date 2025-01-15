@@ -65,6 +65,12 @@
             
             await this._batteryRepository.SaveChangesAsync();
         }
+        public async Task DeleteAsync(string batteryId)
+        {
+            var battery = this._batteryRepository.All().FirstOrDefault(x => x.Id == batteryId);
+            this._batteryRepository.Delete(battery);
+            await this._batteryRepository.SaveChangesAsync();
+        }
     }
 
 }

@@ -69,5 +69,11 @@
             await this._batteryService.UpdateAsync(input, id);
             return this.RedirectToAction("BatteryManagement", "Battery", new {id});
         }
+        public async Task<IActionResult> Delete(string id)
+        {
+            var battery = this._batteryService.GetById<SingleBatteryViewModel>(id);
+            await this._batteryService.DeleteAsync(id);
+            return this.RedirectToAction("Details", "Property", new { id = battery.PropertyId });
+        }
     }
 }
