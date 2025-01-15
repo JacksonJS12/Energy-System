@@ -84,18 +84,20 @@
                             @foreach (var battery in Model.Batteries)
                             {
                                 <div class="col-12 mb-3">
-                                    <div class="card border-secondary">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-primary">@battery.Model</h5>
-                                            <p class="card-text">
-                                                <strong>Capacity:</strong> @battery.Capacity Wh<br/>
-                                                <strong>Voltage:</strong> @battery.Voltage V<br/>
-                                                <strong>Charge Level:</strong> @battery.CurrentChargeLevel %<br/>
-                                                <strong>State of Health:</strong> @battery.StateOfHealth %<br/>
-                                                <strong>Cycle Count:</strong> @battery.CycleCount
-                                            </p>
+                                    <a asp-controller="Battery" asp-action="BatteryManagement" asp-route-id="@battery.Id" class="text-decoration-none">
+                                        <div class="card border-secondary shadow-sm hover-shadow">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-primary">@battery.Model</h5>
+                                                <p class="card-text text-dark">
+                                                    <strong>Capacity:</strong> @battery.Capacity Wh<br/>
+                                                    <strong>Voltage:</strong> @battery.Voltage V<br/>
+                                                    <strong>Charge Level:</strong> @battery.CurrentChargeLevel %<br/>
+                                                    <strong>State of Health:</strong> @battery.StateOfHealth %<br/>
+                                                    <strong>Cycle Count:</strong> @battery.CycleCount
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             }
                             <div class="col-12 mt-3">

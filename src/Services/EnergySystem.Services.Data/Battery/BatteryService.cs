@@ -1,12 +1,15 @@
 ﻿namespace EnergySystem.Services.Data.Battery
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using EnergySystem.Data.Common.Repositories;
     using EnergySystem.Data.Models;
 
     using EnergySystem.Web.ViewModels.Battery;
+
+    using Mapping;
 
     public class BatteryService : IBatteryService
     {
@@ -37,6 +40,14 @@
 
             await this._batteryRepository.AddAsync(battery);
             await this._batteryRepository.SaveChangesAsync();
+        }
+        public T GetById<T>(string batteryId)
+        {
+            var battery = this._batteryRepository.AllAsNoTracking()
+                .Where(x => x.Id == batteryId)
+                .To<T>().FirstOrDefault();
+
+            return battery;
         }
     }
 
