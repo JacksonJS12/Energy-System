@@ -22,6 +22,8 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
+    using Services.Data.Battery;
+
     public class Program
     {
         public static void Main(string[] args)
@@ -83,6 +85,8 @@
 
             services.AddScoped<IGridService, GridService>();
             services.AddScoped<IPropertyService, PropertyService>();
+            services.AddScoped<IBatteryService, BatteryService>();
+
         }
 
         private static void Configure(WebApplication app)

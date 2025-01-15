@@ -1,0 +1,92 @@
+﻿@model EnergySystem.Web.ViewModels.Battery.CreateBatteryInputModel
+
+@{
+    ViewData["Title"] = "Add New Battery";
+}
+
+<h1 class="mb-4">@ViewData["Title"]</h1>
+
+<form method="post">
+    <!-- Battery Model -->
+    <div class="form-group">
+        <label asp-for="Model"></label>
+        <input asp-for="Model" class="form-control" />
+        <span asp-validation-for="Model" class="text-danger"></span>
+    </div>
+
+    <!-- Capacity -->
+    <div class="form-group">
+        <label asp-for="Capacity"></label>
+        <input asp-for="Capacity" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="Capacity" class="text-danger"></span>
+    </div>
+
+    <!-- Voltage -->
+    <div class="form-group">
+        <label asp-for="Voltage"></label>
+        <input asp-for="Voltage" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="Voltage" class="text-danger"></span>
+    </div>
+
+    <!-- Manufacturer -->
+    <div class="form-group">
+        <label asp-for="Manufacturer"></label>
+        <input asp-for="Manufacturer" class="form-control" />
+        <span asp-validation-for="Manufacturer" class="text-danger"></span>
+    </div>
+
+    <!-- Manufacture Date -->
+    <div class="form-group">
+        <label asp-for="ManufactureDate"></label>
+        <input asp-for="ManufactureDate" class="form-control" type="date" value="@DateTime.UtcNow.ToString("yyyy-MM-dd")" min="2000-01-01" max="2030-12-31"/>
+        <span asp-validation-for="ManufactureDate" class="text-danger"></span>
+    </div>
+
+    <!-- Initial Installation Date -->
+    <div class="form-group">
+        <label asp-for="InitialInstallation"></label>
+        <input asp-for="InitialInstallation" class="form-control" type="date" value="@DateTime.UtcNow.ToString("yyyy-MM-dd")" min="2000-01-01" max="2030-12-31"/>
+        <span asp-validation-for="InitialInstallation" class="text-danger"></span>
+    </div>
+
+    <!-- Current Charge Level -->
+    <div class="form-group">
+        <label asp-for="CurrentChargeLevel"></label>
+        <input asp-for="CurrentChargeLevel" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="CurrentChargeLevel" class="text-danger"></span>
+    </div>
+
+    <!-- State of Health -->
+    <div class="form-group">
+        <label asp-for="StateOfHealth"></label>
+        <input asp-for="StateOfHealth" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="StateOfHealth" class="text-danger"></span>
+    </div>
+
+    <!-- Cycle Count -->
+    <div class="form-group">
+        <label asp-for="CycleCount"></label>
+        <input asp-for="CycleCount" class="form-control" type="number" />
+        <span asp-validation-for="CycleCount" class="text-danger"></span>
+    </div>
+
+    <!-- Temperature -->
+    <div class="form-group">
+        <label asp-for="Temperature"></label>
+        <input asp-for="Temperature" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="Temperature" class="text-danger"></span>
+    </div>
+
+    <!-- Lifetime Energy Stored -->
+    <div class="form-group">
+        <label asp-for="LifetimeEnergyStored"></label>
+        <input asp-for="LifetimeEnergyStored" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="LifetimeEnergyStored" class="text-danger"></span>
+    </div>
+
+    <!-- Hidden Property ID -->
+    <input type="hidden" asp-for="PropertyId" value="@Model.PropertyId"/>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary mt-3">Create Battery</button>
+</form>

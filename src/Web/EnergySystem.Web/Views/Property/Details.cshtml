@@ -1,10 +1,4 @@
-﻿@model SinglePropertyViewModel 
-
-@{
-    ViewData["Title"] = "Property Details";
-}
-
-<div class="container my-5">
+﻿<div class="container my-5">
     <!-- Header Section with Back Button -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="text-primary">@Model.Name</h1>
@@ -79,7 +73,7 @@
 
         <!-- Batteries Information -->
         <div class="col-md-6 mb-4">
-            @if (Model.Batteries != null && Model.Batteries.Any())
+            @if (Model.Batteries != null)
             {
                 <div class="card shadow-lg h-100">
                     <div class="card-header bg-success text-white">
@@ -104,20 +98,27 @@
                                     </div>
                                 </div>
                             }
+                            <div class="col-12 mt-3">
+                                <a asp-controller="Battery" asp-action="Create" asp-route-propertyId="@Model.Id" class="btn btn-success w-100 shadow-sm">
+                                    <i class="fas fa-plus-circle"></i> Add New Battery
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            }
-            else
+            }else
             {
-                <div class="card shadow-lg h-100">
-                    <div class="card-header bg-success text-white">
-                        <h3 class="mb-0">Batteries</h3>
-                    </div>
-                    <div class="card-body text-center">
-                        <p class="text-muted">No batteries are associated with this property.</p>
-                    </div>
+            <div class="card shadow-lg h-100">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">Batteries</h3>
                 </div>
+                <div class="card-body text-center">
+                    <p class="text-muted">No batteries are associated with this property.</p>
+                    <a asp-controller="Battery" asp-action="Create" asp-route-propertyId="@Model.Id" class="btn btn-success w-50 shadow-sm">
+                        <i class="fas fa-plus-circle"></i> Add New Battery
+                    </a>
+                </div>
+            </div>
             }
         </div>
     </div>

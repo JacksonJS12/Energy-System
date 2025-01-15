@@ -20,7 +20,7 @@
 
         public DateTime ManufactureDate { get; set; } //Date of manufacture
 
-        public DateTime InitialInstalation { get; set; } //	Date of installation
+        public DateTime InitialInstallation { get; set; } //	Date of installation
 
         public float CurrentChargeLevel { get; set; } //Real-time charge level (%)
 
