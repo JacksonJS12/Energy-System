@@ -15,6 +15,6 @@
 
         public IEnumerable<T> GeAll<T>(string userId);
         public Task DeleteAsync(string propertyId);
-        public Task UpdateAsync(string propertyId, EditPropertyInputModel input);
+        public Task UpdateAsync(EditPropertyInputModel input, string propertyId);
     }
 }

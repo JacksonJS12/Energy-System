@@ -8,6 +8,7 @@
 
     public class SingleBatteryViewModel : IMapFrom<Battery>
     {
+        public string Id { get; set; }
         public string Model { get; set; } //Battery model number
         public float Capacity { get; set; } //Energy storage capacity in Wh or Ah
 

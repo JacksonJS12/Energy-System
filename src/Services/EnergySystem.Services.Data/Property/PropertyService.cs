@@ -98,7 +98,7 @@
             this._propertyRepository.Delete(recipe);
             await this._propertyRepository.SaveChangesAsync();
         }
-        public async Task UpdateAsync(string propertyId, EditPropertyInputModel input)
+        public async Task UpdateAsync(EditPropertyInputModel input, string propertyId)
         {
             var property = this._propertyRepository.All().FirstOrDefault(x => x.Id == propertyId);
             property.Name = input.Name;

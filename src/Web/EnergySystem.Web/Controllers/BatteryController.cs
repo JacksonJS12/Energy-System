@@ -51,5 +51,23 @@
             return RedirectToAction("Details", "Property", new { id = inputModel.PropertyId });
         }
 
+        [HttpGet]
+        public IActionResult Edit(string id)
+        {
+            var inputModel = this._batteryService.GetById<EditBatteryInputModel>(id);
+            return this.View(inputModel);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditBatteryInputModel input, string id)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            await this._batteryService.UpdateAsync(input, id);
+            return this.RedirectToAction("BatteryManagement", "Battery", new {id});
+        }
     }
 }

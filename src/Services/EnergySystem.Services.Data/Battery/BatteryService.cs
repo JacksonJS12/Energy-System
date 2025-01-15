@@ -49,6 +49,22 @@
 
             return battery;
         }
+        public async Task UpdateAsync(EditBatteryInputModel input, string batteryId)
+        {
+            var battery = this._batteryRepository.All().FirstOrDefault(x => x.Id == batteryId);
+            battery.Model = input.Model;
+            battery.Capacity = input.Capacity;
+            battery.Voltage = input.Voltage;
+            battery.Manufacturer = input.Manufacturer;
+            battery.ManufactureDate = input.ManufactureDate;
+            battery.CurrentChargeLevel = input.CurrentChargeLevel;
+            battery.StateOfHealth = input.StateOfHealth;
+            battery.CycleCount = input.CycleCount;
+            battery.Temperature = input.Temperature;
+            battery.LifetimeEnergyStored = input.LifetimeEnergyStored;
+            
+            await this._batteryRepository.SaveChangesAsync();
+        }
     }
 
 }

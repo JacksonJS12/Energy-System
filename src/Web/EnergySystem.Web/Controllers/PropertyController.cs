@@ -83,7 +83,7 @@
         }
         
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, EditPropertyInputModel input)
+        public async Task<IActionResult> Edit(EditPropertyInputModel input, string id)
         {
             if (!this.ModelState.IsValid)
             {
@@ -91,7 +91,7 @@
                 return this.View(input);
             }
 
-            await this._propertyService.UpdateAsync(id, input);
+            await this._propertyService.UpdateAsync(input, id);
             return this.RedirectToAction("Details", "Property", new {id});
         }
     }
