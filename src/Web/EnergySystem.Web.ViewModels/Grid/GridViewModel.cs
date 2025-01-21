@@ -10,11 +10,11 @@
 
         public string Name { get; set; }
 
-        public float MaximumCapacity { get; set; }
+        public decimal MaximumCapacity { get; set; }
 
-        public float CurrentUsage { get; set; }
+        public decimal CurrentUsage { get; set; }
 
-        public float SupplyPrice { get; set; }
+        public decimal SupplyPrice { get; set; }
 
         public string Provider { get; set; }
     }

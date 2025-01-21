@@ -47,7 +47,7 @@
         public float Temperature { get; set; }
 
         [Required]
-        public float LifetimeEnergyStored { get; set; }
+        public decimal LifetimeEnergyStored { get; set; }
 
         [Required]
         public string PropertyId { get; set; }

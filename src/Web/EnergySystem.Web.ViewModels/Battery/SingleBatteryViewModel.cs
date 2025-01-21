@@ -6,6 +6,8 @@
 
     using EnergySystem.Services.Mapping;
 
+    using Battery=global::Battery;
+
     public class SingleBatteryViewModel : IMapFrom<Battery>
     {
         public string Id { get; set; }

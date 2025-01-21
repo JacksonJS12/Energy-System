@@ -10,10 +10,10 @@
     using EnergySystem.Data.Seeding;
     using EnergySystem.Services.Data.Grid;
     using EnergySystem.Services.Data.Property;
-    using EnergySystem.Services.Data.Settings;
     using EnergySystem.Services.Mapping;
     using EnergySystem.Services.Messaging;
     using EnergySystem.Web.ViewModels;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -22,7 +22,11 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
+    using Services.Background;
+    using Services.Background.GridPriceEntry;
     using Services.Data.Battery;
+    using Services.Data.Report;
+    using Services.Report;
 
     public class Program
     {
@@ -80,13 +84,15 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
             services.AddScoped<IPropertyService, PropertyService>();
 
             services.AddScoped<IGridService, GridService>();
             services.AddScoped<IPropertyService, PropertyService>();
             services.AddScoped<IBatteryService, BatteryService>();
-
+            services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IGridPriceEntryService, GridPriceEntryService>();
+            services.AddHostedService<DailyReportBackgroundService>();
+            services.AddScoped<IReportService, ReportService>();
         }
 
         private static void Configure(WebApplication app)

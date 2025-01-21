@@ -74,7 +74,7 @@
             {
                 Name = input.Name,
                 Address = input.Address,
-                ElectricityNeed = float.Parse(input.ElectricityNeed),
+                ElectricityNeed =input.ElectricityNeed,
                 GridId = input.GridId,
                 OwnerId = userId,
             };
@@ -103,7 +103,7 @@
             var property = this._propertyRepository.All().FirstOrDefault(x => x.Id == propertyId);
             property.Name = input.Name;
             property.Address = input.Address;
-            property.ElectricityNeed = float.Parse(input.ElectricityNeed);
+            property.ElectricityNeed = input.ElectricityNeed;
             property.GridId = input.GridId;
             await this._propertyRepository.SaveChangesAsync();
         }

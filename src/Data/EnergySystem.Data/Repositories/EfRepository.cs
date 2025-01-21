@@ -67,5 +67,13 @@
                 this.Context?.Dispose();
             }
         }
+        public void DeleteRange(IQueryable<TEntity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                this.Delete(entity);
+            }
+        }
+
     }
 }

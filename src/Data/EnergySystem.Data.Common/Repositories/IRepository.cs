@@ -21,5 +21,6 @@
         void Delete(TEntity entity);
 
         Task<int> SaveChangesAsync();
+        void DeleteRange(IQueryable<TEntity> entities);
     }
 }

@@ -18,4 +18,8 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Data\EnergySystem.Data.Common\EnergySystem.Data.Common.csproj" />
+    </ItemGroup>
+
 </Project>

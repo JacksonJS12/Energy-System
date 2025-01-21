@@ -50,4 +50,8 @@
         <ProjectReference Include="..\EnergySystem.Web.Infrastructure\EnergySystem.Web.Infrastructure.csproj" />
         <ProjectReference Include="..\EnergySystem.Web.ViewModels\EnergySystem.Web.ViewModels.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Settings\Index.cshtml" />
+    </ItemGroup>
 </Project>

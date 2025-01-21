@@ -20,7 +20,7 @@
 
         [Required]
         [StringLength(MaxElectricityNeedLength, MinimumLength = MinElectricityNeedLength)]
-        public string ElectricityNeed { get; set; }
+        public decimal ElectricityNeed { get; set; }
 
         [Required]
         public string GridId { get; set; }

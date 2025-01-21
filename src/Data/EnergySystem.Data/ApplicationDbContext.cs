@@ -24,9 +24,7 @@
             : base(options)
         {
         }
-
-        public DbSet<Setting> Settings { get; set; }
-
+        
         public DbSet<Battery> Batteries { get; set; }
 
         public DbSet<Grid> Grids { get; set; }
@@ -36,6 +34,7 @@
         public DbSet<Report> Reports { get; set; }
 
         public DbSet<MarketPrice> MarketPrices { get; set; }
+        public DbSet<GridPriceEntry> GridPriceEntries { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

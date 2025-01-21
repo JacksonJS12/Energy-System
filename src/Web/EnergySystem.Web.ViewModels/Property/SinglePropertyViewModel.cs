@@ -15,7 +15,7 @@
 
         public string Address { get; set; }
 
-        public float ElectricityNeed { get; set; }
+        public decimal ElectricityNeed { get; set; }
 
         public GridViewModel Grid { get; set; }
 

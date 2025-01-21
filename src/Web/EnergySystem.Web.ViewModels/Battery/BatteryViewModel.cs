@@ -4,6 +4,8 @@
 
     using Services.Mapping;
 
+    using Battery=global::Battery;
+
     public class BatteryViewModel : IMapFrom<Battery>
 
     {

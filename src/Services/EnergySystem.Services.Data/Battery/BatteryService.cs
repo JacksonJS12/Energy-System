@@ -11,6 +11,8 @@
 
     using Mapping;
 
+    using Battery=global::Battery;
+
     public class BatteryService : IBatteryService
     {
         private readonly IDeletableEntityRepository<Battery> _batteryRepository;
