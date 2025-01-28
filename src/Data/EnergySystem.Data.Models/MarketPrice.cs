@@ -13,10 +13,10 @@
             this.Id = Guid.NewGuid().ToString();
         }
 
-        public DateTime Hour { get; set; } // The specific hour of the price
+        public DateTime Date { get; set; } 
+        public string Hour { get; set; }
         [Precision(18, 2)]
         public decimal PricePerKWh { get; set; } // Price in BGN/kWh
 
-        public string Region { get; set; } // Optional: If prices differ by region or marke
     }
 }

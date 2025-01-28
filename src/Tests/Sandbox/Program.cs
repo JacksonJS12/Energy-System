@@ -13,7 +13,6 @@
     using EnergySystem.Data.Models;
     using EnergySystem.Data.Repositories;
     using EnergySystem.Data.Seeding;
-    using EnergySystem.Services.Data.Settings;
     using EnergySystem.Services.Messaging;
 
     using Microsoft.EntityFrameworkCore;

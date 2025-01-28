@@ -5,7 +5,10 @@
     public class PriceController : BaseController
     {
         // GET
-        public IActionResult PriceTracker() => this.View();
+        public IActionResult PriceTracker()
+        {
+            return this.View();
+        }
 
         public IActionResult CostAnalysis() => this.View();
     }

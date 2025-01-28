@@ -25,7 +25,10 @@
     using Services.Background;
     using Services.Background.GridPriceEntry;
     using Services.Data.Battery;
-    using Services.Data.Report;
+
+    using EnergySystem.Services.Data.Report;
+
+    using Services.GridPriceEntry;
     using Services.Report;
 
     public class Program
@@ -91,8 +94,9 @@
             services.AddScoped<IBatteryService, BatteryService>();
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IGridPriceEntryService, GridPriceEntryService>();
-            services.AddHostedService<DailyReportBackgroundService>();
             services.AddScoped<IReportService, ReportService>();
+            services.AddSingleton<IHostedService, DailyReportBackgroundService>();
+            services.AddScoped<IMarketPricesWebScraperService, MarketPricesWebScraperService>();
         }
 
         private static void Configure(WebApplication app)

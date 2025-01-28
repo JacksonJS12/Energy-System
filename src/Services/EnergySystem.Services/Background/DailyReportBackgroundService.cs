@@ -1,98 +1,93 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-using EnergySystem.Services.Data.Report;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
-public class DailyReportBackgroundService : BackgroundService
+﻿namespace EnergySystem.Services.Background
 {
-    private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<DailyReportBackgroundService> _logger;
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
 
-    public DailyReportBackgroundService(IServiceProvider serviceProvider, ILogger<DailyReportBackgroundService> logger)
+    using EnergySystem.Services.Data.Report;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
+
+    public class DailyReportBackgroundService : BackgroundService
     {
-        _serviceProvider = serviceProvider;
-        _logger = logger;
-    }
+        private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<DailyReportBackgroundService> _logger;
 
-    // protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    // {
-    //     _logger.LogInformation("DailyReportBackgroundService is starting.");
-    //
-    //     while (!stoppingToken.IsCancellationRequested)
-    //     {
-    //         try
-    //         {
-    //             var now = DateTime.Now;
-    //
-    //             // Calculate next 12 PM
-    //             var nextRun = now.Date.AddDays(now.Hour >= 12 ? 1 : 0).AddHours(12);
-    //             var delay = nextRun - now;
-    //
-    //             _logger.LogInformation($"Next report generation scheduled for: {nextRun}");
-    //
-    //             // Wait until the next run (12 PM)
-    //             if (delay > TimeSpan.Zero)
-    //             {
-    //                 await Task.Delay(delay, stoppingToken);
-    //             }
-    //
-    //             // Run the report generation task
-    //             await GenerateDailyReportsAsync(stoppingToken);
-    //         }
-    //         catch (Exception ex)
-    //         {
-    //             _logger.LogError(ex, "An error occurred in DailyReportBackgroundService.");
-    //         }
-    //     }
-    //
-    //     _logger.LogInformation("DailyReportBackgroundService is stopping.");
-    // }
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        _logger.LogInformation("DailyReportBackgroundService is starting for testing.");
-
-        // Run the report generation task immediately for testing
-        await GenerateDailyReportsAsync(stoppingToken);
-
-        // Continue with normal scheduling
-        while (!stoppingToken.IsCancellationRequested)
+        public DailyReportBackgroundService(IServiceProvider serviceProvider, ILogger<DailyReportBackgroundService> logger)
         {
-            var now = DateTime.Now;
-            var nextRun = now.Date.AddDays(now.Hour >= 12 ? 1 : 0).AddHours(12);
-            var delay = nextRun - now;
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
-            _logger.LogInformation($"Next report generation scheduled for: {nextRun}");
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            _logger.LogInformation("DailyReportBackgroundService is starting.");
+            
+            //for testing
+            // using var scope = _serviceProvider.CreateScope();
+            // var scraperService = scope.ServiceProvider.GetRequiredService<IMarketPricesWebScraperService>();
+            // var reportService = scope.ServiceProvider.GetRequiredService<IReportService>();
+            //
+            // await scraperService.GetMarketPrices();
+            // await reportService.GenerateDailyReportsAsync();
 
-            if (delay > TimeSpan.Zero)
+            while (!stoppingToken.IsCancellationRequested)
             {
-                await Task.Delay(delay, stoppingToken);
+                var nowUtc = DateTime.UtcNow; // Current time in UTC
+                var eestTimeZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time"); // EEST timezone (UTC+2)
+                var nowEest = TimeZoneInfo.ConvertTimeFromUtc(nowUtc, eestTimeZone); // Convert UTC to EEST
+            
+                var nextRunEest = nowEest.Date.AddDays(nowEest.Hour >= 12 ? 1 : 0).AddHours(12); // Schedule at 12 PM EEST
+                var delay = nextRunEest - nowEest; // Calculate delay in EEST
+            
+            
+                _logger.LogInformation($"Next report generation scheduled for: {nextRunEest}");
+            
+                if (delay > TimeSpan.Zero)
+                {
+                    try
+                    {
+                        await Task.Delay(delay, stoppingToken);
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        _logger.LogInformation("Task was canceled.");
+                        break;
+                    }
+                }
+            
+                await GenerateDailyReportsAsync(stoppingToken);
             }
 
-            await GenerateDailyReportsAsync(stoppingToken);
+            _logger.LogInformation("DailyReportBackgroundService is stopping.");
         }
-    }
 
-    private async Task GenerateDailyReportsAsync(CancellationToken stoppingToken)
-    {
-        using var scope = _serviceProvider.CreateScope();
-        var reportService = scope.ServiceProvider.GetRequiredService<IReportService>();
-
-        try
+        private async Task GenerateDailyReportsAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Daily report generation started.");
+            using var scope = _serviceProvider.CreateScope();
 
-            await reportService.GenerateDailyReportsAsync();
+            try
+            {
+                var scraperService = scope.ServiceProvider.GetRequiredService<IMarketPricesWebScraperService>();
+                var reportService = scope.ServiceProvider.GetRequiredService<IReportService>();
 
-            _logger.LogInformation("Daily report generation completed.");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An error occurred while generating reports.");
+                _logger.LogInformation("Daily report generation started.");
+
+                // Fetch market prices for the day
+                _logger.LogInformation("Fetching market prices...");
+                await scraperService.GetMarketPrices();
+                _logger.LogInformation("Market prices fetched successfully.");
+
+                // Generate daily reports
+                _logger.LogInformation("Generating daily reports...");
+                await reportService.GenerateDailyReportsAsync();
+                _logger.LogInformation("Daily reports generated successfully.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during daily report generation.");
+            }
         }
     }
 }

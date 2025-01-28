@@ -9,6 +9,8 @@
 
     using Microsoft.EntityFrameworkCore;
 
+    using Services.GridPriceEntry;
+
     public class GridPriceEntryService : IGridPriceEntryService
     {
         private readonly IRepository<GridPriceEntry> _gridPriceEntryRepository;
@@ -20,18 +22,18 @@
             this._marketPriceRepository = marketPriceRepository;
         }
 
-        public async Task AddHourlyEntryAsync(string propertyId, int hour, decimal electricityUsed, string region = null)
+        public async Task AddHourlyEntryAsync(string propertyId, int hour, decimal electricityUsed)
         {
             var currentHour = DateTime.UtcNow.Date.AddHours(hour);
 
             // Get the corresponding market price
             var marketPrice = await this._marketPriceRepository
                 .AllAsNoTracking()
-                .FirstOrDefaultAsync(p => p.Hour == currentHour && p.Region == region);
+                .FirstOrDefaultAsync();
 
             if (marketPrice == null)
             {
-                throw new InvalidOperationException($"Market price not found for hour {currentHour} and region {region ?? "default"}.");
+                throw new InvalidOperationException($"Market price not found for hour {currentHour}.");
             }
 
             // Check if an entry already exists for the hour

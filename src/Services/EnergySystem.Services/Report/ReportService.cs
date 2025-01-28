@@ -12,6 +12,8 @@ using Data.Report;
 using EnergySystem.Data.Common.Repositories;
 using EnergySystem.Data.Models;
 
+using GridPriceEntry;
+
 using Microsoft.EntityFrameworkCore;
 
 public class ReportService : IReportService
