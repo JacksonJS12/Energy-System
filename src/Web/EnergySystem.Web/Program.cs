@@ -28,6 +28,7 @@
 
     using EnergySystem.Services.Data.Report;
 
+    using Services.Data.MarketPrice;
     using Services.GridPriceEntry;
     using Services.Report;
 
@@ -95,8 +96,9 @@
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IGridPriceEntryService, GridPriceEntryService>();
             services.AddScoped<IReportService, ReportService>();
-            services.AddSingleton<IHostedService, DailyReportBackgroundService>();
+            services.AddScoped<IMarketPriceService, MarketPriceService>();
             services.AddScoped<IMarketPricesWebScraperService, MarketPricesWebScraperService>();
+            services.AddSingleton<IHostedService, DailyReportBackgroundService>();
         }
 
         private static void Configure(WebApplication app)

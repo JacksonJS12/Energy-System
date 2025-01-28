@@ -1,55 +1,76 @@
-﻿@* @page *@
-@* @model EnergySystem.Web.Price.PriceTrackerModel *@
+﻿@model IEnumerable<EnergySystem.Web.ViewModels.MarketPrice.MarketPriceInListViewModel>
 @{
     ViewData["Title"] = "Real-Time Price Tracker";
 }
 
+
 <div class="container mt-5">
     <h1 class="text-primary text-center mb-4">Real-Time Price Tracker</h1>
 
-    <!-- Price Chart -->
+    <!-- Date Picker Filter -->
     <div class="card shadow-lg mb-4">
-        <div class="card-header bg-primary text-white">
-            <h2 class="mb-0">Electricity Price Chart</h2>
+        <div class="card-header bg-info text-white">
+            <h2 class="mb-0">Filter by Date</h2>
         </div>
         <div class="card-body">
-            <canvas id="priceChart" width="800" height="400"></canvas>
-        </div>
-    </div>
-
-    <!-- Recommendations -->
-    <div class="card shadow-lg mb-4">
-        <div class="card-header bg-success text-white">
-            <h2 class="mb-0">Recommendations</h2>
-        </div>
-        <div class="card-body">
-            <p class="text-muted">Based on current electricity prices, here are your recommendations:</p>
-            <ul>
-                <li>
-                    @* @if (Model.ShouldCharge) *@
-                    @* { *@
-                    <span class="text-success font-weight-bold">Charge your battery now!</span>
-                    @* } *@
-                    @* else *@
-                    @* { *@
-                    <span class="text-danger font-weight-bold">/ Avoid charging; use battery power instead.</span>
-                    @* } *@
-                </li>
-            </ul>
+            <form method="get" action="">
+                <div class="row">
+                    <div class="col-md-8">
+                        <label for="selectedDate" class="form-label">Select Date:</label>
+                        <input type="date" id="selectedDate" name="selectedDate" class="form-control"
+                               value="@Context.Request.Query["selectedDate"]"/>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Filter</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+
+<!-- Price Chart -->
+<div class="card shadow-lg mb-4">
+    <div class="card-header bg-primary text-white">
+        <h2 class="mb-0">Electricity Price Chart</h2>
+    </div>
+    <div class="card-body">
+        <canvas id="priceChart" width="800" height="400"></canvas>
+    </div>
+</div>
+
+<!-- Recommendations -->
+<div class="card shadow-lg mb-4">
+    <div class="card-header bg-success text-white">
+        <h2 class="mb-0">Recommendations</h2>
+    </div>
+    <div class="card-body">
+        <p class="text-muted">Based on current electricity prices, here are your recommendations:</p>
+        <ul>
+            <li>
+                @* @if (Model.ShouldCharge) *@
+                @* { *@
+                <span class="text-success font-weight-bold">Charge your battery now!</span>
+                @* } *@
+                @* else *@
+                @* { *@
+                <span class="text-danger font-weight-bold">/ Avoid charging; use battery power instead.</span>
+                @* } *@
+            </li>
+        </ul>
+    </div>
+</div>
+
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctx = document.getElementById('priceChart').getContext('2d');
-        const priceData = @Html.Raw(Json.Serialize(new List<double>
-                          {
-                              0.2, 0.19, 0.18, 0.17, 0.16, 0.15, 0.14, 0.13, 0.12,
-                              0.25, 0.26, 0.27, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33,
-                              0.34, 0.35, 0.24, 0.23, 0.22, 0.21,
-                          })); //(Model.PriceData));
+        @{
+            List<decimal> prices = Model.Select(x => x.PricePerKWh).ToList();
+        }
+        const priceData = @Html.Raw(Json.Serialize(prices)); //(Model.PriceData));
         const timeLabels = @Html.Raw(Json.Serialize(new List<string>
                            {
                                "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00",
