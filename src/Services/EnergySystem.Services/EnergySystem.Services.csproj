@@ -9,13 +9,15 @@
         <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <ItemGroup>
-        <AdditionalFiles Include="..\..\stylecop.json"/>
+        <AdditionalFiles Include="..\..\stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="AngleSharp" Version="1.2.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0-preview.3.22175.4" />
+        <PackageReference Include="Selenium.WebDriver" Version="4.28.0" />
+        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="132.0.6834.11000" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435" PrivateAssets="all">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
@@ -24,6 +26,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Data\EnergySystem.Data.Models\EnergySystem.Data.Models.csproj" />
       <ProjectReference Include="..\..\EnergySystem.Common\EnergySystem.Common.csproj" />
+      <ProjectReference Include="..\EnergySystem.Services.Mapping\EnergySystem.Services.Mapping.csproj" />
     </ItemGroup>
 
 </Project>

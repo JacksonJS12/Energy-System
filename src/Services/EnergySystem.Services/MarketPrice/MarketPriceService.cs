@@ -10,6 +10,7 @@
 
     using Mapping;
 
+
     public class MarketPriceService : IMarketPriceService
     {
         private readonly IRepository<MarketPrice> _marketPriceRepository;

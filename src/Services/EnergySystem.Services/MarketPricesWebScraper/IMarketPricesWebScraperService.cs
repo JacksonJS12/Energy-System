@@ -15,6 +15,6 @@
 
     public interface IMarketPricesWebScraperService
     {
-        public Task GetMarketPrices();
+        public Task GetMarketPricesForDayAhead();
     }
 }

@@ -95,10 +95,13 @@
             services.AddScoped<IBatteryService, BatteryService>();
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IGridPriceEntryService, GridPriceEntryService>();
-            services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IMarketPriceService, MarketPriceService>();
             services.AddScoped<IMarketPricesWebScraperService, MarketPricesWebScraperService>();
-            services.AddSingleton<IHostedService, DailyReportBackgroundService>();
+
+            // Background services
+            services.AddSingleton<IHostedService, MarketPricesScraperBackgroundService>();
+            services.AddSingleton<IHostedService, ReportGenerationBackgroundService>();
+
         }
 
         private static void Configure(WebApplication app)

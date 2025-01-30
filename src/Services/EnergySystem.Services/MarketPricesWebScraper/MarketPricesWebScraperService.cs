@@ -15,8 +15,8 @@
         {
             this._marketPriceRepository = marketPriceRepository;
         }
-
-        public async Task GetMarketPrices()
+        
+        public async Task GetMarketPricesForDayAhead()
         {
             var config = Configuration.Default.WithDefaultLoader();
             var address = "https://ibex.bg/dam-data-chart-2/";
@@ -47,7 +47,7 @@
                 var marketPrice = new MarketPrice
                 {
                     Hour = eestDateTime.Hour.ToString(),        // Save time in EEST
-                    PricePerKWh = priceList[i],
+                    PricePerKWh = priceList[i] / 1000, // from MWh to kWh
                     Date = eestDateTime   // Store the date component in EEST
                 };
 
