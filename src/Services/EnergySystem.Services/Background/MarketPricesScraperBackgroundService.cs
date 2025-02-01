@@ -33,7 +33,7 @@ public class MarketPricesScraperBackgroundService : BackgroundService
 
             // Schedule next execution for 14:30 EEST
             // Change to test if the Background Service works correct
-            var nextRunEest = nowEest.Date.AddHours(14).AddMinutes(42);
+            var nextRunEest = nowEest.Date.AddHours(14).AddMinutes(30);
             if (nowEest >= nextRunEest)
             {
                 // If it's already past 14:30 today, schedule for tomorrow

@@ -10,12 +10,8 @@
 
         public string Name { get; set; }
 
-        public decimal MaximumCapacity { get; set; }
-
         public decimal CurrentUsage { get; set; }
 
         public decimal SupplyPrice { get; set; }
-
-        public string Provider { get; set; }
     }
 }

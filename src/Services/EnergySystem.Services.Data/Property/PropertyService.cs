@@ -41,10 +41,8 @@
                         {
                             Id = p.Grid.Id,
                             Name = p.Grid.Name,
-                            MaximumCapacity = p.Grid.MaximumCapacity,
                             CurrentUsage = p.Grid.CurrentUsage,
                             SupplyPrice = p.Grid.SupplyPrice,
-                            Provider = p.Grid.Provider,
                         },
                     Batteries = p.Batteries.Select(b => new BatteryViewModel
                     {

@@ -15,12 +15,12 @@
 
         public string Name { get; set; }
         [Precision(18, 2)]
-        public decimal MaximumCapacity { get; set; } // Maximum energy supply capacity (kWh)
-        [Precision(18, 2)]
         public decimal CurrentUsage { get; set; } // Real-time energy consumption (kWh)
         [Precision(18, 2)]
         public decimal SupplyPrice { get; set; } // Cost per kWh of electricity
 
-        public string Provider { get; set; } // Name of the energy provider
+        public string MarketPriceId { get; set; }
+        
+        public virtual MarketPrice MarketPrice { get; set; }
     }
 }

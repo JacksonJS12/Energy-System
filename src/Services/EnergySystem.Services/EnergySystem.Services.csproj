@@ -25,6 +25,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Data\EnergySystem.Data.Models\EnergySystem.Data.Models.csproj" />
+      <ProjectReference Include="..\..\Data\EnergySystem.Data\EnergySystem.Data.csproj" />
       <ProjectReference Include="..\..\EnergySystem.Common\EnergySystem.Common.csproj" />
       <ProjectReference Include="..\EnergySystem.Services.Mapping\EnergySystem.Services.Mapping.csproj" />
     </ItemGroup>

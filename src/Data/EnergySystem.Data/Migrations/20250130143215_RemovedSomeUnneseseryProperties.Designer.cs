@@ -4,6 +4,7 @@ using EnergySystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EnergySystem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250130143215_RemovedSomeUnneseseryProperties")]
+    partial class RemovedSomeUnneseseryProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,9 +237,6 @@ namespace EnergySystem.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("MarketPriceId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
@@ -250,8 +250,6 @@ namespace EnergySystem.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
-
-                    b.HasIndex("MarketPriceId");
 
                     b.ToTable("Grids");
                 });
@@ -314,8 +312,8 @@ namespace EnergySystem.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Hour")
-                        .HasColumnType("int");
+                    b.Property<string>("Hour")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -555,15 +553,6 @@ namespace EnergySystem.Data.Migrations
                         .HasForeignKey("PropertyId");
 
                     b.Navigation("Property");
-                });
-
-            modelBuilder.Entity("EnergySystem.Data.Models.Grid", b =>
-                {
-                    b.HasOne("EnergySystem.Data.Models.MarketPrice", "MarketPrice")
-                        .WithMany()
-                        .HasForeignKey("MarketPriceId");
-
-                    b.Navigation("MarketPrice");
                 });
 
             modelBuilder.Entity("EnergySystem.Data.Models.GridPriceEntry", b =>

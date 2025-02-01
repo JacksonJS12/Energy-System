@@ -14,7 +14,7 @@
         }
 
         public DateTime Date { get; set; } 
-        public string Hour { get; set; }
+        public int Hour { get; set; }
         [Precision(18, 2)]
         public decimal PricePerKWh { get; set; } // Price in BGN/kWh
 

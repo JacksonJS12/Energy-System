@@ -46,7 +46,7 @@
                 // Create MarketPrice entity
                 var marketPrice = new MarketPrice
                 {
-                    Hour = eestDateTime.Hour.ToString(),        // Save time in EEST
+                    Hour = eestDateTime.Hour,        // Save time in EEST
                     PricePerKWh = priceList[i] / 1000, // from MWh to kWh
                     Date = eestDateTime   // Store the date component in EEST
                 };

@@ -101,6 +101,8 @@
             // Background services
             services.AddSingleton<IHostedService, MarketPricesScraperBackgroundService>();
             services.AddSingleton<IHostedService, ReportGenerationBackgroundService>();
+            //services.AddSingleton<IHostedService, GridSupplyPriceService>();
+            services.AddHostedService<GridSupplyPriceService>();
 
         }
 
