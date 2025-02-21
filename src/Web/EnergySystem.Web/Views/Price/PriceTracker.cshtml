@@ -18,7 +18,8 @@
                     <div class="col-md-8">
                         <label for="selectedDate" class="form-label">Select Date:</label>
                         <input type="date" id="selectedDate" name="selectedDate" class="form-control"
-                               value="@Context.Request.Query["selectedDate"]"/>
+                               value="@(string.IsNullOrEmpty(Context.Request.Query["selectedDate"]) ? DateTime.Today.ToString("yyyy-MM-dd") : Context.Request.Query["selectedDate"])"/>
+
                     </div>
                     <div class="col-md-4 d-flex align-items-end">
                         <button type="submit" class="btn btn-primary w-100">Filter</button>
@@ -72,6 +73,15 @@
             List<decimal> prices = Model.Select(x => x.PricePerKWh).ToList();
         }
         const priceData = @Html.Raw(Json.Serialize(prices)); //(Model.PriceData));
+        
+        // when scraping from IBEX and converting from CET to EEST we lose one price
+        // because we're adding 1h to every record and the last record goes to the next day
+        // the problem is solved if we scrape two consecutive days
+        // with that check we're fixing our problem temporarily
+        // TODO:
+        if (priceData.length < 24) {
+            priceData.unshift(0.11);
+        }
         const timeLabels = @Html.Raw(Json.Serialize(new List<string>
                            {
                                "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00",
