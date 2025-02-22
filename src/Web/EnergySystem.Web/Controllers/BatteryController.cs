@@ -59,8 +59,6 @@
         [Authorize]
         public async Task<IActionResult> Create(CreateBatteryInputModel inputModel)
         {
-            string userId = this.GetUserId();
-            
             if (!this.ModelState.IsValid)
             {
                 return this.View(inputModel);
@@ -113,23 +111,22 @@
             return this.RedirectToAction("BatteryManagement", "Battery", new { id });
         }
 
-        [HttpDelete]
         [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
             string userId = this.GetUserId();
 
             var battery = this._batteryService.GetById<SingleBatteryViewModel>(id, userId);
-            
-            try
-            {
-                await this._batteryService.DeleteAsync(id, userId);
-            }
-            catch (Exception e)
+            if (battery == null)
             {
                 return this.Forbid();
             }
-            return this.RedirectToAction("Details", "Property", new { id = battery.PropertyId });
+            var propertyId = battery.PropertyId;
+           
+                await this._batteryService.DeleteAsync(id);
+            
+               
+            return this.RedirectToAction("Details", "Property", new { id = propertyId });
         }
     }
 }
