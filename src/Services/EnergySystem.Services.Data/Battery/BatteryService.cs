@@ -1,15 +1,11 @@
 ﻿namespace EnergySystem.Services.Data.Battery
 {
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
     using EnergySystem.Data.Common.Repositories;
-    using EnergySystem.Data.Models;
-
+    using EnergySystem.Services.Mapping;
     using EnergySystem.Web.ViewModels.Battery;
-
-    using Mapping;
 
     using Battery=global::Battery;
 

@@ -19,20 +19,20 @@
 
         public GridSupplyPriceService(IServiceProvider serviceProvider, ILogger<GridSupplyPriceService> logger)
         {
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this._serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("GridSupplyPriceService is starting.");
+            this._logger.LogInformation("GridSupplyPriceService is starting.");
 
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
                     // Create a scope for the DbContext
-                    using var scope = _serviceProvider.CreateScope();
+                    using var scope = this._serviceProvider.CreateScope();
                     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
                     // Perform the price update
@@ -40,14 +40,14 @@
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "An error occurred while updating grid supply prices.");
+                    this._logger.LogError(ex, "An error occurred while updating grid supply prices.");
                 }
 
                 // Wait for 1 hour before running again
                 await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
             }
 
-            _logger.LogInformation("GridSupplyPriceService is stopping.");
+            this._logger.LogInformation("GridSupplyPriceService is stopping.");
         }
 
         private async Task UpdateGridPricesAsync(ApplicationDbContext dbContext, CancellationToken stoppingToken)
@@ -62,7 +62,7 @@
             var currentDate = nowEest.Date.AddHours(nowEest.Hour);
 
 
-            _logger.LogInformation($"Current EEST time: {nowEest}. Fetching supply price for {currentDate:yyyy-MM-dd} hour {currentHour}.");
+            this._logger.LogInformation($"Current EEST time: {nowEest}. Fetching supply price for {currentDate:yyyy-MM-dd} hour {currentHour}.");
             
             // Query the MarketPrices table for the current hour and date
             var marketPrice = await dbContext.MarketPrices
@@ -74,11 +74,11 @@
             
             if (marketPrice == 0)
             {
-                _logger.LogWarning("No market price found for the current hour. Skipping update.");
+                this._logger.LogWarning("No market price found for the current hour. Skipping update.");
                 return;
             }
 
-            _logger.LogInformation($"Market price found: {marketPrice:C} per kWh.");
+            this._logger.LogInformation($"Market price found: {marketPrice:C} per kWh.");
 
             // Update all grids with the new supply price
             var grids = await dbContext.Grids.ToListAsync(stoppingToken);
@@ -88,7 +88,7 @@
             }
 
             await dbContext.SaveChangesAsync(stoppingToken);
-            _logger.LogInformation("Supply prices updated successfully for all grids.");
+            this._logger.LogInformation("Supply prices updated successfully for all grids.");
         }
     }
 }

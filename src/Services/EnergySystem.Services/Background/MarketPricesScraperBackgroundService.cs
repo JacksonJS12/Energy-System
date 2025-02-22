@@ -15,7 +15,7 @@ public class MarketPricesScraperBackgroundService : BackgroundService
 
     public MarketPricesScraperBackgroundService(IServiceProvider serviceProvider, ILogger<MarketPricesScraperBackgroundService> logger)
     {
-        _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        this._serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
