@@ -4,6 +4,12 @@
     ViewData["Title"] = "Dashboard";
 }
 
+@if (ViewBag.TimeLabels == null || ViewBag.PriceData == null || ((List<string>)ViewBag.TimeLabels).Count == 0)
+{
+    <p class="text-danger">⚠ No price data available for today.</p>
+}
+
+
 <div class="container mt-5">
     <h1 class="text-primary text-center mb-4">Dashboard</h1>
 
@@ -44,13 +50,14 @@
         </div>
     </div>
 
-    <!-- Current Electricity Prices -->
+    <!--Current Electricity Prices-->
     <div class="card shadow-lg mb-4">
         <div class="card-header bg-primary text-white">
-            <h3>Electricity Prices</h3>
+            <h2 class="mb-0">Electricity Price Chart</h2>
         </div>
         <div class="card-body">
-            <canvas id="electricityPricesChart" width="800" height="400"></canvas>
+            <h4>The data is in EEST format one hour ahead of CET</h4>
+            <canvas id="priceChart" width="800" height="400"></canvas>
         </div>
     </div>
 
@@ -92,32 +99,56 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const ctx = document.getElementById('electricityPricesChart').getContext('2d');
-        const labels = ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"];
-        const electricityPrices = [0.20, 0.18, 0.17, 0.15, 0.14, 0.13, 0.12, 0.25, 0.28, 0.30, 0.35, 0.38, 0.40, 0.37, 0.32, 0.28, 0.25, 0.22, 0.18, 0.15, 0.14, 0.13, 0.12, 0.11];
+    document.addEventListener("DOMContentLoaded", function () {
+        const labels = @Html.Raw(Json.Serialize(ViewData["TimeLabels"]));
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        const electricityPrices = @Html.Raw(Json.Serialize(ViewData["PriceData"]));
 
+        console.log("📊 Labels:", labels);
+        console.log("📈 Prices:", electricityPrices);
+
+        if (!labels.length || !electricityPrices.length) {
+            console.warn("⚠ Chart data is empty.");
+            return;
+        }
         const chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
-                datasets: [
-                    {
-                        label: 'Electricity Prices (BGN/kWh)',
-                        data: electricityPrices,
-                        borderColor: '#007bff',
-                        backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                        fill: true,
-                    }
-                ],
+                datasets: [{
+                    label: 'Electricity Price (BGN/kWh)',
+                    data: electricityPrices,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
             },
             options: {
                 responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
                 scales: {
                     y: {
                         beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Price (BGN/kWh)'
+                        }
                     },
-                },
-            },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Hour of the Day (EEST)'
+                        }
+                    }
+                }
+            }
         });
-    </script>
+    });
+</script>
 }

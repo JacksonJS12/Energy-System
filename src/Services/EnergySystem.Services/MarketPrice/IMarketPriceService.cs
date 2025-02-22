@@ -6,6 +6,6 @@
 
     public interface IMarketPriceService
     {
-        public Task<IEnumerable<T>> GeAll<T>(DateTime selectedDate);
+        public Task<IEnumerable<T>> GetAll<T>(DateTime selectedDate);
     }
 }

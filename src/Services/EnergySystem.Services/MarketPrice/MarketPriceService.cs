@@ -18,7 +18,7 @@
         {
             this._marketPriceRepository = marketPriceRepository;
         }
-        public async Task<IEnumerable<T>> GeAll<T>(DateTime selectedDate)
+        public async Task<IEnumerable<T>> GetAll<T>(DateTime selectedDate)
         {
             var marketPrices = this._marketPriceRepository
                 .AllAsNoTracking()

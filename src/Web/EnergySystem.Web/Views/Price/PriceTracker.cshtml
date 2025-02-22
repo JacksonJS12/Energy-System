@@ -18,7 +18,7 @@
                     <div class="col-md-8">
                         <label for="selectedDate" class="form-label">Select Date:</label>
                         <input type="date" id="selectedDate" name="selectedDate" class="form-control"
-                               value="@(string.IsNullOrEmpty(Context.Request.Query["selectedDate"]) ? DateTime.Today.ToString("yyyy-MM-dd") : Context.Request.Query["selectedDate"])"/>
+                               value="@(Context.Request.Query["selectedDate"])"/>
 
                     </div>
                     <div class="col-md-4 d-flex align-items-end">

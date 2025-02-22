@@ -32,7 +32,7 @@
             selectedDate ??= DateTime.UtcNow.Date;
 
             // Fetch data for the selected day
-            var marketPrices = await this._marketPriceService.GeAll<MarketPriceInListViewModel>(selectedDate.Value);
+            var marketPrices = await this._marketPriceService.GetAll<MarketPriceInListViewModel>(selectedDate.Value);
 
             // Map to ViewModel
             var viewModel = marketPrices.Select(mp => new MarketPriceInListViewModel
