@@ -14,11 +14,11 @@
 
         [Required]
         [Range(MinCapacity, MaxCapacity)]
-        public float Capacity { get; set; }
+        public decimal Capacity { get; set; }
 
         [Required]
         [Range(MinVoltage, MaxVoltage)]
-        public float Voltage { get; set; }
+        public decimal Voltage { get; set; }
 
         [Required]
         [StringLength(MaxManufacturerLength, MinimumLength = MinManufacturerLength)]
@@ -33,18 +33,18 @@
 
         [Required]
         [Range(MinCurrentChargeLevel, MaxCurrentChargeLevel)]
-        public float CurrentChargeLevel { get; set; }
+        public decimal CurrentChargeLevel { get; set; }
 
         [Required]
         [Range(MinStateOfHealth, MaxStateOfHealth)]
-        public float StateOfHealth { get; set; }
+        public decimal StateOfHealth { get; set; }
 
         [Required]
         public int CycleCount { get; set; }
 
         [Required]
         [Range(MinTemperature, MaxTemperature)]
-        public float Temperature { get; set; }
+        public decimal Temperature { get; set; }
 
         [Required]
         public decimal LifetimeEnergyStored { get; set; }

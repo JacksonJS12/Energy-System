@@ -44,7 +44,9 @@
                             CurrentUsage = p.Grid.CurrentUsage,
                             SupplyPrice = p.Grid.SupplyPrice,
                         },
-                    Batteries = p.Batteries.Select(b => new BatteryViewModel
+                    Batteries = p.Batteries == null
+                    ? null
+                    : p.Batteries.Select(b => new BatteryViewModel
                     {
                         Id = b.Id,
                         Model = b.Model,
@@ -72,7 +74,7 @@
             {
                 Name = input.Name,
                 Address = input.Address,
-                ElectricityNeed =input.ElectricityNeed,
+                ElectricityNeed = input.ElectricityNeed,
                 GridId = input.GridId,
                 OwnerId = userId,
             };

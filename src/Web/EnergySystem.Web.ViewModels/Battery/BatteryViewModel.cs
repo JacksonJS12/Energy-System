@@ -13,13 +13,13 @@
 
         public string Model { get; set; }
 
-        public float Capacity { get; set; }
+        public decimal Capacity { get; set; }
 
-        public float Voltage { get; set; }
+        public decimal Voltage { get; set; }
 
-        public float CurrentChargeLevel { get; set; }
+        public decimal CurrentChargeLevel { get; set; }
 
-        public float StateOfHealth { get; set; }
+        public decimal StateOfHealth { get; set; }
 
         public int CycleCount { get; set; }
     }

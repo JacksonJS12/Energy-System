@@ -1,6 +1,7 @@
 ﻿namespace EnergySystem.Web.ViewModels.Property
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     using EnergySystem.Data.Models;
     using EnergySystem.Services.Mapping;

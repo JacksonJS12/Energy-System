@@ -13,24 +13,24 @@ public class Battery : BaseDeletableModel<string>
     }
 
     public string Model { get; set; } //Battery model number
-
-    public float Capacity { get; set; } //Energy storage capacity in Wh or Ah
-
-    public float Voltage { get; set; } //Nominal voltage
+    [Precision(18, 2)]
+    public decimal Capacity { get; set; } //Energy storage capacity in Wh or Ah
+    [Precision(18, 2)]
+    public decimal Voltage { get; set; } //Nominal voltage
 
     public string Manufacturer { get; set; } //Manufacturer name
 
     public DateTime ManufactureDate { get; set; } //Date of manufacture
 
     public DateTime InitialInstallation { get; set; } //Date of installation
-
-    public float CurrentChargeLevel { get; set; } //Real-time charge level (%)
-
-    public float StateOfHealth { get; set; } //Battery health as a percentage
+    [Precision(18, 2)]
+    public decimal CurrentChargeLevel { get; set; } //Real-time charge level (%)
+    [Precision(18, 2)]
+    public decimal StateOfHealth { get; set; } //Battery health as a percentage
 
     public int CycleCount { get; set; } //Number of charge-discharge cycles
-
-    public float Temperature { get; set; } //Current temperature in °C
+    [Precision(18, 2)]
+    public decimal Temperature { get; set; } //Current temperature in °C
     [Precision(18, 2)]
     public decimal LifetimeEnergyStored { get; set; } //Total energy stored (Wh)
     [Precision(18, 2)]

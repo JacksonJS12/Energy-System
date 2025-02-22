@@ -19,7 +19,6 @@
         public string Address { get; set; }
 
         [Required]
-        [StringLength(MaxElectricityNeedLength, MinimumLength = MinElectricityNeedLength)]
         public decimal ElectricityNeed { get; set; }
 
         [Required]
