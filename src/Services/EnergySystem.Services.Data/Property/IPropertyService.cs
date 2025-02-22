@@ -7,14 +7,14 @@
 
     public interface IPropertyService
     {
-        public Task<SinglePropertyViewModel> GetPropertyDetailsAsync(string propertyId);
+        public Task<SinglePropertyViewModel> GetPropertyDetailsAsync(string propertyId, string userId);
 
-        public T GetById<T>(string propertyId);
+        public T GetById<T>(string propertyId, string userId);
 
         public Task CreateAsync(CreateInputModel property, string userId);
 
         public IEnumerable<T> GeAll<T>(string userId);
-        public Task DeleteAsync(string propertyId);
-        public Task UpdateAsync(EditPropertyInputModel input, string propertyId);
+        public Task DeleteAsync(string propertyId, string userId);
+        public Task UpdateAsync(EditPropertyInputModel input, string propertyId, string userId);
     }
 }

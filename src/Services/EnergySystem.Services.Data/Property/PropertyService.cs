@@ -24,7 +24,7 @@
             this._propertyRepository = propertyRepository;
         }
 
-        public async Task<SinglePropertyViewModel> GetPropertyDetailsAsync(string propertyId)
+        public async Task<SinglePropertyViewModel> GetPropertyDetailsAsync(string propertyId, string userId)
         {
             return await this._propertyRepository
                 .All()
@@ -45,25 +45,25 @@
                             SupplyPrice = p.Grid.SupplyPrice,
                         },
                     Batteries = p.Batteries == null
-                    ? null
-                    : p.Batteries.Select(b => new BatteryViewModel
-                    {
-                        Id = b.Id,
-                        Model = b.Model,
-                        Capacity = b.Capacity,
-                        Voltage = b.Voltage,
-                        CurrentChargeLevel = b.CurrentChargeLevel,
-                        StateOfHealth = b.StateOfHealth,
-                        CycleCount = b.CycleCount,
-                    }).ToList(),
+                        ? null
+                        : p.Batteries.Select(b => new BatteryViewModel
+                        {
+                            Id = b.Id,
+                            Model = b.Model,
+                            Capacity = b.Capacity,
+                            Voltage = b.Voltage,
+                            CurrentChargeLevel = b.CurrentChargeLevel,
+                            StateOfHealth = b.StateOfHealth,
+                            CycleCount = b.CycleCount,
+                        }).ToList(),
                 })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(x => x.OwnerId == userId);
         }
 
-        public T GetById<T>(string propertyId)
+        public T GetById<T>(string propertyId, string userId)
         {
             var property = this._propertyRepository.AllAsNoTracking()
-                .Where(x => x.Id == propertyId)
+                .Where(x => x.Id == propertyId && x.OwnerId == userId)
                 .To<T>().FirstOrDefault();
 
             return property;
@@ -92,15 +92,15 @@
                 .ToList();
             return properties;
         }
-        public async Task DeleteAsync(string propertyId)
+        public async Task DeleteAsync(string propertyId, string userId)
         {
-            var property = this._propertyRepository.All().FirstOrDefault(x => x.Id == propertyId);
+            var property = this._propertyRepository.All().FirstOrDefault(x => x.Id == propertyId && x.OwnerId == userId);
             this._propertyRepository.Delete(property);
             await this._propertyRepository.SaveChangesAsync();
         }
-        public async Task UpdateAsync(EditPropertyInputModel input, string propertyId)
+        public async Task UpdateAsync(EditPropertyInputModel input, string propertyId, string userId)
         {
-            var property = this._propertyRepository.All().FirstOrDefault(x => x.Id == propertyId);
+            var property = this._propertyRepository.All().FirstOrDefault(x => x.Id == propertyId && x.OwnerId == userId);
             property.Name = input.Name;
             property.Address = input.Address;
             property.ElectricityNeed = input.ElectricityNeed;

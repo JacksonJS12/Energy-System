@@ -5,14 +5,10 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-
-    using Data.Common.Repositories;
-
+    using EnergySystem.Services.Data.MarketPrice;
+    using EnergySystem.Web.ViewModels.MarketPrice;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-
-    using Services.Data.MarketPrice;
-
-    using ViewModels.MarketPrice;
 
     public class PriceController : BaseController
     {
@@ -22,6 +18,7 @@
         {
             this._marketPriceService = marketPriceService;
         }
+        
         [HttpGet]
         public async Task<IActionResult> PriceTracker(DateTime? selectedDate)
         {
@@ -31,21 +28,20 @@
             // Default to today's date if no date is selected
             selectedDate ??= DateTime.UtcNow.Date;
 
-            // Fetch data for the selected day
             var marketPrices = await this._marketPriceService.GetAll<MarketPriceInListViewModel>(selectedDate.Value);
 
-            // Map to ViewModel
             var viewModel = marketPrices.Select(mp => new MarketPriceInListViewModel
             {
                 Hour = mp.Hour,
                 PricePerKWh = mp.PricePerKWh
             }).ToList();
 
-            ViewBag.SelectedDate = selectedDate.Value.ToString("yyyy-MM-dd");
+            this.ViewBag.SelectedDate = selectedDate.Value.ToString("yyyy-MM-dd");
 
-            return View(viewModel);
+            return this.View(viewModel);
         }
-
+        
+        [Authorize]
         public IActionResult CostAnalysis() => this.View();
     }
 }

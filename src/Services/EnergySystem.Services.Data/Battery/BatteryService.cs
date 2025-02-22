@@ -43,17 +43,17 @@
             await this._batteryRepository.AddAsync(battery);
             await this._batteryRepository.SaveChangesAsync();
         }
-        public T GetById<T>(string batteryId)
+        public T GetById<T>(string batteryId, string userId)
         {
             var battery = this._batteryRepository.AllAsNoTracking()
-                .Where(x => x.Id == batteryId)
+                .Where(x => x.Id == batteryId && x.Property.OwnerId == userId)
                 .To<T>().FirstOrDefault();
 
             return battery;
         }
-        public async Task UpdateAsync(EditBatteryInputModel input, string batteryId)
+        public async Task UpdateAsync(EditBatteryInputModel input, string batteryId, string userId)
         {
-            var battery = this._batteryRepository.All().FirstOrDefault(x => x.Id == batteryId);
+            var battery = this._batteryRepository.All().FirstOrDefault(x => x.Id == batteryId && x.Property.OwnerId == userId);
             battery.Model = input.Model;
             battery.Capacity = input.Capacity;
             battery.Voltage = input.Voltage;
@@ -67,9 +67,9 @@
             
             await this._batteryRepository.SaveChangesAsync();
         }
-        public async Task DeleteAsync(string batteryId)
+        public async Task DeleteAsync(string batteryId, string userId)
         {
-            var battery = this._batteryRepository.All().FirstOrDefault(x => x.Id == batteryId);
+            var battery = this._batteryRepository.All().FirstOrDefault(x => x.Id == batteryId && x.Property.OwnerId == userId);
             this._batteryRepository.Delete(battery);
             await this._batteryRepository.SaveChangesAsync();
         }

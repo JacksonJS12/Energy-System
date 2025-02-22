@@ -72,7 +72,10 @@
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Home/AccessDenied"; // Change this to your preferred page
+            });
             services.AddControllersWithViews(
                 options => { options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); })
                 .AddRazorRuntimeCompilation();

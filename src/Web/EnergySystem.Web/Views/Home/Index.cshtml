@@ -6,7 +6,7 @@
 
 @if (ViewBag.TimeLabels == null || ViewBag.PriceData == null || ((List<string>)ViewBag.TimeLabels).Count == 0)
 {
-    <p class="text-danger">⚠ No price data available for today.</p>
+    <p class="text-danger">No price data available for today.</p>
 }
 
 
@@ -14,41 +14,86 @@
     <h1 class="text-primary text-center mb-4">Dashboard</h1>
 
     <!-- Key Metrics -->
-    <div class="row text-center mb-4">
-        <div class="col-md-4">
-            <div class="card shadow-lg">
-                <div class="card-header bg-info text-white">
-                    <h3>Current Usage</h3>
+    @{
+        if (User.Identity.IsAuthenticated)
+        {
+            // TODO: Must be implemented real connection
+            <div class="row text-center mb-4">
+                <div class="col-md-4">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-info text-white">
+                            <h3>Current Usage</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="display-5 text-primary">15.5 kWh</p>
+                            @* <p class="display-5 text-primary">@Model.CurrentUsage.ToString("F1") kWh</p> *@
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p class="display-5 text-primary">15.5 kWh</p>
-                    @* <p class="display-5 text-primary">@Model.CurrentUsage.ToString("F1") kWh</p> *@
+                <div class="col-md-4">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-success text-white">
+                            <h3>Average Savings</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="display-5 text-success">50.25 BGN</p>
+                            @* <p class="display-5 text-success">@Model.AverageSavings.ToString("C2") BGN</p> *@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-warning text-white">
+                            <h3>Electricity Cost</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="display-5 text-danger">0.30 BGN/kWh</p>
+                            @* <p class="display-5 text-danger">@Model.CurrentElectricityCost.ToString("C2") BGN/kWh</p> *@
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-lg">
-                <div class="card-header bg-success text-white">
-                    <h3>Average Savings</h3>
+        }
+        else
+        {
+            <center><h1>DEMO</h1></center>
+            <div class="row text-center mb-4">
+                <div class="col-md-4">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-info text-white">
+                            <h3>Current Usage</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="display-5 text-primary">15.5 kWh</p>
+                            @* <p class="display-5 text-primary">@Model.CurrentUsage.ToString("F1") kWh</p> *@
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p class="display-5 text-success">50.25 BGN</p>
-                    @* <p class="display-5 text-success">@Model.AverageSavings.ToString("C2") BGN</p> *@
+                <div class="col-md-4">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-success text-white">
+                            <h3>Average Savings</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="display-5 text-success">50.25 BGN</p>
+                            @* <p class="display-5 text-success">@Model.AverageSavings.ToString("C2") BGN</p> *@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-warning text-white">
+                            <h3>Electricity Cost</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="display-5 text-danger">0.30 BGN/kWh</p>
+                            @* <p class="display-5 text-danger">@Model.CurrentElectricityCost.ToString("C2") BGN/kWh</p> *@
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-lg">
-                <div class="card-header bg-warning text-white">
-                    <h3>Electricity Cost</h3>
-                </div>
-                <div class="card-body">
-                    <p class="display-5 text-danger">0.30 BGN/kWh</p>
-                    @* <p class="display-5 text-danger">@Model.CurrentElectricityCost.ToString("C2") BGN/kWh</p> *@
-                </div>
-            </div>
-        </div>
-    </div>
+        }
+    }
 
     <!--Current Electricity Prices-->
     <div class="card shadow-lg mb-4">
@@ -62,93 +107,153 @@
     </div>
 
     <!-- Battery Status and Power Source -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card shadow-lg">
-                <div class="card-header bg-secondary text-white">
-                    <h3>Battery Status</h3>
-                </div>
-                <div class="card-body text-center">
-                    <div class="battery-icon-container mb-3">
-                        <div class="battery-icon">
-                            <div class="battery-level" style="height: 75%;"></div>
-                            @* <div class="battery-level" style="height: @Model.BatteryChargeLevel%;"></div> *@
+    @{        
+        // TODO: Must be implemented real connection
+        if (User.Identity.IsAuthenticated)
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-secondary text-white">
+                            <h3>Battery Status</h3>
                         </div>
-                        <p class="mt-2">75% Charged</p>
-                        @* <p class="mt-2">@Model.BatteryChargeLevel.ToString("F0")% Charged</p> *@
+                        <div class="card-body text-center">
+                            <div class="battery-icon-container mb-3">
+                                <div class="battery-icon">
+                                    <div class="battery-level" style="height: 75%;"></div>
+                                    @* <div class="battery-level" style="height: @Model.BatteryChargeLevel%;"></div> *@
+                                </div>
+                                <p class="mt-2">75% Charged</p>
+                                @* <p class="mt-2">@Model.BatteryChargeLevel.ToString("F0")% Charged</p> *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-dark text-white">
+                            <h3>Current Power Source</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <h2 class="display-6 text-primary">Battery</h2>
+                            @* <h2 class="display-6 text-primary">@Model.CurrentPowerSource</h2> *@
+                            <p>Powering the system with <strong>Battery</strong>.</p>
+                            @* <p>Powering the system with <strong>@Model.CurrentPowerSource</strong>.</p> *@
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-lg">
-                <div class="card-header bg-dark text-white">
-                    <h3>Current Power Source</h3>
+        }
+        else
+        {
+            <center><h1>DEMO</h1></center>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-secondary text-white">
+                            <h3>Battery Status</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="battery-icon-container mb-3">
+                                <div class="battery-icon">
+                                    <div class="battery-level" style="height: 75%;"></div>
+                                    @* <div class="battery-level" style="height: @Model.BatteryChargeLevel%;"></div> *@
+                                </div>
+                                <p class="mt-2">75% Charged</p>
+                                @* <p class="mt-2">@Model.BatteryChargeLevel.ToString("F0")% Charged</p> *@
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body text-center">
-                    <h2 class="display-6 text-primary">Battery</h2>
-                    @* <h2 class="display-6 text-primary">@Model.CurrentPowerSource</h2> *@
-                    <p>Powering the system with <strong>Battery</strong>.</p>
-                    @* <p>Powering the system with <strong>@Model.CurrentPowerSource</strong>.</p> *@
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-dark text-white">
+                            <h3>Current Power Source</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <h2 class="display-6 text-primary">Battery</h2>
+                            @* <h2 class="display-6 text-primary">@Model.CurrentPowerSource</h2> *@
+                            <p>Powering the system with <strong>Battery</strong>.</p>
+                            @* <p>Powering the system with <strong>@Model.CurrentPowerSource</strong>.</p> *@
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        }
+    }
 </div>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const labels = @Html.Raw(Json.Serialize(ViewData["TimeLabels"]));
-        const ctx = document.getElementById('priceChart').getContext('2d');
-        const electricityPrices = @Html.Raw(Json.Serialize(ViewData["PriceData"]));
+        document.addEventListener("DOMContentLoaded", function () {
+            const labels = @Html.Raw(Json.Serialize(ViewData["TimeLabels"]));
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            const electricityPrices = @Html.Raw(Json.Serialize(ViewData["PriceData"]));
 
-        console.log("📊 Labels:", labels);
-        console.log("📈 Prices:", electricityPrices);
+            console.log("Labels:", labels);
+            console.log("Prices:", electricityPrices);
 
-        if (!labels.length || !electricityPrices.length) {
-            console.warn("⚠ Chart data is empty.");
-            return;
-        }
-        const chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Electricity Price (BGN/kWh)',
-                    data: electricityPrices,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Price (BGN/kWh)'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Hour of the Day (EEST)'
-                        }
-                    }
-                }
+            if (!labels.length || !electricityPrices.length) {
+                console.warn("Chart data is empty.");
+                return;
             }
+            const chart = new Chart(ctx,
+                {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets:
+                            [{
+                                label: 'Electricity Price (BGN/kWh)',
+                                data: electricityPrices,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                fill: true,
+                                tension: 0.4
+                            }]
+                    },
+                    options:
+                        {
+                            responsive:
+                                true,
+                            plugins:
+                                {
+                                    legend:
+                                        {
+                                            display:
+                                                true,
+                                            position:
+                                                'top'
+                                        }
+                                },
+                            scales:
+                                {
+                                    y:
+                                        {
+                                            beginAtZero:
+                                                true,
+                                            title:
+                                                {
+                                                    display:
+                                                        true,
+                                                    text:
+                                                        'Price (BGN/kWh)'
+                                                }
+                                        },
+                                    x:
+                                        {
+                                            title:
+                                                {
+                                                    display:
+                                                        true,
+                                                    text:
+                                                        'Hour of the Day (EEST)'
+                                                }
+                                        }
+                                }
+                        }
+                });
         });
-    });
-</script>
+    </script>
 }

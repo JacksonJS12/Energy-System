@@ -27,15 +27,16 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Price" asp-action="PriceTracker">Prices</a>
+                    </li>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Property" asp-action="All">My
                                 Properties</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Price" asp-action="PriceTracker">Prices</a>
-                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Price" asp-action="CostAnalysis">Cost
                                 Analysis</a>

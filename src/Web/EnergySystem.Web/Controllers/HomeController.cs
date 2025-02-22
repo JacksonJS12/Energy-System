@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using Services.Data.MarketPrice;
@@ -32,21 +33,22 @@
 
             if (marketPrices == null || !marketPrices.Any())
             {
-                Console.WriteLine("⚠ No electricity prices found for today.");
+                Console.WriteLine("No electricity prices found for today.");
             }
 
             var hours = marketPrices.Select(p => p.Hour.ToString() + ":00").ToList();
             var prices = marketPrices.Select(p => p.PricePerKWh).ToList();
 
-            ViewData["TimeLabels"] = hours;
-            ViewData["PriceData"] = prices;
+            this.ViewData["TimeLabels"] = hours;
+            this.ViewData["PriceData"] = prices;
 
-            return View();
+            return this.View();
         }
 
 
         public IActionResult Privacy() => this.View();
 
+        [Authorize]
         public IActionResult Reports(DateTime? startDate, DateTime? endDate)
         {
             // Default date range: Last 7 days
@@ -70,16 +72,22 @@
                 DetailedReports = reports,
             };
 
-            ViewData["StartDate"] = startDate.Value.ToString("yyyy-MM-dd");
-            ViewData["EndDate"] = endDate.Value.ToString("yyyy-MM-dd");
+            this.ViewData["StartDate"] = startDate.Value.ToString("yyyy-MM-dd");
+            this.ViewData["EndDate"] = endDate.Value.ToString("yyyy-MM-dd");
 
             return View(model);
         }
 
+        [Authorize]
         public IActionResult Alerts() => this.View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() => this.View(
         new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
+        
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

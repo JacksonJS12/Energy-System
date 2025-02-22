@@ -1,19 +1,14 @@
 ﻿namespace EnergySystem.Web.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    using System;
     using System.Threading.Tasks;
-
-    using AutoMapper;
 
     using EnergySystem.Services.Data.Grid;
     using EnergySystem.Services.Data.Property;
-    using EnergySystem.Web.ViewModels.ApplicationUser;
     using EnergySystem.Web.ViewModels.Property;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-
-    using Services.Mapping;
 
     public class PropertyController : BaseController
     {
@@ -27,6 +22,7 @@
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             var formModel = new CreateInputModel();
@@ -38,6 +34,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(CreateInputModel input)
         {
             var userId = this.GetUserId();
@@ -48,6 +45,7 @@
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult All()
         {
             string userId = this.GetUserId();
@@ -60,39 +58,78 @@
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Details(string id)
         {
-            var property = this._propertyService.GetById<SinglePropertyViewModel>(id);
+            string userId = this.GetUserId();
+
+            var property = this._propertyService.GetById<SinglePropertyViewModel>(id, userId);
+            if (property == null)
+            {
+                return this.Forbid();
+            }
 
             return this.View(property);
         }
-        
+
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
-            await this._propertyService.DeleteAsync(id);
+            string userId = this.GetUserId();
+
+            try
+            {
+                await this._propertyService.DeleteAsync(id, userId);
+            }
+            catch (Exception)
+            {
+                return this.Forbid();
+            }
+
             return this.RedirectToAction("All", "Property");
         }
-        
+
         [HttpGet]
+        [Authorize]
         public IActionResult Edit(string id)
         {
-            var inputModel = this._propertyService.GetById<EditPropertyInputModel>(id);
+            string userId = this.GetUserId();
+
+            var inputModel = this._propertyService.GetById<EditPropertyInputModel>(id, userId);
+
+            if (inputModel == null)
+            {
+                return this.Forbid();
+            }
+
             inputModel.GridsItems = this._gridService.GetAllAsKeyValuePairs();
+
             return this.View(inputModel);
         }
-        
+
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(EditPropertyInputModel input, string id)
         {
+            string userId = this.GetUserId();
+
             if (!this.ModelState.IsValid)
             {
                 input.GridsItems = this._gridService.GetAllAsKeyValuePairs();
                 return this.View(input);
             }
 
-            await this._propertyService.UpdateAsync(input, id);
-            return this.RedirectToAction("Details", "Property", new {id});
+            try
+            {
+                await this._propertyService.UpdateAsync(input, id, userId);
+            }
+            catch (Exception)
+            {
+                return this.Forbid();
+            }
+
+            return this.RedirectToAction("Details", "Property", new { id });
         }
     }
 }

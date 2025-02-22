@@ -17,7 +17,9 @@
         public string Address { get; set; }
 
         public decimal ElectricityNeed { get; set; }
-
+        
+        public string OwnerId { get; set; }
+        
         public GridViewModel Grid { get; set; }
 
         public IEnumerable<BatteryViewModel> Batteries { get; set; }

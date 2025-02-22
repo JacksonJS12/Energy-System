@@ -43,26 +43,31 @@
 </div>
 
 <!-- Recommendations -->
-<div class="card shadow-lg mb-4">
-    <div class="card-header bg-success text-white">
-        <h2 class="mb-0">Recommendations</h2>
-    </div>
-    <div class="card-body">
-        <p class="text-muted">Based on current electricity prices, here are your recommendations:</p>
-        <ul>
-            <li>
-                @* @if (Model.ShouldCharge) *@
-                @* { *@
-                <span class="text-success font-weight-bold">Charge your battery now!</span>
-                @* } *@
-                @* else *@
-                @* { *@
-                <span class="text-danger font-weight-bold">/ Avoid charging; use battery power instead.</span>
-                @* } *@
-            </li>
-        </ul>
-    </div>
-</div>
+@{
+    if (User.Identity.IsAuthenticated)
+    {
+        <div class="card shadow-lg mb-4">
+            <div class="card-header bg-success text-white">
+                <h2 class="mb-0">Recommendations</h2>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Based on current electricity prices, here are your recommendations:</p>
+                <ul>
+                    <li>
+                        @* @if (Model.ShouldCharge) *@
+                        @* { *@
+                        <span class="text-success font-weight-bold">Charge your battery now!</span>
+                        @* } *@
+                        @* else *@
+                        @* { *@
+                        <span class="text-danger font-weight-bold">/ Avoid charging; use battery power instead.</span>
+                        @* } *@
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+}
 
 
 @section Scripts {
@@ -73,7 +78,7 @@
             List<decimal> prices = Model.Select(x => x.PricePerKWh).ToList();
         }
         const priceData = @Html.Raw(Json.Serialize(prices)); //(Model.PriceData));
-        
+
         // when scraping from IBEX and converting from CET to EEST we lose one price
         // because we're adding 1h to every record and the last record goes to the next day
         // the problem is solved if we scrape two consecutive days
