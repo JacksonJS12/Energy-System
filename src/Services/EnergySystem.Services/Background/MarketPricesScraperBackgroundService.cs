@@ -65,7 +65,7 @@ public class MarketPricesScraperBackgroundService : BackgroundService
 
     private async Task ScrapeMarketPricesAsync(CancellationToken stoppingToken)
     {
-        using var scope = _serviceProvider.CreateScope();
+        using var scope = this._serviceProvider.CreateScope();
 
         try
         {

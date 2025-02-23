@@ -59,33 +59,13 @@ namespace EnergySystem.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Grids",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MaximumCapacity = table.Column<float>(type: "real", nullable: false),
-                    CurrentUsage = table.Column<float>(type: "real", nullable: false),
-                    SupplyPrice = table.Column<float>(type: "real", nullable: false),
-                    Provider = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Grids", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MarketPrices",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Hour = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PricePerKWh = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Hour = table.Column<int>(type: "int", nullable: false),
+                    PricePerKWh = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -101,13 +81,15 @@ namespace EnergySystem.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PropertyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PropertyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    GridUsage = table.Column<double>(type: "float", nullable: false),
-                    BatteryUsage = table.Column<double>(type: "float", nullable: false),
-                    GridCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BatteryCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TotalCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Savings = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    GridUsage = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    BatteryUsage = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    GridCost = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    BatteryCost = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    TotalCost = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    Savings = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -116,24 +98,6 @@ namespace EnergySystem.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reports", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Settings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Settings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -243,15 +207,40 @@ namespace EnergySystem.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Grids",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrentUsage = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    SupplyPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    MarketPriceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grids", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Grids_MarketPrices_MarketPriceId",
+                        column: x => x.MarketPriceId,
+                        principalTable: "MarketPrices",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Properties",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ElectricityNeed = table.Column<float>(type: "real", nullable: false),
+                    ElectricityNeed = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     GridId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    EnergyUsedFromGridToday = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     PoweringRegime = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -279,18 +268,19 @@ namespace EnergySystem.Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Capacity = table.Column<float>(type: "real", nullable: false),
-                    Voltage = table.Column<float>(type: "real", nullable: false),
+                    Capacity = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    Voltage = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ManufactureDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    InitialInstalation = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CurrentChargeLevel = table.Column<float>(type: "real", nullable: false),
-                    StateOfHealth = table.Column<float>(type: "real", nullable: false),
+                    InitialInstallation = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CurrentChargeLevel = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    StateOfHealth = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     CycleCount = table.Column<int>(type: "int", nullable: false),
-                    Temperature = table.Column<float>(type: "real", nullable: false),
-                    LifetimeEnergyStored = table.Column<float>(type: "real", nullable: false),
-                    LifetimeEnergyDeliveredpe = table.Column<float>(type: "real", nullable: false),
+                    Temperature = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    LifetimeEnergyStored = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    LifetimeEnergyStoredAtStartOfDay = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     WarrantyExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PriceChargingAt = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     PropertyId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -302,6 +292,36 @@ namespace EnergySystem.Data.Migrations
                     table.PrimaryKey("PK_Batteries", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Batteries_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GridPriceEntries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PropertyId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Hour = table.Column<int>(type: "int", nullable: false),
+                    ElectricityUsed = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    MarketPriceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GridPriceEntries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GridPriceEntries_MarketPrices_MarketPriceId",
+                        column: x => x.MarketPriceId,
+                        principalTable: "MarketPrices",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GridPriceEntries_Properties_PropertyId",
                         column: x => x.PropertyId,
                         principalTable: "Properties",
                         principalColumn: "Id");
@@ -367,9 +387,29 @@ namespace EnergySystem.Data.Migrations
                 column: "PropertyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GridPriceEntries_IsDeleted",
+                table: "GridPriceEntries",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GridPriceEntries_MarketPriceId",
+                table: "GridPriceEntries",
+                column: "MarketPriceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GridPriceEntries_PropertyId",
+                table: "GridPriceEntries",
+                column: "PropertyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Grids_IsDeleted",
                 table: "Grids",
                 column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Grids_MarketPriceId",
+                table: "Grids",
+                column: "MarketPriceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MarketPrices_IsDeleted",
@@ -395,11 +435,6 @@ namespace EnergySystem.Data.Migrations
                 name: "IX_Reports_IsDeleted",
                 table: "Reports",
                 column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Settings_IsDeleted",
-                table: "Settings",
-                column: "IsDeleted");
         }
 
         /// <inheritdoc />
@@ -424,13 +459,10 @@ namespace EnergySystem.Data.Migrations
                 name: "Batteries");
 
             migrationBuilder.DropTable(
-                name: "MarketPrices");
+                name: "GridPriceEntries");
 
             migrationBuilder.DropTable(
                 name: "Reports");
-
-            migrationBuilder.DropTable(
-                name: "Settings");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -443,6 +475,9 @@ namespace EnergySystem.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Grids");
+
+            migrationBuilder.DropTable(
+                name: "MarketPrices");
         }
     }
 }

@@ -45,8 +45,4 @@
         <ProjectReference Include="..\EnergySystem.Data.Models\EnergySystem.Data.Models.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Migrations\" />
-    </ItemGroup>
-
 </Project>
