@@ -47,7 +47,7 @@
                 new Claim(ClaimTypes.NameIdentifier, "user123"),
             }, "mock"));
 
-            _batteryController.ControllerContext = new ControllerContext
+            this._batteryController.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext { User = user }
             };
