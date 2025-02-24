@@ -59,7 +59,6 @@ public class ReportService : IReportService
             // Create and save the report
             var report = new Report
             {
-                PropertyName = property.Name,
                 PropertyId = property.Id,
                 Date = DateTime.UtcNow.Date,
                 GridUsage = property.GridPriceEntries.Sum(e => e.ElectricityUsed),
