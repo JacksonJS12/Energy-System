@@ -15,6 +15,7 @@
             this.Id = Guid.NewGuid().ToString();
             this.Batteries = new HashSet<Battery>();
             this.GridPriceEntries = new HashSet<GridPriceEntry>();
+            this.Reports = new HashSet<Report>();
         }
 
         public string Name { get; set; }
@@ -35,6 +36,7 @@
         // Hourly data: <Hour, <UsedElectricity, PricePerkWh>>
         public ICollection<GridPriceEntry> GridPriceEntries { get; set; }
         public ICollection<Battery> Batteries { get; set; }
+        public ICollection<Report> Reports { get; set; } 
 
         public PoweringRegime PoweringRegime { get; set; } //Enum for powering regime (e.g., Grid, Battery, Mixed).
     }

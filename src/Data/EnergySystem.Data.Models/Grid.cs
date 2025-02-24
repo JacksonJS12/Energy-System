@@ -1,6 +1,7 @@
 ﻿namespace EnergySystem.Data.Models
 {
     using System;
+    using System.Collections.Generic;
 
     using Common.Models;
 
@@ -11,6 +12,7 @@
         public Grid()
         {
             this.Id = Guid.NewGuid().ToString();
+            this.Reports = new HashSet<Report>();
         }
 
         public string Name { get; set; }
@@ -22,5 +24,7 @@
         public string MarketPriceId { get; set; }
         
         public virtual MarketPrice MarketPrice { get; set; }
+
+        public ICollection<Report> Reports { get; set; }
     }
 }

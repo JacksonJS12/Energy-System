@@ -399,6 +399,9 @@ namespace EnergySystem.Data.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("BatteryId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<decimal>("BatteryUsage")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -416,6 +419,9 @@ namespace EnergySystem.Data.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("GridId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<decimal>("GridUsage")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -427,10 +433,7 @@ namespace EnergySystem.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PropertyId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PropertyName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Savings")
                         .HasPrecision(18, 2)
@@ -442,7 +445,13 @@ namespace EnergySystem.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BatteryId");
+
+                    b.HasIndex("GridId");
+
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("PropertyId");
 
                     b.ToTable("Reports");
                 });
@@ -601,6 +610,27 @@ namespace EnergySystem.Data.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("EnergySystem.Data.Models.Report", b =>
+                {
+                    b.HasOne("Battery", "Battery")
+                        .WithMany("Reports")
+                        .HasForeignKey("BatteryId");
+
+                    b.HasOne("EnergySystem.Data.Models.Grid", "Grid")
+                        .WithMany("Reports")
+                        .HasForeignKey("GridId");
+
+                    b.HasOne("EnergySystem.Data.Models.Property", "Property")
+                        .WithMany("Reports")
+                        .HasForeignKey("PropertyId");
+
+                    b.Navigation("Battery");
+
+                    b.Navigation("Grid");
+
+                    b.Navigation("Property");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("EnergySystem.Data.Models.ApplicationRole", null)
@@ -652,6 +682,11 @@ namespace EnergySystem.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Battery", b =>
+                {
+                    b.Navigation("Reports");
+                });
+
             modelBuilder.Entity("EnergySystem.Data.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Claims");
@@ -663,11 +698,18 @@ namespace EnergySystem.Data.Migrations
                     b.Navigation("Roles");
                 });
 
+            modelBuilder.Entity("EnergySystem.Data.Models.Grid", b =>
+                {
+                    b.Navigation("Reports");
+                });
+
             modelBuilder.Entity("EnergySystem.Data.Models.Property", b =>
                 {
                     b.Navigation("Batteries");
 
                     b.Navigation("GridPriceEntries");
+
+                    b.Navigation("Reports");
                 });
 #pragma warning restore 612, 618
         }
