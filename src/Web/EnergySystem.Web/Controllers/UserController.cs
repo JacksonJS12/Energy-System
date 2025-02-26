@@ -1,10 +1,12 @@
 ﻿namespace EnergySystem.Web.Controllers
 {
+    using System;
+    using System.Net.Http;
+    using System.Security.Cryptography;
+    using System.Text;
     using System.Threading.Tasks;
-
     using EnergySystem.Data.Models;
     using EnergySystem.Web.ViewModels.User;
-
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -13,19 +15,22 @@
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly HttpClient _httpClient;
 
         public UserController(
             SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IHttpClientFactory httpClientFactory)
         {
             this._signInManager = signInManager;
             this._userManager = userManager;
+            this._httpClient = httpClientFactory.CreateClient();
         }
 
         [HttpGet]
         public IActionResult Register()
         {
-            return this.View();
+            return View();
         }
 
         [HttpPost]
@@ -33,20 +38,25 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(model);
+                return View(model);
+            }
+
+            // ** Check if the password is compromised **
+            if (await IsPasswordBreached(model.Password))
+            {
+                this.ModelState.AddModelError(string.Empty, "This password has been found in a data breach. Please choose a different one.");
+                return View(model);
             }
 
             ApplicationUser user = new ApplicationUser()
             {
                 FirstName = model.FirstName,
-                LastName = model.LastName
+                LastName = model.LastName,
+                Email = model.Email,
+                UserName = model.Email
             };
 
-            await this._userManager.SetEmailAsync(user, model.Email);
-            await this._userManager.SetUserNameAsync(user, model.Email);
-
-            IdentityResult result =
-                await this._userManager.CreateAsync(user, model.Password);
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
@@ -54,8 +64,7 @@
                 {
                     this.ModelState.AddModelError(string.Empty, error.Description);
                 }
-
-                return this.View(model);
+                return View(model);
             }
 
             await this._signInManager.SignInAsync(user, false);
@@ -68,12 +77,7 @@
         {
             await this.HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            LoginFormModel model = new LoginFormModel()
-            {
-                ReturnUrl = returnUrl
-            };
-
-            return View(model);
+            return View(new LoginFormModel { ReturnUrl = returnUrl });
         }
 
         [HttpPost]
@@ -88,10 +92,24 @@
 
             if (!result.Succeeded)
             {
+                this.ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return View(model);
             }
 
             return Redirect(model.ReturnUrl ?? "/Home/Index");
+        }
+
+        // ** Helper Method to Check if Password is Breached **
+        private async Task<bool> IsPasswordBreached(string password)
+        {
+            using var sha1 = SHA1.Create();
+            var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(password));
+            var hashString = BitConverter.ToString(hash).Replace("-", "").ToUpper();
+            var prefix = hashString.Substring(0, 5);
+            var suffix = hashString.Substring(5);
+
+            var response = await this._httpClient.GetStringAsync($"https://api.pwnedpasswords.com/range/{prefix}");
+            return response.Contains(suffix);
         }
     }
 }
