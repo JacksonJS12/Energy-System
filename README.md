@@ -35,4 +35,3 @@ Handles user interactions through a responsive web interface, facilitating seaml
 #### Projects:
 <li>EnergySystem.Web: The main web application project containing controllers and views.</li>
 <li>EnergySystem.Web.ViewModels: Defines the view models used to pass data between controllers and views.</li>
-<li>EnergySystem.Web.ViewModels: Defines the view models used to pass data between controllers and views.</li>
