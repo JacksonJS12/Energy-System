@@ -34,6 +34,7 @@
         public DbSet<Report> Reports { get; set; }
 
         public DbSet<MarketPrice> MarketPrices { get; set; }
+
         public DbSet<GridPriceEntry> GridPriceEntries { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);

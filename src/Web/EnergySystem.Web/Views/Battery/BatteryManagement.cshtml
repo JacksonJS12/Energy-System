@@ -18,12 +18,12 @@
             <p class="battery-percentage mt-2">@Model.CurrentChargeLevel %</p>
             <div class="mt-3">
                 <a asp-controller="Battery" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
-                    Edit Property
+                    Edit Battery Information
                 </a>
             </div>
             <div class="mt-3">
                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    Delete Property
+                    Delete 
                 </button>
             </div>
         </div>

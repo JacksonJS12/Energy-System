@@ -1,4 +1,5 @@
 ﻿@using EnergySystem.Common
+@using EnergySystem.Services.Data.User
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +31,7 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-controller="Price" asp-action="PriceTracker">Prices</a>
                     </li>
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity?.IsAuthenticated ?? false)
                     {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Property" asp-action="All">My

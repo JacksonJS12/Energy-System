@@ -29,6 +29,7 @@
     using EnergySystem.Services.Data.Report;
 
     using Services.Data.MarketPrice;
+    using Services.Data.User;
     using Services.GridPriceEntry;
     using Services.Report;
 
@@ -65,7 +66,9 @@
                     builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase");
                 options.Password.RequiredLength =
                     builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
-            }).AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            })
+                .AddRoles<ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<CookiePolicyOptions>(
             options => {
@@ -75,6 +78,7 @@
             services.ConfigureApplicationCookie(options =>
             {
                 options.AccessDeniedPath = "/Home/AccessDenied"; // Change this to your preferred page
+                options.LoginPath = "/User/Login";
             });
             services.AddControllersWithViews(
                 options => { options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); })
@@ -100,6 +104,7 @@
             services.AddScoped<IGridPriceEntryService, GridPriceEntryService>();
             services.AddScoped<IMarketPriceService, MarketPriceService>();
             services.AddScoped<IMarketPricesWebScraperService, MarketPricesWebScraperService>();
+            services.AddScoped<IUserService, UserService>();
 
             // Background services
             services.AddSingleton<IHostedService, MarketPricesScraperBackgroundService>();
@@ -132,7 +137,6 @@
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

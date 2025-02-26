@@ -18,7 +18,8 @@ namespace EnergySystem.Data.Models
             this.Logins = new HashSet<IdentityUserLogin<string>>();
             this.Properties = new HashSet<Property>();
         }
-
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
@@ -36,5 +37,6 @@ namespace EnergySystem.Data.Models
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
+       
     }
 }
