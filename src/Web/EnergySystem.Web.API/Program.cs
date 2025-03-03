@@ -10,6 +10,7 @@ namespace EnergySystem.Web.API
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddHttpClient();
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",

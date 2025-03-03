@@ -12,12 +12,10 @@ namespace EnergySystem.Web.API.Controllers
     [Route("api/esp32")]
     public class Esp32Controller : ControllerBase
     {
-        private readonly IHubContext<DataHub> _hubContext;
-        
-        
-        public Esp32Controller(IHubContext<DataHub> hubContext)
+        private readonly HttpClient _httpClient;
+        public Esp32Controller(HttpClient httpClient)
         {
-            this._hubContext = hubContext;
+            this._httpClient = httpClient;
         }
         
         
@@ -27,16 +25,23 @@ namespace EnergySystem.Web.API.Controllers
             return Ok(new { message = "ESP32 connected successfully!" });
         }
         
-        [HttpPost("send-data")]
-        public async Task<IActionResult> ReceiveData([FromBody] Esp32DataModel data)
+        [HttpGet("toggle")]
+        public async Task<IActionResult> ToggleRelay()
         {
-            // Log data (optional)
-            Console.WriteLine($"Received from ESP32: {data.DeviceId} - Voltage: {data.Voltage}V, Current: {data.Current}A");
+            string esp32Ip = "http://192.168.1.5"; 
+            string requestUrl = $"{esp32Ip}/toggle-relay";
 
-            // Send data to SignalR clients (MVC app)
-            await this._hubContext.Clients.All.SendAsync("ReceiveData", data.DeviceId, data.Voltage, data.Current);
+            try
+            {
+                HttpResponseMessage response = await this._httpClient.GetAsync(requestUrl);
+                string responseBody = await response.Content.ReadAsStringAsync();
 
-            return Ok(new { message = "Data received successfully!" });
+                return Ok(new { message = "Relay toggled successfully", espResponse = responseBody });
+            }
+            catch (HttpRequestException ex)
+            {
+                return StatusCode(500, new { message = "Failed to communicate with ESP32", error = ex.Message });
+            }
         }
     }
 }
