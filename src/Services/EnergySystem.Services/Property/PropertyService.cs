@@ -1,16 +1,18 @@
-﻿namespace EnergySystem.Services.Data.Property
+﻿namespace EnergySystem.Services.Property
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
+
     using EnergySystem.Data.Common.Repositories;
     using EnergySystem.Data.Models;
-    using EnergySystem.Web.ViewModels.Battery;
-    using EnergySystem.Web.ViewModels.Grid;
-    using EnergySystem.Web.ViewModels.Property;
-
+    using EnergySystem.Services.Projections.Battery;
+    using EnergySystem.Services.Projections.Grid;
+    using EnergySystem.Services.Projections.Property;
     using Mapping;
 
     using Microsoft.EntityFrameworkCore;
@@ -18,18 +20,20 @@
     public class PropertyService : IPropertyService
     {
         private readonly IDeletableEntityRepository<Property> _propertyRepository;
+        private readonly IMapper _mapper;
 
-        public PropertyService(IDeletableEntityRepository<Property> propertyRepository)
+        public PropertyService(IDeletableEntityRepository<Property> propertyRepository, IMapper mapper)
         {
             this._propertyRepository = propertyRepository;
+            this._mapper = mapper;
         }
 
-        public async Task<SinglePropertyViewModel> GetPropertyDetailsAsync(string propertyId, string userId)
+        public async Task<SinglePropertyProjection> GetPropertyDetailsAsync(string propertyId, string userId)
         {
             return await this._propertyRepository
                 .All()
                 .Where(p => p.Id == propertyId)
-                .Select(p => new SinglePropertyViewModel()
+                .Select(p => new SinglePropertyProjection()
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -37,7 +41,7 @@
                     ElectricityNeed = p.ElectricityNeed,
                     Grid = p.Grid == null
                         ? null
-                        : new GridViewModel()
+                        : new GridProjection()
                         {
                             Id = p.Grid.Id,
                             Name = p.Grid.Name,
@@ -46,7 +50,7 @@
                         },
                     Batteries = p.Batteries == null
                         ? null
-                        : p.Batteries.Select(b => new BatteryViewModel
+                        : p.Batteries.Select(b => new BatteryProjection
                         {
                             Id = b.Id,
                             Model = b.Model,
@@ -64,11 +68,12 @@
         {
             var property = this._propertyRepository.AllAsNoTracking()
                 .Where(x => x.Id == propertyId && x.OwnerId == userId)
-                .To<T>().FirstOrDefault();
+                .ProjectTo<T>(this._mapper.ConfigurationProvider)
+                .FirstOrDefault();
 
             return property;
         }
-        public async Task CreateAsync(CreateInputModel input, string userId)
+        public async Task CreateAsync(CreateInputProjection input, string userId)
         {
             var property = new Property
             {
@@ -82,13 +87,13 @@
             await this._propertyRepository.AddAsync(property);
             await this._propertyRepository.SaveChangesAsync();
         }
-        public IEnumerable<T> GeAll<T>(string userId)
+        public IEnumerable<T> GetAll<T>(string userId)
         {
             var properties = this._propertyRepository
                 .AllAsNoTracking()
                 .OrderByDescending(x => x.Id)
                 .Where(x => x.OwnerId == userId)
-                .To<T>()
+                .ProjectTo<T>(this._mapper.ConfigurationProvider)
                 .ToList();
             return properties;
         }
@@ -98,7 +103,7 @@
             this._propertyRepository.Delete(property);
             await this._propertyRepository.SaveChangesAsync();
         }
-        public async Task UpdateAsync(EditPropertyInputModel input, string propertyId, string userId)
+        public async Task UpdateAsync(EditPropertyInputProjection input, string propertyId, string userId)
         {
             var property = this._propertyRepository.All().FirstOrDefault(x => x.Id == propertyId && x.OwnerId == userId);
             property.Name = input.Name;

@@ -1,4 +1,4 @@
-﻿namespace EnergySystem.Services.Data.Grid
+﻿namespace EnergySystem.Services.Grid
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -6,7 +6,6 @@
     using EnergySystem.Data;
     using EnergySystem.Data.Common.Repositories;
     using EnergySystem.Data.Models;
-    using EnergySystem.Web.ViewModels.Grid;
 
     public class GridService : IGridService
     {

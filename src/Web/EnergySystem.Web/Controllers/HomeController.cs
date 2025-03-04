@@ -5,11 +5,16 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using AutoMapper;
+
+    using Data.Models;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using Services.Data.MarketPrice;
     using Services.Data.Report;
+    using Services.Projections.MarketPrice;
 
     using ViewModels;
     using ViewModels.Home;
@@ -19,10 +24,12 @@
     {
         private readonly IMarketPriceService _marketPriceService;
         private readonly IReportService _reportService;
-        public HomeController(IReportService reportService, IMarketPriceService marketPriceService)
+        private readonly IMapper _mapper;
+        public HomeController(IReportService reportService, IMarketPriceService marketPriceService, IMapper mapper)
         {
             this._marketPriceService = marketPriceService;
             this._reportService = reportService;
+            this._mapper = mapper;
         }
         [HttpGet]
         public async Task<IActionResult> Index()

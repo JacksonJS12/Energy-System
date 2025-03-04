@@ -1,9 +1,8 @@
-﻿namespace EnergySystem.Services.Data.User
+﻿namespace EnergySystem.Services.User
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using EnergySystem.Web.ViewModels.User;
 
     public interface IUserService
     {

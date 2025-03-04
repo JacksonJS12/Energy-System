@@ -3,12 +3,17 @@
     using System;
     using System.Threading.Tasks;
 
-    using EnergySystem.Services.Data.Battery;
-    using EnergySystem.Services.Data.Property;
+    using AutoMapper;
+
     using EnergySystem.Web.ViewModels.Battery;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+
+    using Services.Battery;
+    using Services.Projections.Battery;
+    using Services.Projections.Property;
+    using Services.Property;
 
     using ViewModels.Property;
 
@@ -16,10 +21,12 @@
     {
         private readonly IPropertyService _propertyService;
         private readonly IBatteryService _batteryService;
-        public BatteryController(IPropertyService propertyService, IBatteryService batteryService)
+        private readonly IMapper _mapper;
+        public BatteryController(IPropertyService propertyService, IBatteryService batteryService, IMapper mapper)
         {
             this._propertyService = propertyService;
             this._batteryService = batteryService;
+            this._mapper = mapper;
         }
 
         [HttpGet]
@@ -28,12 +35,14 @@
         {
             string userId = this.GetUserId();
 
-            var battery = this._batteryService.GetById<SingleBatteryViewModel>(id, userId);
+            var battery = this._batteryService.GetById<SingleBatteryProjection>(id, userId);
             if (battery == null)
             {
                 return this.Forbid();
             }
-            return this.View(battery);
+
+            SingleBatteryViewModel viewModel = this._mapper.Map<SingleBatteryViewModel>(battery);
+            return this.View(viewModel);
         }
 
         [HttpGet]
@@ -42,12 +51,12 @@
         {
             string userId = this.GetUserId();
 
-            var property = this._propertyService.GetById<SinglePropertyViewModel>(propertyId, userId);
+            var property = this._propertyService.GetById<SinglePropertyProjection>(propertyId, userId);
             if (property == null)
             {
                 return this.Forbid();
             }
-            
+
             var inputModel = new CreateBatteryInputModel
             {
                 PropertyId = propertyId // Pass the property ID to the view
@@ -64,9 +73,11 @@
                 return this.View(inputModel);
             }
 
+            CreateBatteryInputProjection projection = this._mapper.Map<CreateBatteryInputProjection>(inputModel);
+
             try
             {
-                await this._batteryService.CreateAsync(inputModel, inputModel.PropertyId);
+                await this._batteryService.CreateAsync(projection, inputModel.PropertyId);
             }
             catch (Exception)
             {
@@ -81,12 +92,15 @@
         {
             string userId = this.GetUserId();
 
-            var inputModel = this._batteryService.GetById<EditBatteryInputModel>(id, userId);
-            if (inputModel == null)
+            var projection = this._batteryService.GetById<EditBatteryInputProjection>(id, userId);
+            if (projection == null)
             {
                 return this.Forbid();
             }
-            return this.View(inputModel);
+
+            EditBatteryInputModel viewModel = this._mapper.Map<EditBatteryInputModel>(projection);
+
+            return this.View(viewModel);
         }
 
         [HttpPost]
@@ -100,9 +114,11 @@
                 return this.View(input);
             }
 
+            EditBatteryInputProjection projection = this._mapper.Map<EditBatteryInputProjection>(input);
+
             try
             {
-                await this._batteryService.UpdateAsync(input, id, userId);
+                await this._batteryService.UpdateAsync(projection, id, userId);
             }
             catch (Exception)
             {
@@ -116,16 +132,16 @@
         {
             string userId = this.GetUserId();
 
-            var battery = this._batteryService.GetById<SingleBatteryViewModel>(id, userId);
+            var battery = this._batteryService.GetById<SingleBatteryProjection>(id, userId);
             if (battery == null)
             {
                 return this.Forbid();
             }
             var propertyId = battery.PropertyId;
-           
-                await this._batteryService.DeleteAsync(id);
-            
-               
+
+            await this._batteryService.DeleteAsync(id);
+
+
             return this.RedirectToAction("Details", "Property", new { id = propertyId });
         }
     }

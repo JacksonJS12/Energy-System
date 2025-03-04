@@ -9,7 +9,7 @@
         <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <ItemGroup>
-        <AdditionalFiles Include="..\..\stylecop.json"/>
+        <AdditionalFiles Include="..\..\stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
@@ -20,10 +20,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Data\EnergySystem.Data.Models\EnergySystem.Data.Models.csproj"/>
+        <ProjectReference Include="..\..\Data\EnergySystem.Data.Models\EnergySystem.Data.Models.csproj" />
         <ProjectReference Include="..\..\EnergySystem.Common\EnergySystem.Common.csproj" />
-        <ProjectReference Include="..\..\Services\EnergySystem.Services.Mapping\EnergySystem.Services.Mapping.csproj"/>
-        <ProjectReference Include="..\..\Services\EnergySystem.Services\EnergySystem.Services.csproj"/>
+        <ProjectReference Include="..\..\Services\EnergySystem.Services.Mapping\EnergySystem.Services.Mapping.csproj" />
     </ItemGroup>
 
 </Project>

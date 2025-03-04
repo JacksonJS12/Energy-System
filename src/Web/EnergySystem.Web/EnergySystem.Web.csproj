@@ -22,7 +22,6 @@
         <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" Version="6.0.36" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.20">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -45,7 +44,6 @@
         <ProjectReference Include="..\..\EnergySystem.Common\EnergySystem.Common.csproj" />
         <ProjectReference Include="..\..\Data\EnergySystem.Data.Models\EnergySystem.Data.Models.csproj" />
         <ProjectReference Include="..\..\Data\EnergySystem.Data\EnergySystem.Data.csproj" />
-        <ProjectReference Include="..\..\Services\EnergySystem.Services.Data\EnergySystem.Services.Data.csproj" />
         <ProjectReference Include="..\..\Services\EnergySystem.Services.Mapping\EnergySystem.Services.Mapping.csproj" />
         <ProjectReference Include="..\..\Services\EnergySystem.Services.Messaging\EnergySystem.Services.Messaging.csproj" />
         <ProjectReference Include="..\..\Services\EnergySystem.Services\EnergySystem.Services.csproj" />

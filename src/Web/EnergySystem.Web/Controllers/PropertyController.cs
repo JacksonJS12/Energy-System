@@ -3,22 +3,28 @@
     using System;
     using System.Threading.Tasks;
 
-    using EnergySystem.Services.Data.Grid;
-    using EnergySystem.Services.Data.Property;
+    using AutoMapper;
+
     using EnergySystem.Web.ViewModels.Property;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    using Services.Grid;
+    using Services.Projections.Property;
+    using Services.Property;
+
     public class PropertyController : BaseController
     {
         private readonly IGridService _gridService;
         private readonly IPropertyService _propertyService;
+        private readonly IMapper _mapper;
 
-        public PropertyController(IPropertyService propertyService, IGridService gridService)
+        public PropertyController(IPropertyService propertyService, IGridService gridService, IMapper mapper)
         {
             this._propertyService = propertyService;
             this._gridService = gridService;
+            this._mapper = mapper;
         }
 
         [HttpGet]
@@ -39,7 +45,9 @@
         {
             var userId = this.GetUserId();
 
-            await this._propertyService.CreateAsync(input, userId);
+            CreateInputProjection projection = this._mapper.Map<CreateInputProjection>(input);
+
+            await this._propertyService.CreateAsync(projection, userId);
 
             return this.RedirectToAction("All", "Property");
         }
@@ -50,10 +58,13 @@
         {
             string userId = this.GetUserId();
 
-            var viewModel = new PropertiesListViewModel
+            var projection = new PropertiesListProjection
             {
-                Properties = this._propertyService.GeAll<PropertyInListViewModel>(userId),
+                Properties = this._propertyService.GetAll<PropertyInListProjection>(userId),
             };
+
+            PropertiesListViewModel viewModel = this._mapper.Map<PropertiesListViewModel>(projection);
+
             return this.View(viewModel);
         }
 
@@ -63,11 +74,13 @@
         {
             string userId = this.GetUserId();
 
-            var property = this._propertyService.GetById<SinglePropertyViewModel>(id, userId);
-            if (property == null)
+            var projection = this._propertyService.GetById<SinglePropertyProjection>(id, userId);
+            if (projection == null)
             {
                 return this.Forbid();
             }
+
+            var property = this._mapper.Map<SinglePropertyViewModel>(projection);
 
             return this.View(property);
         }
@@ -96,16 +109,18 @@
         {
             string userId = this.GetUserId();
 
-            var inputModel = this._propertyService.GetById<EditPropertyInputModel>(id, userId);
+            var projection = this._propertyService.GetById<EditPropertyInputProjection>(id, userId);
 
-            if (inputModel == null)
+            if (projection == null)
             {
                 return this.Forbid();
             }
 
-            inputModel.GridsItems = this._gridService.GetAllAsKeyValuePairs();
+            projection.GridsItems = this._gridService.GetAllAsKeyValuePairs();
 
-            return this.View(inputModel);
+            var ViewModel = this._mapper.Map<EditPropertyInputModel>(projection);
+
+            return this.View(ViewModel);
         }
 
         [HttpPost]
@@ -120,9 +135,11 @@
                 return this.View(input);
             }
 
+            var projection = this._mapper.Map<EditPropertyInputProjection>(input);
+
             try
             {
-                await this._propertyService.UpdateAsync(input, id, userId);
+                await this._propertyService.UpdateAsync(projection, id, userId);
             }
             catch (Exception)
             {

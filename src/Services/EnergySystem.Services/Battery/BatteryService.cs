@@ -1,24 +1,30 @@
-﻿namespace EnergySystem.Services.Data.Battery
+﻿namespace EnergySystem.Services.Battery
 {
     using System.Linq;
     using System.Threading.Tasks;
 
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
+
     using EnergySystem.Data.Common.Repositories;
     using EnergySystem.Services.Mapping;
-    using EnergySystem.Web.ViewModels.Battery;
+
+    using Projections.Battery;
 
     using Battery=global::Battery;
 
     public class BatteryService : IBatteryService
     {
         private readonly IDeletableEntityRepository<Battery> _batteryRepository;
+        private readonly IMapper _mapper;
 
-        public BatteryService(IDeletableEntityRepository<Battery> batteryRepository)
+        public BatteryService(IDeletableEntityRepository<Battery> batteryRepository, IMapper mapper)
         {
             this._batteryRepository = batteryRepository;
+            this._mapper = mapper;
         }
 
-        public async Task CreateAsync(CreateBatteryInputModel model, string propertyId)
+        public async Task CreateAsync(CreateBatteryInputProjection model, string propertyId)
         {
             var battery = new Battery
             {
@@ -43,11 +49,12 @@
         {
             var battery = this._batteryRepository.AllAsNoTracking()
                 .Where(x => x.Id == batteryId && x.Property.OwnerId == userId)
-                .To<T>().FirstOrDefault();
+                .ProjectTo<T>(this._mapper.ConfigurationProvider)
+                .FirstOrDefault();
 
             return battery;
         }
-        public async Task UpdateAsync(EditBatteryInputModel input, string batteryId, string userId)
+        public async Task UpdateAsync(EditBatteryInputProjection input, string batteryId, string userId)
         {
             var battery = this._batteryRepository.All().FirstOrDefault(x => x.Id == batteryId && x.Property.OwnerId == userId);
             battery.Model = input.Model;

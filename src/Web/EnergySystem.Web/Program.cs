@@ -8,8 +8,6 @@
     using EnergySystem.Data.Models;
     using EnergySystem.Data.Repositories;
     using EnergySystem.Data.Seeding;
-    using EnergySystem.Services.Data.Grid;
-    using EnergySystem.Services.Data.Property;
     using EnergySystem.Services.Mapping;
     using EnergySystem.Services.Messaging;
     using EnergySystem.Web.ViewModels;
@@ -24,20 +22,26 @@
 
     using Services.Background;
     using Services.Background.GridPriceEntry;
-    using Services.Data.Battery;
 
     using EnergySystem.Services.Data.Report;
 
+    using Services.Battery;
     using Services.Data.MarketPrice;
-    using Services.Data.User;
+    using Services.Grid;
     using Services.GridPriceEntry;
+    using Services.Property;
     using Services.Report;
+    using Services.User;
+    using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+
+    using Profiles;
 
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
             ConfigureServices(builder.Services, builder.Configuration, builder);
             var app = builder.Build();
             Configure(app);
@@ -91,6 +95,14 @@
 
             services.AddSingleton(configuration);
 
+            Assembly currentAssembly = Assembly.GetExecutingAssembly();
+            services.AddAutoMapper(currentAssembly);
+            services.AddAutoMapper(typeof(MarketPriceProfile));
+            services.AddAutoMapper(typeof(PropertyProfile));
+            services.AddAutoMapper(typeof(BatteryProfile));
+            services.AddAutoMapper(typeof(GridProfile));
+
+
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
@@ -130,6 +142,7 @@
 
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
 
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -146,11 +159,13 @@
 
             app.UseRouting();
 
+
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            app.MapControllers();
             app.MapRazorPages();
         }
     }

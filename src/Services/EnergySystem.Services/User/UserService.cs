@@ -1,4 +1,4 @@
-﻿namespace EnergySystem.Services.Data.User
+﻿namespace EnergySystem.Services.User
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -6,7 +6,6 @@
 
     using EnergySystem.Data.Common.Repositories;
     using EnergySystem.Data.Models;
-    using EnergySystem.Web.ViewModels.User;
 
     using Mapping;
 

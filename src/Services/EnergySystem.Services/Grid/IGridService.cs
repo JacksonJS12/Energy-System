@@ -1,9 +1,7 @@
-﻿namespace EnergySystem.Services.Data.Grid
+﻿namespace EnergySystem.Services.Grid
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
-    using EnergySystem.Web.ViewModels.Grid;
 
     public interface IGridService
     {
