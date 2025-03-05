@@ -5,8 +5,11 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using EnergySystem.Services.Data.Grid;
-    using EnergySystem.Services.Data.Property;
+    using AutoMapper;
+
+    using EnergySystem.Services.Grid;
+    using EnergySystem.Services.Projections.Property;
+    using EnergySystem.Services.Property;
     using EnergySystem.Web.Controllers;
     using EnergySystem.Web.ViewModels.Property;
 
@@ -25,12 +28,13 @@
         private readonly Mock<IPropertyService> _mockPropertyService;
         private readonly Mock<IGridService> _mockGridService;
         private readonly PropertyController _controller;
+        private readonly IMapper _mapper;
 
         public PropertyControllerTests()
         {
             this._mockPropertyService = new Mock<IPropertyService>();
             this._mockGridService = new Mock<IGridService>();
-            this._controller = new PropertyController(this._mockPropertyService.Object, _mockGridService.Object);
+            this._controller = new PropertyController(this._mockPropertyService.Object, this._mockGridService.Object, this._mapper);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -61,7 +65,7 @@
         public async Task Create_Post_ShouldRedirectToAll_WhenModelIsValid()
         {
             var input = new CreateInputModel();
-            this._mockPropertyService.Setup(service => service.CreateAsync(It.IsAny<CreateInputModel>(), It.IsAny<string>()))
+            this._mockPropertyService.Setup(service => service.CreateAsync(It.IsAny<CreateInputProjection>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
 
             var result = await this._controller.Create(input);
@@ -73,7 +77,7 @@
         [Fact]
         public void All_ShouldReturnViewWithProperties()
         {
-            this._mockPropertyService.Setup(service => service.GeAll<PropertyInListViewModel>(It.IsAny<string>()))
+            this._mockPropertyService.Setup(service => service.GetAll<PropertyInListViewModel>(It.IsAny<string>()))
                 .Returns(new List<PropertyInListViewModel>());
 
             var result = this._controller.All();

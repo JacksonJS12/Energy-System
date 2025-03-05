@@ -13,9 +13,11 @@ namespace EnergySystem.Web.API.Controllers
     public class Esp32Controller : ControllerBase
     {
         private readonly HttpClient _httpClient;
-        public Esp32Controller(HttpClient httpClient)
+        private readonly IHubContext<RelayHub> _hubContext;
+        public Esp32Controller(HttpClient httpClient, IHubContext<RelayHub> hubContext)
         {
             this._httpClient = httpClient;
+            this._hubContext = hubContext;
         }
         
         
@@ -24,19 +26,21 @@ namespace EnergySystem.Web.API.Controllers
         {
             return Ok(new { message = "ESP32 connected successfully!" });
         }
-        
+
         [HttpGet("toggle")]
         public async Task<IActionResult> ToggleRelay()
         {
-            string esp32Ip = "http://192.168.1.5"; 
+            string esp32Ip = "http://192.168.1.5";
             string requestUrl = $"{esp32Ip}/toggle-relay";
 
             try
             {
-                HttpResponseMessage response = await this._httpClient.GetAsync(requestUrl);
-                string responseBody = await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = await _httpClient.GetAsync(requestUrl);
+                bool relayState = response.IsSuccessStatusCode;
 
-                return Ok(new { message = "Relay toggled successfully", espResponse = responseBody });
+                await this._hubContext.Clients.All.SendAsync("ReceiveRelayStatus", "ESP32_1", relayState);
+
+                return Ok(new { message = "Relay toggled successfully", relayState });
             }
             catch (HttpRequestException ex)
             {

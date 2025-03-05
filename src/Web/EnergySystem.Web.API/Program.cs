@@ -10,6 +10,7 @@ namespace EnergySystem.Web.API
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddSignalR();
             builder.Services.AddHttpClient();
             builder.Services.AddCors(options =>
             {
@@ -38,8 +39,8 @@ namespace EnergySystem.Web.API
 
 
             app.MapControllers();
-            app.MapHub<Hubs.DataHub>("/datahub");
-            
+            app.MapHub<Hubs.RelayHub>("/relayhub");
+
             app.Run();
         }
     }

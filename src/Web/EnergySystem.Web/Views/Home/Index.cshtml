@@ -107,7 +107,7 @@
     </div>
 
     <!-- Battery Status and Power Source -->
-    @{        
+    @{
         // TODO: Must be implemented real connection
         if (User.Identity.IsAuthenticated)
         {
@@ -182,29 +182,44 @@
         }
     }
 
-    <h2>Relay Control</h2>
-    <button id="toggleButton">Toggle Relay</button>
-    <p>Status: <span id="relayStatus">Unknown</span></p>
+    <h2>ESP32 Relay Control</h2>
+    <button id="toggleRelay">Toggle Relay</button>
+    <p>Status: <span id="relayStatus">Waiting...</span></p>
 
 </div>
 
 
 @section Scripts {
-    @* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
-    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script> *@
-    @* <script src="js/site.js"></script> *@
+    <script src="js/site.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    @* <script> *@
-    @*     $("#toggleButton").click(function() { *@
-    @*         $.get("/api/relay/toggle", function(response) { *@
-    @*             $("#relayStatus").text("Relay toggled"); *@
-    @*             console.log(response); *@
-    @*         }).fail(function() { *@
-    @*             $("#relayStatus").text("Error communicating with ESP32"); *@
-    @*         }); *@
-    @*     }); *@
-    @* </script> *@
-   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // ✅ Connect to SignalR Hub
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("http://localhost:5051/api/esp32/toggle")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        connection.start().then(() => {
+            console.log("Connected to SignalR Hub");
+        }).catch(err => console.error(err.toString()));
+
+        // ✅ Receive relay state updates
+        connection.on("ReceiveRelayStatus", (esp32Id, relayState) => {
+            $("#relayStatus").text(relayState ? "Relay ON" : "Relay OFF");
+            console.log(`🔹 ESP32: ${esp32Id} | State: ${relayState ? "ON" : "OFF"}`);
+        });
+
+        // ✅ Button Click - Call API to Toggle Relay
+        $("#toggleRelay").click(function () {
+            $.post("/Esp32/ToggleRelay", function (response) {
+                console.log(response);
+            }).fail(function () {
+                $("#relayStatus").text("Error toggling relay.");
+            });
+        });
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const labels = @Html.Raw(Json.Serialize(ViewData["TimeLabels"]));
@@ -234,45 +249,45 @@
                             }]
                     },
                     options:
+                    {
+                        responsive:
+                            true,
+                        plugins:
                         {
-                            responsive:
-                                true,
-                            plugins:
+                            legend:
+                            {
+                                display:
+                                    true,
+                                position:
+                                    'top'
+                            }
+                        },
+                        scales:
+                        {
+                            y:
+                            {
+                                beginAtZero:
+                                    true,
+                                title:
                                 {
-                                    legend:
-                                        {
-                                            display:
-                                                true,
-                                            position:
-                                                'top'
-                                        }
-                                },
-                            scales:
-                                {
-                                    y:
-                                        {
-                                            beginAtZero:
-                                                true,
-                                            title:
-                                                {
-                                                    display:
-                                                        true,
-                                                    text:
-                                                        'Price (BGN/kWh)'
-                                                }
-                                        },
-                                    x:
-                                        {
-                                            title:
-                                                {
-                                                    display:
-                                                        true,
-                                                    text:
-                                                        'Hour of the Day (EEST)'
-                                                }
-                                        }
+                                    display:
+                                        true,
+                                    text:
+                                        'Price (BGN/kWh)'
                                 }
+                            },
+                            x:
+                            {
+                                title:
+                                {
+                                    display:
+                                        true,
+                                    text:
+                                        'Hour of the Day (EEST)'
+                                }
+                            }
                         }
+                    }
                 });
         });
     </script>

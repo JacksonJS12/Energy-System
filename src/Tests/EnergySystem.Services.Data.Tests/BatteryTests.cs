@@ -6,9 +6,13 @@
     using System.Reflection;
     using System.Security.Claims;
     using System.Threading.Tasks;
+
+    using AutoMapper;
+
+    using Battery;
+
     using EnergySystem.Data.Common.Repositories;
     using EnergySystem.Data.Models;
-    using EnergySystem.Services.Data.Battery;
     using EnergySystem.Web.Controllers;
     using EnergySystem.Web.ViewModels.Battery;
     using FluentAssertions;
@@ -31,14 +35,15 @@
         private readonly Mock<IBatteryService> _mockBatteryService;
         private readonly Mock<IPropertyService> _mockPropertyService;
         private readonly BatteryController _batteryController;
+        private readonly IMapper _mapper;
 
         public BatteryServiceTests()
         {
             this._mockBatteryRepository = new Mock<IDeletableEntityRepository<Battery>>();
-            this._batteryService = new BatteryService(this._mockBatteryRepository.Object);
+            this._batteryService = new BatteryService(this._mockBatteryRepository.Object, this._mapper);
             this._mockBatteryService = new Mock<IBatteryService>();
             this._mockPropertyService = new Mock<IPropertyService>();
-            this._batteryController = new BatteryController(this._mockPropertyService.Object, this._mockBatteryService.Object);
+            this._batteryController = new BatteryController(this._mockPropertyService.Object, this._mockBatteryService.Object, this._mapper);
             
             AutoMapperConfig.RegisterMappings(typeof(SingleBatteryViewModel).Assembly);
 

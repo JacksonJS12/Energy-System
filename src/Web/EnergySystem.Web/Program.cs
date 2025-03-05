@@ -36,6 +36,7 @@
 
     using Profiles;
 
+
     public class Program
     {
         public static void Main(string[] args)
@@ -89,7 +90,7 @@
                 .AddRazorRuntimeCompilation();
 
             services.AddHttpClient();
-            
+
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
