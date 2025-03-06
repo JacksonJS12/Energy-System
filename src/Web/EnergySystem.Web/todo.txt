@@ -11,6 +11,8 @@
 
 - Add bredcrums to easier switching back and forth
 
+- Edit data view models to show correct data fields 
+
 DONE:
 - Create action for Property
 - Details action for Property
