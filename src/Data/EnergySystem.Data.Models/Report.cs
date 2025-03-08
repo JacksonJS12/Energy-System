@@ -14,7 +14,7 @@
         }
         public string PropertyId { get; set; }
 
-        public virtual Property Property { get; set; }
+        public string PropertyName { get; set; }
 
         public DateTime Date { get; set; } // The date for this report entry.
 

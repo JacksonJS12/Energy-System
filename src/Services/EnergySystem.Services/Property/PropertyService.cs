@@ -112,5 +112,17 @@
             property.GridId = input.GridId;
             await this._propertyRepository.SaveChangesAsync();
         }
+        
+        public T GetPowerPanelByPropertyId<T>(string propertyId, string userId)
+        {
+            var powerPanel = this._propertyRepository.AllAsNoTracking()
+                .Where(x => x.Id == propertyId && x.OwnerId == userId)
+                .Select(x => x.PowerPanel) // Assuming PowerPanel is a navigation property
+                .ProjectTo<T>(this._mapper.ConfigurationProvider)
+                .FirstOrDefault();
+
+            return powerPanel;
+        }
+
     }
 }

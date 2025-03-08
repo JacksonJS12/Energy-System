@@ -148,5 +148,23 @@
 
             return this.RedirectToAction("Details", "Property", new { id });
         }
+        
+        [HttpGet]
+        [Authorize]
+        public IActionResult PowerPanel(string id)
+        {
+            string userId = this.GetUserId();
+
+            var projection = this._propertyService.GetPowerPanelByPropertyId<PowerPanelProjection>(id, userId);
+            if (projection == null)
+            {
+                return this.Forbid();
+            }
+
+            var powerPanel = this._mapper.Map<PowerPanelViewModel>(projection);
+
+            return this.View(powerPanel);
+        }
+
     }
 }

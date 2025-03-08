@@ -26,7 +26,14 @@
 
             this.CreateMap<Property, PropertyInListProjection>();
             this.CreateMap<Property, SinglePropertyProjection>();
-            CreateMap<Property, EditPropertyInputProjection>();
+            this.CreateMap<Property, EditPropertyInputProjection>();
+            
+            this.CreateMap<PowerPanel, PowerPanelProjection>();
+            this.CreateMap<PowerPanelProjection, PowerPanelViewModel>();
+            this.CreateMap<PowerPanelViewModel, PowerPanelProjection>();
+            this.CreateMap<PowerPanel, PowerPanelProjection>()
+                .ForMember(dest => dest.PropertyName, opt => opt.MapFrom(src => src.Property.Name))
+                .ForMember(dest => dest.PropertyId, opt => opt.MapFrom(src => src.Property.Id));
         }
     }
 }

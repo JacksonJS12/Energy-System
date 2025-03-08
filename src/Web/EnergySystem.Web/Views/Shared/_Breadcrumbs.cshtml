@@ -1,0 +1,23 @@
+﻿<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Property" asp-action="All">My Properties</a>
+        </li>
+
+        @if (ViewData["BreadcrumbProperty"] != null)
+        {
+            <li class="breadcrumb-item">
+                <a asp-controller="Property" asp-action="Details" asp-route-id="@ViewData["BreadcrumbPropertyId"]">
+                    @ViewData["BreadcrumbProperty"]
+                </a>
+            </li>
+        }
+
+        @if (ViewData["BreadcrumbCurrent"] != null)
+        {
+            <li class="breadcrumb-item active" aria-current="page">
+                @ViewData["BreadcrumbCurrent"]
+            </li>
+        }
+    </ol>
+</nav>

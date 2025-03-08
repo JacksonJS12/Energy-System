@@ -1,7 +1,17 @@
 ﻿@model EnergySystem.Web.ViewModels.Battery.SingleBatteryViewModel
 @{
     ViewData["Title"] = "Battery Management";
+   
+
+    ViewData["BreadcrumbProperty"] = Model.PropertyName;
+    ViewData["BreadcrumbPropertyId"] = Model.PropertyId;
+    ViewData["BreadcrumbCurrent"] = "Battery Management";
+
+    string currentChargeLevel = $"{Model.CurrentChargeLevel:f0}";
+    string stateOfHealth = $"{Model.StateOfHealth:f0}";
 }
+
+<partial name="_Breadcrumbs" />
 
 <div class="container mt-5">
     <h1 class="text-primary text-center mb-4">Battery Management</h1>
@@ -11,11 +21,11 @@
         <div class="col-md-4 text-center">
             <div class="battery-container flex-column-reverse">
                 <div class="battery-body">
-                    <div class="battery-fill" style="height: @Model.CurrentChargeLevel%;"></div>
+                    <div class="battery-fill" style="height: @currentChargeLevel%;"></div>
                 </div>
                 <div class="battery-tip"></div>
             </div>
-            <p class="battery-percentage mt-2">@Model.CurrentChargeLevel %</p>
+            <p class="battery-percentage mt-2">@stateOfHealth %</p>
             <div class="mt-3">
                 <a asp-controller="Battery" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
                     Edit Battery Information
@@ -23,7 +33,7 @@
             </div>
             <div class="mt-3">
                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    Delete 
+                    Delete
                 </button>
             </div>
         </div>
@@ -46,7 +56,7 @@
                             <strong>Voltage:</strong> @Model.Voltage V
                         </li>
                         <li class="list-group-item">
-                            <strong>State of Health:</strong> @Model.StateOfHealth %
+                            <strong>State of Health:</strong> @stateOfHealth %
                         </li>
                         <li class="list-group-item">
                             <strong>Cycle Count:</strong> @Model.CycleCount

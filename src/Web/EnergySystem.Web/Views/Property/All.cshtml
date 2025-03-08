@@ -10,7 +10,7 @@
         @foreach (var property in Model.Properties)
         {
             <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm" onclick="location.href='@Url.Action("Details", "Property", new { id = property.Id })'" style="cursor: pointer;">
                     <div class="card-header bg-success text-white">
                         @property.Name.ToUpper()
                     </div>

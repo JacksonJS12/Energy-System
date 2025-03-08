@@ -25,6 +25,8 @@
 
     using EnergySystem.Services.Data.Report;
 
+    using Hubs;
+
     using Services.Battery;
     using Services.Data.MarketPrice;
     using Services.Grid;
@@ -34,7 +36,11 @@
     using Services.User;
     using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 
+    using OpenQA.Selenium.BiDi.Modules.Script;
+
     using Profiles;
+
+    using Services.WorkerService;
 
 
     public class Program
@@ -95,6 +101,8 @@
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddSingleton(configuration);
+            
+            services.AddSignalR();
 
             Assembly currentAssembly = Assembly.GetExecutingAssembly();
             services.AddAutoMapper(currentAssembly);
@@ -127,6 +135,7 @@
             services.AddSingleton<IHostedService, ReportGenerationBackgroundService>();
             //services.AddSingleton<IHostedService, GridSupplyPriceService>();
             services.AddHostedService<GridSupplyPriceService>();
+            //services.AddHostedService<Worker>();
 
         }
 
@@ -168,6 +177,7 @@
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             app.MapControllers();
             app.MapRazorPages();
+            app.MapHub<PowerPanelHub>("/powerpanelhub");
         }
     }
 }

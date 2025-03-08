@@ -4,6 +4,7 @@ using EnergySystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EnergySystem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250307233731_ReportNameUpdated")]
+    partial class ReportNameUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -345,25 +348,6 @@ namespace EnergySystem.Data.Migrations
                     b.ToTable("MarketPrices");
                 });
 
-            modelBuilder.Entity("EnergySystem.Data.Models.PowerPanel", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PropertyId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PropertyName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PowerPanels");
-                });
-
             modelBuilder.Entity("EnergySystem.Data.Models.Property", b =>
                 {
                     b.Property<string>("Id")
@@ -401,9 +385,6 @@ namespace EnergySystem.Data.Migrations
                     b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("PowerPanelId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("PoweringRegime")
                         .HasColumnType("int");
 
@@ -414,10 +395,6 @@ namespace EnergySystem.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("OwnerId");
-
-                    b.HasIndex("PowerPanelId")
-                        .IsUnique()
-                        .HasFilter("[PowerPanelId] IS NOT NULL");
 
                     b.ToTable("Properties");
                 });
@@ -640,15 +617,9 @@ namespace EnergySystem.Data.Migrations
                         .WithMany("Properties")
                         .HasForeignKey("OwnerId");
 
-                    b.HasOne("EnergySystem.Data.Models.PowerPanel", "PowerPanel")
-                        .WithOne("Property")
-                        .HasForeignKey("EnergySystem.Data.Models.Property", "PowerPanelId");
-
                     b.Navigation("Grid");
 
                     b.Navigation("Owner");
-
-                    b.Navigation("PowerPanel");
                 });
 
             modelBuilder.Entity("EnergySystem.Data.Models.Report", b =>
@@ -740,11 +711,6 @@ namespace EnergySystem.Data.Migrations
             modelBuilder.Entity("EnergySystem.Data.Models.Grid", b =>
                 {
                     b.Navigation("Reports");
-                });
-
-            modelBuilder.Entity("EnergySystem.Data.Models.PowerPanel", b =>
-                {
-                    b.Navigation("Property");
                 });
 
             modelBuilder.Entity("EnergySystem.Data.Models.Property", b =>

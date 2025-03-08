@@ -23,7 +23,7 @@ public class MarketPricesScraperBackgroundService : BackgroundService
     {
         this._logger.LogInformation("MarketPricesScraperBackgroundService is starting.");
         // hard test
-       // await ScrapeMarketPricesAsync(stoppingToken);
+       //await ScrapeMarketPricesAsync(stoppingToken);
 
         while (!stoppingToken.IsCancellationRequested)
         {

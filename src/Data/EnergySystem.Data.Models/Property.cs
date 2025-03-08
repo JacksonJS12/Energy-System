@@ -39,5 +39,7 @@
         public ICollection<Report> Reports { get; set; } 
 
         public PoweringRegime PoweringRegime { get; set; } //Enum for powering regime (e.g., Grid, Battery, Mixed).
+        public string PowerPanelId { get; set; }
+        public PowerPanel PowerPanel { get; set; }
     }
 }

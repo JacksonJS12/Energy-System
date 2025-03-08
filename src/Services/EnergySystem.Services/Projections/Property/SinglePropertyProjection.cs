@@ -23,6 +23,8 @@
         public string OwnerId { get; set; }
         
         public GridProjection Grid { get; set; }
+        public string PowerPanelId { get; set; }
+        public string PropertyName { get; set; }
 
         public IEnumerable<BatteryProjection> Batteries { get; set; }
     }

@@ -1,0 +1,38 @@
+﻿@model PowerPanelViewModel
+@{
+    ViewData["BreadcrumbProperty"] = Model.PropertyName;
+    ViewData["BreadcrumbPropertyId"] = Model.PropertyId;
+    ViewData["BreadcrumbCurrent"] = "Power Panel";
+    
+    Console.WriteLine($"Property ID: {Model.PropertyId}, Property Name: {Model.PropertyName}");
+}
+<partial name="_Breadcrumbs" />
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/powerpanelhub")
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+
+            connection.start().then(() => {
+                console.log("Connected to SignalR Hub");
+            }).catch(err => console.error(err.toString()));
+
+            connection.on("UpdateEnergyUsage", function (energyUsage) {
+                console.log("Energy Usage Update Received: ", energyUsage);
+                document.getElementById("energyUsage").innerText = energyUsage.toFixed(2) + " kW/h";
+            });
+
+            connection.on("ReceiveAcState", function (isAcOn) {
+                console.log("AC State Update Received: ", isAcOn);
+                document.getElementById("acState").innerText = isAcOn ? "ON" : "OFF";
+            });
+        });
+    </script>
+}
+
+<h2>Power Panel Display</h2>
+<p>AC State: <span id="acState">OFF</span></p>
+<p>Energy Usage: <span id="energyUsage">10.00 kW/h</span></p>

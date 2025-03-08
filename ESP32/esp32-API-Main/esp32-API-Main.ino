@@ -3,28 +3,34 @@
 #include <WebServer.h>
 #include <HTTPClient.h>
 
-#define RELAY_PIN 4   // GPIO connected to relay (if needed)
-#define BUTTON_PIN 5  // GPIO connected to button
+#define RELAY1_PIN 4   // AC Control (Normally Closed)
+#define RELAY2_PIN 6   // Battery Charging Control (Normally Closed)
+#define BUTTON_PIN 5   // Button to toggle AC state
 
-const char* ssid = "H3601P_1D8F"; 
-const char* password = "bku2E9b7GK"; 
+const char* ssid = "ne_pipai"; 
+const char* password = "12345678"; 
 
-const char* apiUrl = "https://192.168.1.4:5001/api/esp32/button";  // Replace with actual API IP
+const char* apiUrl = "https://192.168.138.92:5001/api/esp32/button";  
+const char* toggleRelayApiUrl = "https://192.168.138.92:5001/api/esp32/toggle";  
+const char* batteryRelayApiUrl = "https://192.168.138.92:5001/api/esp32/charge-battery";  
 
-bool acState = false;  // Tracks AC simulation state
+bool acState = false;  // Tracks AC state
+bool batteryCharging = false;  // Tracks Battery Charging state
 bool lastButtonState = HIGH; 
-unsigned long lastDebounceTime = 0;  // Tracks last button press time
-const unsigned long debounceDelay = 300;  // Debounce time to avoid double presses
-
+unsigned long lastDebounceTime = 0;
+const unsigned long debounceDelay = 300;
+bool relayState = false;
 WebServer server(80);
-bool relayState = false;  // Tracks relay state
 
 void setup() {
     Serial.begin(115200);
-    pinMode(RELAY_PIN, OUTPUT);
-    digitalWrite(RELAY_PIN, HIGH);  // Default relay OFF
+    
+    pinMode(RELAY1_PIN, OUTPUT);
+    pinMode(RELAY2_PIN, OUTPUT);
+    digitalWrite(RELAY1_PIN, LOW);  // NC default state
+    digitalWrite(RELAY2_PIN, LOW);  // NC default state
 
-    pinMode(BUTTON_PIN, INPUT_PULLUP); // Internal pull-up resistor for button
+    pinMode(BUTTON_PIN, INPUT_PULLUP);
 
     // Connect to Wi-Fi
     WiFi.begin(ssid, password);
@@ -38,45 +44,57 @@ void setup() {
     Serial.print("ESP32 IP Address: ");
     Serial.println(WiFi.localIP());
 
-    // Define API endpoint for toggling relay
+    // Define API endpoint for toggling relay via local web server
     server.on("/toggle-relay", HTTP_GET, []() {
-        relayState = !relayState;
-        digitalWrite(RELAY_PIN, relayState ? LOW : HIGH);  // Toggle relay
-        Serial.println(relayState ? "Relay ON" : "Relay OFF");
-
+        toggleRelay();
         server.send(200, "application/json", relayState ? "{\"relay\":\"on\"}" : "{\"relay\":\"off\"}");
+    });
+
+    server.on("/charge-battery", HTTP_GET, []() {
+        toggleBatteryCharging();
+        server.send(200, "application/json", batteryCharging ? "{\"battery\":\"charging\"}" : "{\"battery\":\"not charging\"}");
     });
 
     server.begin();
 }
 
 void loop() {
-    server.handleClient();  // Handle API requests
+    server.handleClient();  // Handle local API requests
 
     bool buttonState = digitalRead(BUTTON_PIN);
 
-    // Check if button was pressed and released (debounced)
     if (buttonState == LOW && lastButtonState == HIGH && (millis() - lastDebounceTime) > debounceDelay) {
-        acState = !acState;  // Toggle AC state
+        acState = !acState;
+        toggleRelay();
 
-        // Determine message to send
         String message = acState ? "Button is pressed. AC is now ON." : "Button is pressed. AC is now OFF.";
+        sendDataToApi(apiUrl, message);
 
-        // Send message to API
-        sendButtonPressToApi(message);
-
-        Serial.println(message);  // Debugging output
-
-        lastDebounceTime = millis();  // Update debounce time
+        Serial.println(message);
+        lastDebounceTime = millis();
     }
 
-    lastButtonState = buttonState; // Store last button state
+    lastButtonState = buttonState;
+
+    delay(500);
 }
 
-void sendButtonPressToApi(String message) {
+void toggleRelay() {
+    acState = !acState;
+    digitalWrite(RELAY1_PIN, acState ? LOW : HIGH);  // Toggle NC relay
+    sendDataToApi(toggleRelayApiUrl, acState ? "Relay ON" : "Relay OFF");
+}
+
+void toggleBatteryCharging() {
+    batteryCharging = !batteryCharging;
+    digitalWrite(RELAY2_PIN, batteryCharging ? LOW : HIGH);  // Toggle NC relay
+    sendDataToApi(batteryRelayApiUrl, batteryCharging ? "Battery Charging ON" : "Battery Charging OFF");
+}
+
+void sendDataToApi(const char* url, String message) {
     if (WiFi.status() == WL_CONNECTED) {
         HTTPClient http;
-        http.begin(apiUrl);
+        http.begin(url);
         http.addHeader("Content-Type", "application/json");
 
         String jsonPayload = "{\"message\":\"" + message + "\"}";
@@ -84,18 +102,8 @@ void sendButtonPressToApi(String message) {
         Serial.println(jsonPayload);
 
         int httpResponseCode = http.POST(jsonPayload);
-
         Serial.print("HTTP Response code: ");
         Serial.println(httpResponseCode);
-
-        if (httpResponseCode > 0) {
-            String response = http.getString();
-            Serial.print("API Response: ");
-            Serial.println(response);
-        } else {
-            Serial.println("Failed to send data to API. Possible network issue.");
-        }
-
         http.end();
     } else {
         Serial.println("Wi-Fi Disconnected. Cannot send API request.");

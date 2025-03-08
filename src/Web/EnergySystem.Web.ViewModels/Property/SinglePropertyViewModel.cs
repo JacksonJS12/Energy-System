@@ -1,6 +1,7 @@
 ﻿namespace EnergySystem.Web.ViewModels.Property
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     using EnergySystem.Data.Models;
@@ -15,13 +16,14 @@
         public string Name { get; set; }
 
         public string Address { get; set; }
-
+        
+        [DisplayName("Electricity need for a month")]
         public decimal ElectricityNeed { get; set; }
         
         public string OwnerId { get; set; }
         
         public GridViewModel Grid { get; set; }
-
+        public string PowerPanelId { get; set; }
         public IEnumerable<BatteryViewModel> Batteries { get; set; }
     }
 }

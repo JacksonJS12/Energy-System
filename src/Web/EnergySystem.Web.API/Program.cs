@@ -1,6 +1,8 @@
 
 namespace EnergySystem.Web.API
 {
+    using Hubs;
+
     public class Program
     {
         public static void Main(string[] args)
@@ -39,7 +41,8 @@ namespace EnergySystem.Web.API
 
 
             app.MapControllers();
-            app.MapHub<Hubs.RelayHub>("/relayhub");
+            app.MapHub<RelayHub>("/relayhub");
+            app.MapHub<PowerPanelHub>("/powerpanelhub");
 
             app.Run();
         }

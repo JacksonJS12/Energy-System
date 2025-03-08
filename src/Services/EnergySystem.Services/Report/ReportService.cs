@@ -60,6 +60,7 @@ public class ReportService : IReportService
             var report = new Report
             {
                 PropertyId = property.Id,
+                PropertyName = property.Name,   
                 Date = DateTime.UtcNow.Date,
                 GridUsage = property.GridPriceEntries.Sum(e => e.ElectricityUsed),
                 BatteryUsage = batteryUsage,
